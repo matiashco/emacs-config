@@ -1,0 +1,909 @@
+* Current Status
+This stores all my customizations for emacs that would be in the .emacs file.
+
+Everything seems to be working right now!
+* GUI Changes
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+(tool-bar-mode -1)
+(column-number-mode 1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
+(show-paren-mode 1)
+(display-time-mode -1)
+#+END_SRC
+* Themes
+** Atom One Dark Theme
+#+BEGIN_SRC emacs-lisp
+(use-package atom-one-dark-theme
+  :ensure t)
+#+END_SRC
+** Theme Changes
+ #+BEGIN_SRC emacs-lisp
+(defun toggle-dark-mode () ""
+       (interactive)
+       (if (custom-theme-enabled-p 'atom-one-dark)
+           (disable-theme 'atom-one-dark)
+         (enable-theme 'atom-one-dark)))
+(global-set-key (kbd "<f10>") 'toggle-dark-mode)
+ #+END_SRC
+* Navigation
+** Avy
+#+BEGIN_SRC emacs-lisp
+(use-package avy
+  :ensure t
+  :bind (("C-M-c" . 'avy-goto-char)
+	 ("C-M-g" . 'avy-goto-line)
+	 ("C-M-y" . 'avy-copy-line)
+	 )
+  :config
+  (setq avy-all-windows nil))
+#+END_SRC
+** Ace Window
+Removes the need to call other-window multiples times
+#+BEGIN_SRC emacs-lisp
+(use-package ace-window
+  :ensure t
+  :bind ("`" . 'ace-window)
+  :config
+  (setq aw-scope 'frame))
+#+END_SRC
+** Using Registers
+*** Store to Preset Register
+Sets point to preset register and allows for quick jumping to that register,
+switching the register to the point switched to. Note that I commented out the
+jumping to test my new function that cycles through all possible registers.
+#+BEGIN_SRC emacs-lisp
+(defun ska-point-to-register ()
+  "Store cursorposition _fast_ in a register. Use ska-jump-to-register
+to jump back to the stored position."
+  (interactive)
+  (point-to-register 8))
+(global-set-key (kbd "C-.") 'ska-point-to-register)
+#+END_SRC
+*** Quick-save Point to Register + Cycle Registers
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-r") 'point-to-register)
+(global-set-key (kbd "M-j") 'register-to-point)
+
+(defun cycle-point-across-registers ()
+  (interactive)
+  "Move point across all possible unique markers in register list."
+  (let ((valid-marker-list (seq-uniq
+			    (seq-filter (lambda (marker) (markerp marker))
+					(seq-map (lambda (reg) (cdr reg)) register-alist))))
+	(valid-marker-list-copy)
+	(current-marker))
+    (setq valid-marker-list-copy valid-marker-list)
+    (while (and (setq current-marker (pop valid-marker-list-copy))
+		(not (equal current-marker (point-marker)))))
+    (register-val-jump-to (car (or valid-marker-list-copy valid-marker-list)) nil)))
+(global-set-key (kbd "C-,") 'cycle-point-across-registers)
+#+END_SRC
+** Frames
+Since I'm starting to use a lot of frames, changing between them quickly is
+critical.
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-`") 'other-frame)
+#+END_SRC
+** (Hs-Mode) Expand Block during Navigation
+Used to expand Hs block if I'm going to a particular line in a hidden block.
+#+BEGIN_SRC emacs-lisp
+(defadvice goto-line (after expand-after-goto-line
+                            activate compile)
+  "hideshow-expand affected block when using goto-line in a collapsed buffer"
+  (save-excursion
+    (hs-show-block)))
+(defadvice register-to-point (after expand-after-goto-line
+                            activate compile)
+  (save-excursion
+    (hs-show-block)))
+#+END_SRC
+** Forward Up List
+I'm switching from using =backward-up-list= to moving forward up a list cause I
+use that so much more often.
+#+BEGIN_SRC emacs-lisp
+(defun forward-up-list (&optional ARG)
+  (interactive "p")
+  ""
+  (if ARG
+      (backward-up-list (- ARG) t t)
+    (backward-up-list (- 1) t t)))
+(global-set-key (kbd "C-M-u") 'forward-up-list)
+
+#+END_SRC
+* Modes
+** Org Mode
+Used to organize myself, especially for project management.
+*** Org Variables
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-files '())
+(setq org-agenda-sorting-strategy
+      '((agenda habit-down time-up priority-down category-keep)
+	(todo priority-down todo-state-down)
+	(tags priority-down category-keep)
+	(search category-keep)))
+(setq org-clock-mode-line-total 'today)
+(setq org-log-into-drawer t)
+(setq org-log-note-headings
+      '((done . "CLOSING NOTE %t")
+	(state . "%-12s %t")
+	(note . "Note taken on %t")
+	(reschedule . "Rescheduled from %S on %t")
+	(delschedule . "Not scheduled, was %S on %t")
+	(redeadline . "New deadline from %S on %t")
+	(deldeadline . "Removed deadline, was %S on %t")
+	(refile . "Refiled on %t")
+	(clock-out . "")))
+(setq org-src-window-setup 'current-window)
+#+END_SRC
+*** Key shorcuts
+ #+BEGIN_SRC emacs-lisp
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-cb" 'org-switchb)
+ #+END_SRC
+*** Export settings
+#+BEGIN_SRC emacs-lisp
+(require 'ox-latex)
+(unless (boundp 'org-latex-classes)
+  (setq org-latex-classes nil))
+(add-to-list 'org-latex-classes
+             '("article"
+               "\\documentclass{article}"
+               ("\\section{%s}" . "\\section*{%s}")))
+(setq org-latex-listings 'minted)
+(add-to-list 'org-latex-packages-alist '("" "minted"))
+(add-to-list 'org-latex-packages-alist '("dvipsnames" "xcolor"))
+(add-to-list 'org-latex-packages-alist '("" "setspace"))
+
+(setq org-latex-pdf-process
+      '("pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f"))
+#+END_SRC
+*** Code Block Execution
+#+BEGIN_SRC emacs-lisp
+(with-eval-after-load 'org
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (C . t)
+     (shell .t)))
+  )
+
+(setq org-src-fontify-natively t
+    org-src-preserve-indentation t
+    org-src-tab-acts-natively t
+    org-confirm-babel-evaluate nil)
+#+END_SRC
+*** Org Bullets
+Displays bullets in a nicer way.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+END_SRC
+*** Org Capture Templates
+Used to capture ideas and things to do. Right now I'm in the middle of
+implementing a workflow, so this will be edited soon enough.
+#+BEGIN_SRC emacs-lisp
+(defun ret-correct-format-entry () ""
+       (format "%-13s" "\"TODO\""))
+(setq org-capture-templates
+      '(("p" "Personal Journal" entry (file+datetree
+				       "~/Dropbox/org/personal/journal.org")
+	 "* [%<%I:%M%p>] %?\n\n")
+        ("e" "Entry" entry (file+headline "~/Dropbox/org/inbox.org" "Inbox")
+         "* TODO %?\n:LOGBOOK:\n- %(ret-correct-format-entry)%U\n:END:\n")))
+#+END_SRC
+*** Org Journal Workflow
+These customizations are used to implement the workflow of using journal Org
+files to house progress and todo's on projects.
+#+BEGIN_SRC emacs-lisp
+(defun org-keywords ()
+  "parse the buffer and return a cons list of (property . value)
+from lines like:
+,#+PROPERTY: value"
+  (org-element-map (org-element-parse-buffer 'element) 'keyword
+    (lambda (keyword) (cons (org-element-property :key keyword)
+                            (org-element-property :value keyword)))))
+(defun org-keyword (KEYWORD)
+  "get the value of a KEYWORD in the form of #+KEYWORD: value"
+  (cdr (assoc KEYWORD (org-keywords))))
+
+(defun add-journal-entry ()
+  (interactive)
+  "Assumes point is in an org buffer. Adds a journal entry with the timestamp \
+   under the current day in the datetree, adding a heading for the current \
+   day if necessary. Point is set to right after timestamp."
+  (save-restriction
+    (widen)                             ;in case current buffer is narrowed
+    (if (not (equal "t" (org-keyword "JOURNAL_FILE")))
+        (error "File does not contain #+JOURNAL_FILE set to t")
+      (funcall #'org-datetree-find-date-create
+	       (calendar-gregorian-from-absolute (org-today)))
+      (org-narrow-to-subtree)
+      (end-of-buffer)
+      (org-return)                          ;addresses one line heading
+      (delete-blank-lines)                  ;that gets cut otherwise
+      (org-insert-heading 4 t)              ;t to move after prev heading
+      (insert (format-time-string "[%I:%M%p] " (current-time)))
+      (message "Done"))))
+
+(defun add-todo-entry ()
+  (interactive)
+  "Assumes point is in an org buffer. Adds a todo entry with a logbook drawer \
+   including the time the todo entry was created. Adds the heading under the \
+   current day in the datetree, creating a heading for the current day if \
+   necessary. Point is set to right after TODO entry."
+  (save-restriction
+    (widen)                             ;in case current buffer is narrowed
+    (if (not (equal "t" (org-keyword "JOURNAL_FILE")))
+        (error "File does not contain #+JOURNAL_FILE set to t")
+      (funcall #'org-datetree-find-date-create
+	       (calendar-gregorian-from-absolute (org-today)))
+      (org-narrow-to-subtree)
+      (end-of-buffer)
+      (org-return)                          ;addresses one line heading
+      (delete-blank-lines)                  ;that gets cut otherwise
+      (org-insert-heading 4 t)              ;t to move after prev heading
+      (insert (format "TODO \n   :LOGBOOK:\n   - %s%s\n   :END:\n"
+		      (ret-correct-format-entry)
+		      (format-time-string
+		       (org-time-stamp-format (current-time) t)
+		       (current-time))))
+      (end-of-buffer)
+      (org-previous-visible-heading 1)
+      (org-cycle)
+      (org-end-of-line)
+      (message "Done"))))
+#+END_SRC
+*** Org Clocking
+Useful to see how much time I'm spending on a project
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c C-x TAB") 'org-clock-in)
+(global-set-key (kbd "C-c C-x C-o") 'org-clock-out)
+#+END_SRC
+*** Org TODO Keywords
+Works with workflow system I'm implementing.
+#+BEGIN_SRC emacs-lisp
+(setq org-todo-keywords '(
+                          (sequence "TODO(t!)" "WAITING(a@)" "NEXT(n!)" "WORKING(w!)" "|" "DONE(d!)" "CANCELLED(c@)")
+                          (sequence "NOTE(o)")))
+(setq org-todo-keyword-faces '(("ENTRY" . "brown")
+                               ("TODO" . org-warning)
+                               ("NOTE" . "purple")
+                               ("NEXT" . "blue")
+                               ("WORKING" . "black")
+                               ("WAITING" . "orange")
+                               ("CANCELLED" . org-warning)))
+#+END_SRC
+*** Org TODO Refiling
+Working with implemented workflow to refile a TODO from inbox to an open org
+buffer and move it to the current day in the datetree.
+#+BEGIN_SRC emacs-lisp
+(defun +org/opened-buffer-files ()
+  (interactive)
+  "Return the list of files currently opened in emacs"
+  (delq nil
+        (mapcar (lambda (x)
+                  (if (and (buffer-file-name x)
+                           (string-match "\\.org$"
+                                         (buffer-file-name x)))
+                      (buffer-file-name x)))
+                (buffer-list))))
+
+(defun move-subtree-to-current-day ()
+  ""
+  (org-cycle)
+  (org-copy-subtree 1 t)
+  (funcall #'org-datetree-find-date-create
+	   ;; Current date, possibly corrected for late night
+	   ;; workers.
+	   (calendar-gregorian-from-absolute (org-today)))
+  (org-narrow-to-subtree)
+  (end-of-buffer)
+  (org-return)                          ;addresses one line heading
+  (delete-blank-lines)                  ;that gets cut otherwise
+  (org-paste-subtree 4)
+  (widen))
+#+END_SRC
+*** Org Agenda View Customizations
+I ended up creating an agenda view that shows the current day todos plus
+unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.emacs.d/blob/master/michael.org][this guy's emacs config]].
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-custom-commands
+      '(("d" "Day Agenda with Current-day and Unscheduled TODOs"
+	 ((agenda #1="" ((org-agenda-span 1)
+			 (org-agenda-skip-function
+			  '(org-agenda-skip-entry-if 'todo
+						     '("DONE"
+						       "CANCELLED"
+						       "NOTE")))))
+	  (todo #1# ((org-agenda-overriding-header "\nUnscheduled TODO")
+                     (org-agenda-skip-function
+		      '(org-agenda-skip-entry-if 'timestamp 'todo
+						 '("DONE"
+						   "CANCELLED"
+						   "NOTE")))))))
+	("b" "Buffer summary"
+	 ((todo "" ((org-agenda-files '("~/Dropbox/org/inbox.org"))))))))
+#+END_SRC
+*** Org Journal Default Visibility
+Used to see journals from workflow better, showing every day entry in the
+datetree by default.
+#+BEGIN_SRC emacs-lisp
+(defun load-journal-visibility ()
+  ""
+  (if (equal "t" (org-keyword "JOURNAL_FILE"))
+      (org-shifttab 3)
+    nil))
+#+END_SRC
+*** Org Workflow Variables
+#+BEGIN_SRC emacs-lisp
+(setq org-refile-targets '((+org/opened-buffer-files :level . 0)))
+(setq org-refile-use-outline-path 'file)
+(add-hook 'org-after-refile-insert-hook 'move-subtree-to-current-day)
+(add-hook 'org-mode-hook 'load-journal-visibility)
+(setq org-agenda-window-setup 'current-window)
+#+END_SRC    
+*** Org Workflow Shortcuts
+**** Jump to Inbox
+This function makes use of a hardcoded file name - put this in a variable
+instead.
+#+BEGIN_SRC emacs-lisp
+(defun jump-to-inbox ()
+  (interactive)
+  "Jump to the agenda view for inbox"
+  (org-agenda nil "b"))
+(global-set-key (kbd "s-i") 'jump-to-inbox)
+#+END_SRC
+**** Jump to Org Agenda + TODO
+#+BEGIN_SRC emacs-lisp
+(defun activate-agenda-todo ()
+  (interactive)
+  "Jump to org agenda and todo interactive system"
+   (org-agenda nil "d" 'buffer))
+(global-set-key (kbd "s-a") 'activate-agenda-todo)
+#+END_SRC
+**** Create a journal entry
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "s-j") 'add-journal-entry)
+#+END_SRC
+**** Create a todo entry
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "s-t") 'add-todo-entry)
+#+END_SRC
+*** Remove Agenda Cycle Keybinding
+#+BEGIN_SRC emacs-lisp
+(defun unmap-agenda-cycle () ""
+       (define-key org-mode-map (kbd "C-,") nil))
+(add-hook 'org-mode-hook 'unmap-agenda-cycle)
+#+END_SRC
+*** Refile when state changed to WORKING
+I want to refile the todo item when I change its state to WORKING.
+
+This is just for refiling a todo when I'm in a workflow journal and am changing
+to the WORKING state. Note that the =org-add-log-setup= is taken from the
+=org-todo= source code and assumes that I want to record the time of state
+change when switching to the WORKING state.
+
+=org-agenda-redo-all= is called to refresh the agenda to see that the todo was
+changed to WORKING in the agenda view, since I usually change the todo status in
+the agenda view.
+
+#+BEGIN_SRC emacs-lisp
+(defun refile-if-in-journal-and-working () ""
+    (if (and (equal "t" (org-keyword "JOURNAL_FILE"))
+	     (equal "WORKING" org-state))
+	(progn (move-subtree-to-current-day)
+	       (org-add-log-setup 'state org-state nil 'time)
+	       (org-agenda-redo-all t))))
+(add-hook 'org-after-todo-state-change-hook 'refile-if-in-journal-and-working)
+#+END_SRC
+*** Remove Org Force Cycle Keybinding
+This is done to allow for a shortcut that will switch buffers quickly.
+#+BEGIN_SRC emacs-lisp
+(defun unmap-org-force-cycle () ""
+       (define-key org-mode-map (kbd "C-<tab>") nil))
+(add-hook 'org-mode-hook 'unmap-org-force-cycle)
+#+END_SRC
+** Flycheck Mode
+I have this turned off right now - I should check it out more
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :ensure t)
+#+END_SRC
+** Ido Mode
+*** Enable
+#+BEGIN_SRC emacs-lisp
+(use-package ido
+  :config
+  (setq ido-default-buffer-method 'selected-window)
+  (setq ido-default-file-method 'selected-window)
+  (setq ido-everywhere t)
+  (ido-mode 1))
+#+END_SRC
+
+*** View File Ido
+ Make searching through buffers and finding files easier
+ #+BEGIN_SRC emacs-lisp
+(defun view-file-ido ()
+  (interactive)
+  ""
+  (view-file (buffer-file-name (ido-find-file))))
+(global-set-key (kbd "C-x C-r") 'view-file-ido)
+ #+END_SRC
+** Electric Indent Mode
+I'm trying to replace RET with C-j to remove some of the burden on my right
+pinky, which feels the most pain when I type on Emacs for a while. Setting this
+mode off allows automatic indenting whenever I press C-j.
+#+BEGIN_SRC emacs-lisp
+(electric-indent-mode -1)
+#+END_SRC
+** Subword Mode
+Excellent when I'm in Java or anything with camel case strings. Allows for
+movement across subwords.
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c C-w") 'subword-mode)
+#+END_SRC
+** View Mode
+ Mode to view files. I'm customizing this mode to help me efficiently look
+ through source code. I'm currently trying out narrowing code, widening code,
+ easily highlighting function definitions with ".", and cloning code into an
+ indirect buffer.
+ #+BEGIN_SRC emacs-lisp
+(defun view-mode-add-custom-keybindings ()
+  "Add my preferred keybindings for make view-mode easier to navigate"
+  (hs-minor-mode 1)
+  (define-key view-mode-map (kbd "c") 'avy-goto-char)
+  (define-key view-mode-map (kbd "a") (key-binding "\C-a"))
+  (define-key view-mode-map (kbd "e") (key-binding "\C-e"))
+  (define-key view-mode-map (kbd "m") (key-binding "\M-m"))
+  (define-key view-mode-map (kbd "g") 'goto-line)
+  (define-key view-mode-map (kbd "r") 'point-to-register)
+  (define-key view-mode-map (kbd "j") 'register-to-point)
+  (define-key view-mode-map (kbd "TAB") 'hs-toggle-hiding)
+  (define-key view-mode-map (kbd "<C-tab>") 'hs-hide-level)
+  (define-key view-mode-map (kbd "<backtab>") 'hs-show-all)
+  (define-key view-mode-map (kbd "n") 'narrow-to-region)
+  (define-key view-mode-map (kbd ".") 'mark-sexp)
+  (define-key view-mode-map (kbd "w") 'widen)
+  (define-key view-mode-map (kbd "i") 'clone-indirect-buffer))
+(add-hook 'view-mode-hook 'view-mode-add-custom-keybindings)
+(global-set-key (kbd "C-x C-v") 'view-mode)
+ #+END_SRC
+* Searching
+** Ag
+Uses the silver searcher shell program to search quickly. Good for finding
+references of strings in many files.
+#+BEGIN_SRC emacs-lisp
+(use-package ag
+  :ensure t
+  :config
+  (setq ag-reuse-buffers t)
+  (setq ag-reuse-window t))
+#+END_SRC
+* Buffer Management
+** Saving Buffer
+ Easily the most used key I use. Small tweak but huge payoff.
+ #+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<menu>") 'save-buffer)
+ #+END_SRC  
+** Global Auto Revert Mode
+Turning on auto revert buffer and removing the confirmation message
+#+BEGIN_SRC emacs-lisp
+(global-auto-revert-mode t)
+(setq auto-revert-verbose nil)
+#+END_SRC
+** Ibuffer
+*** Shortcuts
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+#+END_SRC
+*** Customization
+#+BEGIN_SRC emacs-lisp
+(setq ibuffer-show-empty-filter-groups nil)
+(add-hook 'ibuffer-mode-hook
+	  '(lambda ()
+	     (ibuffer-auto-mode 1)
+	     (ibuffer-switch-to-saved-filter-groups "home")))
+(setq ibuffer-saved-filter-groups
+      '(("home"
+	 ("emacs-config" (or (filename . ".emacs.d")
+			     (filename . ".emacs")))
+	 ("Org" (or (mode . org-mode)
+		    (filename . "OrgMode")))
+         ("code" (or (mode . c++-mode)
+                     (mode . c-mode)
+                     (mode . python-mode)
+                     (mode . java-mode)
+                     (mode . latex-mode)))
+	 ("Emacs Buffers" (or (name . "\*Help\*")
+                              (name . "\*Apropos\*")
+                              (name . "\*info\*")
+                              (name . "\*scratch\*")
+                              (name . "\*Messages\*")
+                              (name . "\*Occur\*")
+                              (name . "\**\*"))))))
+#+END_SRC
+* Window Management
+** Zoom into and out of window - Single Frame
+This is a handy function to expand and compress a buffer momentarily
+#+BEGIN_SRC emacs-lisp
+(defun toggle-zoom () "Zooms into window and zooms out"
+       (interactive)
+       (if (= 1 (length (window-list)))
+           (jump-to-register '_)
+         (progn
+           (window-configuration-to-register '_)
+           (delete-other-windows)
+           )))
+(global-set-key (kbd "C-x 5 z") 'toggle-zoom)
+#+END_SRC
+** Eyebrowse
+ Package that allows for switching between window configurations in the same
+ frame. I want to try using this to create something similar to tmux.
+ #+BEGIN_SRC emacs-lisp
+(use-package eyebrowse
+  :ensure t
+  :bind (("s-1" . 'eyebrowse-switch-to-window-config-1)
+	 ("s-2" . 'eyebrowse-switch-to-window-config-2)
+	 ("s-3" . 'eyebrowse-switch-to-window-config-3)
+	 ("s-4" . 'eyebrowse-switch-to-window-config-4)
+	 ("s-5" . 'eyebrowse-switch-to-window-config-5)
+	 ("s-6" . 'eyebrowse-switch-to-window-config-6)
+	 ("s-7" . 'eyebrowse-switch-to-window-config-7)
+	 ("s-8" . 'eyebrowse-switch-to-window-config-8)
+	 ("s-9" . 'eyebrowse-switch-to-window-config-9)
+	 ("s-r" . 'eyebrowse-rename-window-config)))
+ #+END_SRC
+* Frame Management
+** Compile Frame
+Compile the code in another frame. Handy when resolving bugs.
+#+BEGIN_SRC emacs-lisp
+(defun compile-mode ()
+  "Create a new frame with the selected buffer alongside the compile buffer."
+  (interactive)
+  (select-frame (make-frame))
+  (compile (compilation-read-command compile-command)))
+(global-set-key (kbd "C-x 5 c") 'compile-mode)
+(global-set-key (kbd "<f6>") 'compile-mode)
+#+END_SRC
+** GDB Frame
+Run GDB on another frame. Helpful to debug.
+#+BEGIN_SRC emacs-lisp
+(defun gdb-mode () "Create a new frame with the selected buffer alongside the compile buffer."
+  (interactive)
+  (select-frame (make-frame))
+  (split-window-below)
+  (gdb (gud-query-cmdline 'gdb)))
+(global-set-key (kbd "C-x 5 d") 'gdb-mode)
+(global-set-key (kbd "<f7>") 'gdb-mode)
+#+END_SRC
+** Ag Frame
+Display silver searcher in another frame
+#+BEGIN_SRC emacs-lisp
+(defun code-search-mode ()
+  "Create a new frame with the selected buffer alongside the ag search results buffer."
+  (interactive)
+  (select-frame (make-frame))
+  (ag (ag/read-from-minibuffer "Search string") (read-directory-name "Directory: ")))
+(global-set-key (kbd "C-x 5 s") 'code-search-mode)
+(global-set-key (kbd "<f8>") 'code-search-mode)
+#+END_SRC
+** Shell Mode
+Create a new frame with the shell. Figure out if you want to change this eshell
+or not.
+#+BEGIN_SRC emacs-lisp
+(defun open-shell-mode ()
+  "Create a new frame with just the shell."
+  (interactive)
+  (select-frame (make-frame))
+  (shell)
+  (delete-other-windows))
+(global-set-key (kbd "C-x 5 h") 'open-shell-mode)
+(global-set-key (kbd "<f5>") 'open-shell-mode)
+#+END_SRC
+** Region to New Frame
+Creates a function that will copy a region and put it in a new frame on a
+scratch buffer.
+#+BEGIN_SRC emacs-lisp
+(defun copy-region-to-new-frame() ""
+       (interactive)
+       (let ((original-frame (selected-frame))
+             (frame (make-frame))
+             (line-count (count-lines (region-beginning) (region-end)))
+             (buffer (generate-new-buffer 
+                     (generate-new-buffer-name "untitled"))))
+         (kill-ring-save (region-beginning) (region-end))
+         (select-frame frame)
+         (switch-to-buffer buffer)
+         (yank)
+         (beginning-of-buffer)
+         (fit-frame-to-buffer frame line-count line-count 80 80)
+         (select-frame original-frame)))
+(global-set-key (kbd "C-x 5 r") 'copy-region-to-new-frame)
+(global-set-key (kbd "<f9>") 'copy-region-to-new-frame)
+#+END_SRC   
+** Delete Frame
+Quick way to delete current frame
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<delete>") 'delete-frame)
+#+END_SRC
+* Dired
+Powerful package to navigate between files and perform operations on files.
+#+BEGIN_SRC emacs-lisp
+(define-key dired-mode-map (kbd "j") 'ido-find-file)
+(define-key dired-mode-map (kbd "l") 'dired-up-directory)
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
+(global-set-key (kbd "C-x C-j") 'dired-jump)
+#+END_SRC
+* Coding
+** Comment Region
+#+BEGIN_SRC emacs-lisp
+(defun my-comment-region ()
+  "Comments a single line of code"
+  (interactive)
+  (comment-or-uncomment-region (region-beginning) (region-end)))
+(global-set-key (kbd "C-;") 'my-comment-region)
+#+END_SRC
+** C/C++
+*** C++ Modern Syntax highlighting
+#+BEGIN_SRC emacs-lisp
+(use-package modern-cpp-font-lock
+  :ensure t
+  :config
+  (modern-c++-font-lock-global-mode t))
+#+END_SRC
+** Compile
+*** Shortcuts
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<f6>") 'compile)
+#+END_SRC
+*** Compile Variables
+#+BEGIN_SRC emacs-lisp
+(setq compilation-always-kill t)
+(setq compilation-scroll-output 'first-error)
+#+END_SRC
+** GDB
+#+BEGIN_SRC emacs-lisp
+(setq gdb-many-windows t)
+#+END_SRC
+** Dumb Jump
+I'm installing this package because it's a solution to jumping around
+definitions easily and without any setup. I hear it can be slow on big projects,
+but I'm going to try it out and see what happens.
+#+BEGIN_SRC emacs-lisp
+(use-package dumb-jump
+  :ensure t
+  :bind (("M-g o" . dumb-jump-go-other-window)
+         ("M-g j" . dumb-jump-go)
+         ("M-g i" . dumb-jump-go-prompt)
+         ("M-g x" . dumb-jump-go-prefer-external)
+         ("M-g z" . dumb-jump-go-prefer-external-other-window)
+	 ("M-." . dumb-jump-go)
+	 ("M-," . dumb-jump-back)
+	 ))
+#+END_SRC
+* Version Control
+* TRAMP
+** Verbose
+#+BEGIN_SRC emacs-lisp
+(customize-set-variable 'tramp-verbose 1 "Enable just Errors")
+#+END_SRC
+* Eshell
+** Eshell Variables
+#+BEGIN_SRC emacs-lisp
+(setq eshell-list-files-after-cd t)
+(setq eshell-destroy-buffer-when-process-dies t)
+(setq eshell-history-size 1000000)
+#+END_SRC
+** Make exec-visual Tramp Aware
+Found this on [[https://gist.github.com/ralt/a36288cd748ce185b26237e6b85b27bb][this post]] to run visual commands over TRAMP, only for ssh though.
+#+BEGIN_SRC emacs-lisp
+(require 'tramp)
+(defun redefine-eshell-exec-visual () ""
+       (eval
+  '(defun eshell-exec-visual (&rest args)
+     "Run the specified PROGRAM in a terminal emulation buffer. ARGS are \
+      passed to the program.  At the moment, no piping of input is allowed."
+     (let* (eshell-interpreter-alist
+	    (original-args args)
+	    (interp (eshell-find-interpreter (car args) (cdr args)))
+	    (in-ssh-tramp (and (tramp-tramp-file-p default-directory)
+			       (equal (tramp-file-name-method
+				       (tramp-dissect-file-name default-directory))
+				      "ssh")))
+	    (program (if in-ssh-tramp
+			 "ssh"
+		       (car interp)))
+	    (args (if in-ssh-tramp
+		      (let ((dir-name (tramp-dissect-file-name default-directory)))
+			(eshell-flatten-list
+			 (list
+			  "-t"
+			  (tramp-file-name-host dir-name)
+			  (format
+			   "export TERM=xterm-256color; cd %s; exec %s"
+			   (tramp-file-name-localname dir-name)
+			   (string-join
+			    (append
+			     (list (tramp-file-name-localname (tramp-dissect-file-name (car interp))))
+			     (cdr args))
+			    " ")))))
+		    (eshell-flatten-list
+		     (eshell-stringify-list (append (cdr interp)
+						    (cdr args))))))
+	    (term-buf
+	     (generate-new-buffer
+	      (concat "*"
+		      (if in-ssh-tramp
+			  (format "%s %s" default-directory (string-join original-args " "))
+			(file-name-nondirectory program))
+		      "*")))
+	    (eshell-buf (current-buffer)))
+       (save-current-buffer
+	 (switch-to-buffer term-buf)
+	 (term-mode)
+	 (set (make-local-variable 'term-term-name) eshell-term-name)
+	 (make-local-variable 'eshell-parent-buffer)
+	 (setq eshell-parent-buffer eshell-buf)
+	 (term-exec term-buf program program nil args)
+	 (let ((proc (get-buffer-process term-buf)))
+	   (if (and proc (eq 'run (process-status proc)))
+	       (set-process-sentinel proc 'eshell-term-sentinel)
+	     (error "Failed to invoke visual command")))
+	 (term-char-mode)
+	 (if eshell-escape-control-x
+	     (term-set-escape-char ?\C-x))))
+     nil)))
+(add-hook 'eshell-mode-hook 'redefine-eshell-exec-visual)
+#+END_SRC   
+* PDF View
+Used to view PDF's
+#+BEGIN_SRC emacs-lisp
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install))
+
+(use-package org-pdfview
+  :ensure t)
+#+END_SRC
+* Cycling through Errors/Results
+I use these commands a lot when cycling through code errors or search results.
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-`") 'next-error)
+(global-set-key (kbd "C-M-`") 'previous-error)
+#+END_SRC
+* Insert / Delete Text
+** Delete Sexp
+Sets C-M-Backspace to remove a string expression. Note this key usually calls
+and Xorg command, so you should remove that command first before using this.
+#+BEGIN_SRC emacs-lisp
+(global-set-key [C-M-backspace] 'backward-kill-sexp)
+#+END_SRC
+** Custom Open Line (Electric Indent Mode)
+#+BEGIN_SRC emacs-lisp
+(defun my-open-line() ""
+       (interactive)
+       (save-excursion 
+         (electric-newline-and-maybe-indent)))
+(global-set-key (kbd "C-o") 'my-open-line)
+#+END_SRC
+** Insert Balanced Chars
+Really helpful when writing in a programming language, but also just writing
+strings in general.
+#+BEGIN_SRC emacs-lisp
+(defun insert-braces (&optional arg) ""
+       (interactive "P")
+       (insert-pair arg ?\{ ?\}))
+(global-set-key (kbd "C-{") 'insert-braces)
+
+(defun insert-brackets (&optional arg) ""
+       (interactive "P")
+       (insert-pair arg ?\[ ?\]))
+(global-set-key (kbd "M-[") 'insert-brackets)
+
+(defun insert-quotes (&optional arg) ""
+       (interactive "P")
+       (insert-pair arg ?\" ?\"))
+(global-set-key (kbd "M-\"") 'insert-quotes)
+
+(defun insert-single-quotes (&optional arg) ""
+  (interactive "P")
+  (insert-pair arg ?\' ?\'))
+(global-set-key (kbd "M-\'") 'insert-single-quotes)
+#+END_SRC
+** Balanced Chars Remove Extra Space
+Usually I can add the space myself after inserting a pair of balanced chars, so
+let's turn this off.
+#+BEGIN_SRC emacs-lisp
+(setq parens-require-spaces nil)
+#+END_SRC
+** New Delete Keybindings
+I'm keeping the backspace keybindings as is, but I'm going to try out these
+new keybindings for deleting text too.
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-/") 'delete-backward-char)
+(global-set-key (kbd "M-/") 'backward-kill-word)
+#+END_SRC
+** Change Undo keybinding
+This one is going to be hard to get used to, but I just hope I don't undo that
+much.
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-M-/") 'undo)
+#+END_SRC
+* Web Browser (EWW)
+Trying to use this more to quickly find webpage.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'eww-mode-hook
+          (lambda ()
+            (local-set-key "c" 'avy-goto-char)))
+#+END_SRC
+** EWW Variables
+*** Set EWW as default web browser
+I like this because it gives me a clean look for webpages. That being said, I
+should find a way to use firefox for certain pages too.
+#+BEGIN_SRC emacs-lisp
+(setq browse-url-browser-function 'eww-browse-url)
+#+END_SRC
+* Try
+Handy package that lets you try out packages
+#+BEGIN_SRC emacs-lisp
+(use-package try
+  :ensure t)
+#+END_SRC
+* Misc
+** Fill Column
+   Now set to 80 since that's what most people allow on lines
+#+BEGIN_SRC emacs-lisp
+(setq-default fill-column 80)
+#+END_SRC
+** Narrow Region
+#+BEGIN_SRC emacs-lisp
+(put 'narrow-to-region 'disabled nil)
+#+END_SRC
+** Prompt Change
+Turn all prompts from yes-or-no to y-or-n
+#+BEGIN_SRC emacs-lisp
+(fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+
+[[http://www.google.com]]
+** Kill Emacs With Prompt
+Prevents from closing Emacs accidentally.
+#+BEGIN_SRC emacs-lisp
+(setq confirm-kill-emacs 'y-or-n-p)
+#+END_SRC
+* Elfeed
+This package is used to read the news. I tried it out for a bit and love how it
+works almost right out of the box.
+
+#+BEGIN_SRC emacs-lisp
+(use-package elfeed
+  :ensure t
+  :config
+  (setq elfeed-feeds
+	'(
+	  "http://rss.sciam.com/ScientificAmerican-Global"
+	  "https://www.technologyreview.com/topnews.rss"
+	  "https://www.joelonsoftware.com/feed/"
+	  "https://www.gatesnotes.com/home/rss"
+	  "https://www.boston.com/tag/local-news/?feed=rss")))
+#+END_SRC
+* TODOS
+Try out the following keybindings:
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-z") 'avy-goto-char-timer)
+
+(defun switch-to-other-buffer ()
+  "Switches to the last buffer used."
+  (interactive)
+  (switch-to-buffer (other-buffer)))
+(global-set-key (kbd "C-<tab>") 'switch-to-other-buffer)
+
+(setq browse-url-generic-program "firefox")
+#+END_SRC
