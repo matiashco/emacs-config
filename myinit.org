@@ -583,13 +583,13 @@ configuration for the frame."
 ** Compile Frame
 Compile the code in another frame. Handy when resolving bugs.
 #+BEGIN_SRC emacs-lisp
-(defun compile-mode ()
+(defun matiash-compile-mode ()
   "Create a new frame with the selected buffer alongside the compile buffer."
   (interactive)
   (select-frame (make-frame))
   (compile (compilation-read-command compile-command)))
-(global-set-key (kbd "C-x 5 c") 'compile-mode)
-(global-set-key (kbd "<f6>") 'compile-mode)
+(global-set-key (kbd "C-x 5 c") 'matiash-compile-mode)
+(global-set-key (kbd "<f6>") 'matiash-compile-mode)
 #+END_SRC
 ** GDB Frame
 Run GDB on another frame. Helpful to debug.
