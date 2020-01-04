@@ -464,11 +464,11 @@ I have this turned off right now - I should check it out more
 *** View File Ido
  Make searching through buffers and finding files easier
  #+BEGIN_SRC emacs-lisp
-(defun view-file-ido ()
+(defun matiash-view-file-ido ()
   (interactive)
-  ""
+  "Runs the view-file function, but with the power of Ido."
   (view-file (buffer-file-name (ido-find-file))))
-(global-set-key (kbd "C-x C-r") 'view-file-ido)
+(global-set-key (kbd "C-x C-r") 'matiash-view-file-ido)
  #+END_SRC
 ** Electric Indent Mode
 I'm trying to replace RET with C-j to remove some of the burden on my right
