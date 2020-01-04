@@ -1,5 +1,6 @@
 * Current Status
-This stores all my customizations for emacs that would be in the .emacs file.
+This stores all my customizations for emacs that would be in the
+.emacs file.
 
 Everything seems to be working right now!
 * GUI Changes
@@ -78,8 +79,8 @@ those that don't save a point as a marker value."
 (global-set-key (kbd "C-,") 'matiash-cycle-point-across-registers)
 #+END_SRC
 ** Frames
-Since I'm starting to use a lot of frames, changing between them quickly is
-critical.
+Since I'm starting to use a lot of frames, changing between them
+quickly is critical.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-`") 'other-frame)
 #+END_SRC
@@ -93,7 +94,8 @@ them. Putting it into the config:
   :config (frame-tag-mode 1))
 #+END_SRC
 ** (Hs-Mode) Expand Block during Navigation
-Used to expand Hs block if I'm going to a particular line in a hidden block.
+Used to expand Hs block if I'm going to a particular line in a hidden
+block.
 #+BEGIN_SRC emacs-lisp
 (defadvice goto-line (after expand-after-goto-line
                             activate compile)
@@ -109,8 +111,8 @@ register-to-point in a collapsed buffer."
     (hs-show-block)))
 #+END_SRC
 ** Forward Up List
-I'm switching from using =backward-up-list= to moving forward up a list cause I
-use that so much more often.
+I'm switching from using =backward-up-list= to moving forward up a
+list cause I use that so much more often.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-forward-up-list (&optional ARG)
   "Acts like backward-up-list, but point moves to the end of the
@@ -123,8 +125,8 @@ balanced parentheses instead of the beginning."
 #+END_SRC
 
 ** Switching Between Buffers
-I usually end up working with two files and going back and forth between
-them. Adding a keybinding to make that easier.
+I usually end up working with two files and going back and forth
+between them. Adding a keybinding to make that easier.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-switch-to-other-buffer ()
   "Switches to the last buffer used."
@@ -158,8 +160,8 @@ Used to organize myself, especially for project management.
 (setq org-src-window-setup 'current-window)
 #+END_SRC
 *** My Org Mode Variables
-This section holds the variables for paths to different org mode files I
-reference in this init file. Change these to fit your needs!
+This section holds the variables for paths to different org mode files
+I reference in this init file. Change these to fit your needs!
 #+BEGIN_SRC emacs-lisp
 (defvar personal-journal-path
   "/home/dropbox/Dropbox/org/personal/journal.org"
@@ -224,8 +226,8 @@ implementing a workflow, so this will be edited soon enough.
          "* TODO %?\n:LOGBOOK:\n- %(matiash-get-entry-format)%U\n:END:\n")))
 #+END_SRC
 *** Org Journal Workflow
-These customizations are used to implement the workflow of using journal Org
-files to house progress and todo's on projects.
+These customizations are used to implement the workflow of using
+journal Org files to house progress and todo's on projects.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-org-keywords ()
   "Parse the buffer and return a cons list of (property . value)
@@ -317,8 +319,8 @@ Works with workflow system I'm implementing.
         ("CANCELLED" . org-warning)))
 #+END_SRC
 *** Org TODO Refiling
-Working with implemented workflow to refile a TODO from inbox to an open org
-buffer and move it to the current day in the datetree.
+Working with implemented workflow to refile a TODO from inbox to an
+open org buffer and move it to the current day in the datetree.
 #+BEGIN_SRC emacs-lisp
 (defun +org/opened-buffer-files ()
   "Return the list of files currently opened in emacs"
@@ -347,8 +349,8 @@ buffer and move it to the current day in the datetree.
   (widen))
 #+END_SRC
 *** Org Agenda View Customizations
-I ended up creating an agenda view that shows the current day todos plus
-unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.emacs.d/blob/master/michael.org][this guy's emacs config]].
+I ended up creating an agenda view that shows the current day todos
+plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.emacs.d/blob/master/michael.org][this guy's emacs config]].
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands
       '(("d" "Day Agenda with Current-day and Unscheduled TODOs"
@@ -368,8 +370,8 @@ unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.emacs.
 	 ((todo "" ((org-agenda-files '(inbox-path))))))))
 #+END_SRC
 *** Org Journal Default Visibility
-Used to see journals from workflow better, showing every day entry in the
-datetree by default.
+Used to see journals from workflow better, showing every day entry in
+the datetree by default.
 #+BEGIN_SRC emacs-lisp
 (defun load-journal-visibility ()
   ""
@@ -387,8 +389,8 @@ datetree by default.
 #+END_SRC    
 *** Org Workflow Shortcuts
 **** Jump to Inbox
-This function makes use of a hardcoded file name - put this in a variable
-instead.
+This function makes use of a hardcoded file name - put this in a
+variable instead.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-jump-to-inbox ()
   "Jump to the agenda view for inbox, where Org captured events
@@ -422,14 +424,14 @@ get stored."
 *** Refile when state changed to WORKING
 I want to refile the todo item when I change its state to WORKING.
 
-This is just for refiling a todo when I'm in a workflow journal and am changing
-to the WORKING state. Note that the =org-add-log-setup= is taken from the
-=org-todo= source code and assumes that I want to record the time of state
-change when switching to the WORKING state.
+This is just for refiling a todo when I'm in a workflow journal and am
+changing to the WORKING state. Note that the =org-add-log-setup= is
+taken from the =org-todo= source code and assumes that I want to
+record the time of state change when switching to the WORKING state.
 
-=org-agenda-redo-all= is called to refresh the agenda to see that the todo was
-changed to WORKING in the agenda view, since I usually change the todo status in
-the agenda view.
+=org-agenda-redo-all= is called to refresh the agenda to see that the
+todo was changed to WORKING in the agenda view, since I usually change
+the todo status in the agenda view.
 
 #+BEGIN_SRC emacs-lisp
 (defun matiash-refile-working-state ()
@@ -452,8 +454,8 @@ This is done to allow for a shortcut that will switch buffers quickly.
 (add-hook 'org-mode-hook 'matiash-unmap-org-force-cycle)
 #+END_SRC
 *** AutoFill mode when in Org Mode
-Here I'll set auto fill mode on to a total of 70 characters. Makes filling out
-Org files in general cleaner and easier to read.
+Here I'll set auto fill mode on to a total of 70 characters. Makes
+filling out Org files in general cleaner and easier to read.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-set-org-fill-column ()
   "Sets 'fill-column' to 70"
@@ -478,33 +480,34 @@ I have this turned off right now - I should check it out more
 #+END_SRC
 
 *** View File Ido
- Make searching through buffers and finding files easier
- #+BEGIN_SRC emacs-lisp
+Make searching through buffers and finding files easier
+#+BEGIN_SRC emacs-lisp
 (defun matiash-view-file-ido ()
   "Runs the view-file function, but with the power of Ido."
   (interactive)
   (view-file (buffer-file-name (ido-find-file))))
 (global-set-key (kbd "C-x C-r") 'matiash-view-file-ido)
- #+END_SRC
+#+END_SRC
 ** Electric Indent Mode
-I'm trying to replace RET with C-j to remove some of the burden on my right
-pinky, which feels the most pain when I type on Emacs for a while. Setting this
-mode off allows automatic indenting whenever I press C-j.
+I'm trying to replace RET with C-j to remove some of the burden on my
+right pinky, which feels the most pain when I type on Emacs for a
+while. Setting this mode off allows automatic indenting whenever I
+press C-j.
 #+BEGIN_SRC emacs-lisp
 (electric-indent-mode -1)
 #+END_SRC
 ** Subword Mode
-Excellent when I'm in Java or anything with camel case strings. Allows for
-movement across subwords.
+Excellent when I'm in Java or anything with camel case strings. Allows
+for movement across subwords.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c C-w") 'subword-mode)
 #+END_SRC
 ** View Mode
- Mode to view files. I'm customizing this mode to help me efficiently look
- through source code. I'm currently trying out narrowing code, widening code,
- easily highlighting function definitions with ".", and cloning code into an
- indirect buffer.
- #+BEGIN_SRC emacs-lisp
+Mode to view files. I'm customizing this mode to help me efficiently
+look through source code. I'm currently trying out narrowing code,
+widening code, easily highlighting function definitions with ".", and
+cloning code into an indirect buffer.
+#+BEGIN_SRC emacs-lisp
 (defun view-mode-add-custom-keybindings ()
   "Add my preferred keybindings for make view-mode easier to navigate"
   (hs-minor-mode 1)
@@ -516,11 +519,11 @@ movement across subwords.
   (define-key view-mode-map (kbd "i") 'clone-indirect-buffer))
 (add-hook 'view-mode-hook 'view-mode-add-custom-keybindings)
 (global-set-key (kbd "C-x C-v") 'view-mode)
- #+END_SRC
+#+END_SRC
 * Searching
 ** Ag
-Uses the silver searcher shell program to search quickly. Good for finding
-references of strings in many files.
+Uses the silver searcher shell program to search quickly. Good for
+finding references of strings in many files.
 #+BEGIN_SRC emacs-lisp
 (use-package ag
   :ensure t
@@ -530,10 +533,10 @@ references of strings in many files.
 #+END_SRC
 * Buffer Management
 ** Saving Buffer
- Easily the most used key I use. Small tweak but huge payoff.
- #+BEGIN_SRC emacs-lisp
+Easily the most used key I use. Small tweak but huge payoff.
+#+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<menu>") 'save-buffer)
- #+END_SRC  
+#+END_SRC  
 ** Global Auto Revert Mode
 Turning on auto revert buffer and removing the confirmation message
 #+BEGIN_SRC emacs-lisp
@@ -630,7 +633,8 @@ Run GDB on another frame. Helpful to debug.
 Display silver searcher in another frame.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-code-search-mode ()
-  "Create a new frame with the selected buffer alongside the ag search results buffer."
+  "Create a new frame with the selected buffer alongside the ag
+search results buffer."
   (interactive)
   (select-frame (make-frame))
   (ag (ag/read-from-minibuffer "Search string") (read-directory-name "Directory: ")))
@@ -638,8 +642,8 @@ Display silver searcher in another frame.
 (global-set-key (kbd "<f8>") 'matiash-code-search-mode)
 #+END_SRC
 ** Shell Mode
-Create a new frame with the shell. Figure out if you want to change this eshell
-or not.
+Create a new frame with the shell. Figure out if you want to change
+this eshell or not.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-open-shell-mode ()
   "Create a new frame with just the shell."
@@ -651,8 +655,8 @@ or not.
 (global-set-key (kbd "<f5>") 'matiash-open-shell-mode)
 #+END_SRC
 ** Region to New Frame
-Creates a function that will copy a region and put it in a new frame on a
-scratch buffer.
+Creates a function that will copy a region and put it in a new frame
+on a scratch buffer.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-copy-region-to-new-frame ()
   "Assumes a region is selected. Creates a variable size frame
@@ -679,7 +683,8 @@ Quick way to delete current frame
 (global-set-key (kbd "M-<delete>") 'delete-frame)
 #+END_SRC
 * Dired
-Powerful package to navigate between files and perform operations on files.
+Powerful package to navigate between files and perform operations on
+files.
 #+BEGIN_SRC emacs-lisp
 (define-key dired-mode-map (kbd "j") 'ido-find-file)
 (define-key dired-mode-map (kbd "l") 'dired-up-directory)
@@ -737,7 +742,6 @@ Some shell configurations.
 (setq eshell-destroy-buffer-when-process-dies t)
 (setq eshell-history-size 1000000)
 #+END_SRC
-#+END_SRC
 * PDF View
 Used to view PDF's
 #+BEGIN_SRC emacs-lisp
@@ -750,31 +754,33 @@ Used to view PDF's
   :ensure t)
 #+END_SRC
 * Cycling through Errors/Results
-I use these commands a lot when cycling through code errors or search results.
+I use these commands a lot when cycling through code errors or search
+results.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-`") 'next-error)
 (global-set-key (kbd "C-M-`") 'previous-error)
 #+END_SRC
 * Insert / Delete Text
 ** Delete Sexp
-Sets C-M-Backspace to remove a string expression. Note this key usually gets
-caught by the underlying operating system, so be sure to remove that shortcut
-before using this keybinding.
+Sets C-M-Backspace to remove a string expression. Note this key
+usually gets caught by the underlying operating system, so be sure to
+remove that shortcut before using this keybinding.
 #+BEGIN_SRC emacs-lisp
 (global-set-key [C-M-backspace] 'backward-kill-sexp)
 #+END_SRC
 ** Custom Open Line (Electric Indent Mode)
 #+BEGIN_SRC emacs-lisp
 (defun matiash-open-line()
-  "Aims to create a new line below point yet keep point indented."
+  "Aims to create a new line below point yet keep point
+indented."
   (interactive)
   (save-excursion 
     (electric-newline-and-maybe-indent)))
 (global-set-key (kbd "C-o") 'matiash-open-line)
 #+END_SRC
 ** Insert Balanced Chars
-Really helpful when writing in a programming language, but also just writing
-strings in general.
+Really helpful when writing in a programming language, but also just
+writing strings in general.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-insert-braces (&optional arg)
   "Insert pair of balanced braces. Places point between them."
@@ -809,21 +815,21 @@ them."
 (global-set-key (kbd "C-=") 'matiash-insert-balanced-equals)
 #+END_SRC
 ** Balanced Chars Remove Extra Space
-Usually I can add the space myself after inserting a pair of balanced chars, so
-let's turn this off.
+Usually I can add the space myself after inserting a pair of balanced
+chars, so let's turn this off.
 #+BEGIN_SRC emacs-lisp
 (setq parens-require-spaces nil)
 #+END_SRC
 ** New Delete Keybindings
-I'm keeping the backspace keybindings as is, but I'm going to try out these
-new keybindings for deleting text too.
+I'm keeping the backspace keybindings as is, but I'm going to try out
+these new keybindings for deleting text too.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-/") 'delete-backward-char)
 (global-set-key (kbd "M-/") 'backward-kill-word)
 #+END_SRC
 ** Change Undo keybinding
-This one is going to be hard to get used to, but I just hope I don't undo that
-much.
+This one is going to be hard to get used to, but I just hope I don't
+undo that much.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-M-/") 'undo)
 #+END_SRC
@@ -846,9 +852,9 @@ Trying to use this more!
 (global-set-key (kbd "C-c u") 'browse-url-at-point)   
 #+END_SRC   
 *** Goto Address Mode
-This mode is very handy since it highlights links. Sometimes link appear in
-shell output or in version control logs, so I'll enable that mode in those
-places.
+This mode is very handy since it highlights links. Sometimes link
+appear in shell output or in version control logs, so I'll enable that
+mode in those places.
 #+BEGIN_SRC emacs-lisp
 (add-hook 'shell-mode-hook 'goto-address-mode)
 (add-hook 'eshell-mode-hook 'goto-address-mode)
@@ -869,7 +875,7 @@ Hate to see it, but I should use it!
 #+END_SRC
 * Misc
 ** Fill Column
-   Now set to 80 since that's what most people allow on lines
+Now set to 80 since that's what most people allow on lines
 #+BEGIN_SRC emacs-lisp
 (setq-default fill-column 80)
 #+END_SRC
