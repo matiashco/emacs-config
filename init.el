@@ -1,6 +1,10 @@
 ;; Uncomment this line if you're starting with a fresh emacs
 ;; (package-initialize)
 
+;; MacOS requires package-initialize to run.
+(if (string= system-type "darwin")
+    (package-initialize))
+
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
