@@ -574,6 +574,12 @@ Turning on auto revert buffer and removing the confirmation message
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<f5>") 'revert-buffer)
 #+END_SRC
+** Delete Buffer
+Quick way to delete the current buffer
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<delete>") 'kill-current-buffer)
+(global-set-key (kbd "<deletechar>") 'kill-current-buffer) ; for Mac
+#+END_SRC
 * Window Management
 ** Zoom into and out of window - Single Frame
 This is a handy function to expand and compress a buffer momentarily
@@ -589,6 +595,11 @@ configuration for the frame."
       (delete-other-windows)
       )))
 (global-set-key (kbd "C-x 5 z") 'matiash-toggle-zoom)
+#+END_SRC
+** Delete Window
+Quick way to delete the current window
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-<delete>") 'delete-window)
 #+END_SRC
 * Frame Management
 ** Compile Frame
@@ -664,7 +675,7 @@ with a copy of the text from the region."
 ** Delete Frame
 Quick way to delete current frame
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<delete>") 'delete-frame)
+(global-set-key (kbd "M-<delete>") 'delete-frame)
 #+END_SRC
 * Dired
 Powerful package to navigate between files and perform operations on files.
@@ -714,7 +725,10 @@ Setting that to 2, at least for my current job.
 * Shell
 Some shell configurations.
 #+BEGIN_SRC emacs-lisp
-(define-key shell-mode-map (kbd "<kp-delete>") 'kill-current-buffer)
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (define-key shell-mode-map
+              (kbd "<delete>") 'kill-current-buffer)))
 #+END_SRC
 * Eshell
 ** Eshell Variables
@@ -722,9 +736,6 @@ Some shell configurations.
 (setq eshell-destroy-buffer-when-process-dies t)
 (setq eshell-history-size 1000000)
 #+END_SRC
-** Unbind the M-tab in Eshell mode
-#+BEGIN_SRC emacs-lisp
-(add-hook 'eshell-mode-hook (lambda () (define-key eshell-mode-map (kbd "<M-tab>") nil)))
 #+END_SRC
 * PDF View
 Used to view PDF's
