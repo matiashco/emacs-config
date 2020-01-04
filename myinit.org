@@ -579,23 +579,6 @@ configuration for the frame."
       )))
 (global-set-key (kbd "C-x 5 z") 'matiash-toggle-zoom)
 #+END_SRC
-** Eyebrowse
- Package that allows for switching between window configurations in the same
- frame. I want to try using this to create something similar to tmux.
- #+BEGIN_SRC emacs-lisp
-(use-package eyebrowse
-  :ensure t
-  :bind (("s-1" . 'eyebrowse-switch-to-window-config-1)
-	 ("s-2" . 'eyebrowse-switch-to-window-config-2)
-	 ("s-3" . 'eyebrowse-switch-to-window-config-3)
-	 ("s-4" . 'eyebrowse-switch-to-window-config-4)
-	 ("s-5" . 'eyebrowse-switch-to-window-config-5)
-	 ("s-6" . 'eyebrowse-switch-to-window-config-6)
-	 ("s-7" . 'eyebrowse-switch-to-window-config-7)
-	 ("s-8" . 'eyebrowse-switch-to-window-config-8)
-	 ("s-9" . 'eyebrowse-switch-to-window-config-9)
-	 ("s-r" . 'eyebrowse-rename-window-config)))
- #+END_SRC
 * Frame Management
 ** Compile Frame
 Compile the code in another frame. Handy when resolving bugs.
