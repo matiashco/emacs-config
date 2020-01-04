@@ -33,10 +33,7 @@ Everything seems to be working right now!
 #+BEGIN_SRC emacs-lisp
 (use-package avy
   :ensure t
-  :bind (("C-M-c" . 'avy-goto-char)
-	 ("C-M-g" . 'avy-goto-line)
-	 ("C-M-y" . 'avy-copy-line)
-	 )
+  :bind (("\\" . 'avy-goto-char-timer))
   :config
   (setq avy-all-windows nil))
 #+END_SRC
