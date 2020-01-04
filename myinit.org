@@ -128,7 +128,7 @@ them. Adding a keybinding to make that easier.
 * Modes
 ** Org Mode
 Used to organize myself, especially for project management.
-*** Org Variables
+*** Org Mode Customizations
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-files '())
 (setq org-agenda-sorting-strategy
@@ -149,6 +149,19 @@ Used to organize myself, especially for project management.
 	(refile . "Refiled on %t")
 	(clock-out . "")))
 (setq org-src-window-setup 'current-window)
+#+END_SRC
+*** My Org Mode Variables
+This section holds the variables for paths to different org mode files I
+reference in this init file. Change these to fit your needs!
+#+BEGIN_SRC emacs-lisp
+(defvar personal-journal-path
+  "/home/dropbox/Dropbox/org/personal/journal.org"
+  "Path to my personal journal Org file. Referenced when
+  customizing Org capture templates.")
+(defvar inbox-path "/home/dropbox/Dropbox/org/inbox.org"
+  "Path to my inbox Org file, where newly captured items are
+  stored. Referenced when customizing Org capture templates and
+  viewing Org Agenda files.")
 #+END_SRC
 *** Key shorcuts
  #+BEGIN_SRC emacs-lisp
@@ -198,10 +211,9 @@ implementing a workflow, so this will be edited soon enough.
 (defun matiash-get-entry-format () ""
        (format "%-13s" "\"TODO\""))
 (setq org-capture-templates
-      '(("p" "Personal Journal" entry (file+datetree
-				       "~/Dropbox/org/personal/journal.org")
+      '(("p" "Personal Journal" entry (file+datetree personal-journal-path)
 	 "* [%<%I:%M%p>] %?\n\n")
-        ("e" "Entry" entry (file+headline "~/Dropbox/org/inbox.org" "Inbox")
+        ("e" "Entry" entry (file+headline inbox-path "Inbox")
          "* TODO %?\n:LOGBOOK:\n- %(matiash-get-entry-format)%U\n:END:\n")))
 #+END_SRC
 *** Org Journal Workflow
@@ -335,7 +347,7 @@ unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.emacs.
 						   "CANCELLED"
 						   "NOTE")))))))
 	("b" "Buffer summary"
-	 ((todo "" ((org-agenda-files '("~/Dropbox/org/inbox.org"))))))))
+	 ((todo "" ((org-agenda-files '(inbox-path))))))))
 #+END_SRC
 *** Org Journal Default Visibility
 Used to see journals from workflow better, showing every day entry in the
