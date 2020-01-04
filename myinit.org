@@ -843,3 +843,7 @@ Prevents from closing Emacs accidentally.
 #+BEGIN_SRC emacs-lisp   
 (setq ring-bell-function 'ignore)
 #+END_SRC
+** Indentation
+#+BEGIN_SRC emacs-lisp
+(setq-default indent-tabs-mode nil)
+#+END_SRC
