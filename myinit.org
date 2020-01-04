@@ -185,14 +185,14 @@ Used to organize myself, especially for project management.
 Used to capture ideas and things to do. Right now I'm in the middle of
 implementing a workflow, so this will be edited soon enough.
 #+BEGIN_SRC emacs-lisp
-(defun ret-correct-format-entry () ""
+(defun matiash-get-entry-format () ""
        (format "%-13s" "\"TODO\""))
 (setq org-capture-templates
       '(("p" "Personal Journal" entry (file+datetree
 				       "~/Dropbox/org/personal/journal.org")
 	 "* [%<%I:%M%p>] %?\n\n")
         ("e" "Entry" entry (file+headline "~/Dropbox/org/inbox.org" "Inbox")
-         "* TODO %?\n:LOGBOOK:\n- %(ret-correct-format-entry)%U\n:END:\n")))
+         "* TODO %?\n:LOGBOOK:\n- %(matiash-get-entry-format)%U\n:END:\n")))
 #+END_SRC
 *** Org Journal Workflow
 These customizations are used to implement the workflow of using journal Org
@@ -246,7 +246,7 @@ from lines like:
       (delete-blank-lines)                  ;that gets cut otherwise
       (org-insert-heading 4 t)              ;t to move after prev heading
       (insert (format "TODO \n   :LOGBOOK:\n   - %s%s\n   :END:\n"
-		      (ret-correct-format-entry)
+		      (matiash-get-entry-format)
 		      (format-time-string
 		       (org-time-stamp-format (current-time) t)
 		       (current-time))))
