@@ -392,11 +392,11 @@ get stored."
 #+END_SRC
 **** Jump to Org Agenda + TODO
 #+BEGIN_SRC emacs-lisp
-(defun activate-agenda-todo ()
+(defun matiash-activate-agenda-todo ()
   (interactive)
   "Jump to org agenda and todo interactive system"
    (org-agenda nil "d" 'buffer))
-(global-set-key (kbd "s-a") 'activate-agenda-todo)
+(global-set-key (kbd "s-a") 'matiash-activate-agenda-todo)
 #+END_SRC
 **** Create a journal entry
 #+BEGIN_SRC emacs-lisp
