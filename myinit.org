@@ -408,9 +408,9 @@ get stored."
 #+END_SRC
 *** Remove Agenda Cycle Keybinding
 #+BEGIN_SRC emacs-lisp
-(defun unmap-agenda-cycle () ""
+(defun matiash-unmap-agenda-cycle () ""
        (define-key org-mode-map (kbd "C-,") nil))
-(add-hook 'org-mode-hook 'unmap-agenda-cycle)
+(add-hook 'org-mode-hook 'matiash-unmap-agenda-cycle)
 #+END_SRC
 *** Refile when state changed to WORKING
 I want to refile the todo item when I change its state to WORKING.
