@@ -111,7 +111,17 @@ use that so much more often.
       (backward-up-list (- ARG) t t)
     (backward-up-list (- 1) t t)))
 (global-set-key (kbd "C-M-u") 'forward-up-list)
+#+END_SRC
 
+** Switching Between Buffers
+I usually end up working with two files and going back and forth between
+them. Adding a keybinding to that easily.
+#+BEGIN_SRC emacs-lisp
+(defun switch-to-other-buffer ()
+  "Switches to the last buffer used."
+  (interactive)
+  (switch-to-buffer (other-buffer)))
+(global-set-key (kbd "C-<tab>") 'switch-to-other-buffer)
 #+END_SRC
 * Modes
 ** Org Mode
@@ -899,12 +909,6 @@ works almost right out of the box.
 Try out the following keybindings:
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-z") 'avy-goto-char-timer)
-
-(defun switch-to-other-buffer ()
-  "Switches to the last buffer used."
-  (interactive)
-  (switch-to-buffer (other-buffer)))
-(global-set-key (kbd "C-<tab>") 'switch-to-other-buffer)
 
 (setq browse-url-generic-program "firefox")
 #+END_SRC
