@@ -690,7 +690,11 @@ Powerful package to navigate between files and perform operations on files.
 * TRAMP
 ** Verbose
 #+BEGIN_SRC emacs-lisp
-(customize-set-variable 'tramp-verbose 1 "Enable just Errors")
+(require 'tramp)
+(setq tramp-verbose 1)
+;; (setq tramp-verbose 6)
+(setq password-cache-expiry nil)
+(setq tramp-terminal-type "dumb")
 #+END_SRC
 * Eshell
 ** Eshell Variables
