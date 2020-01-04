@@ -31,6 +31,12 @@ installed"
       (disable-theme 'atom-one-dark)
     (enable-theme 'atom-one-dark)))
 (global-set-key (kbd "<f10>") 'matiash-toggle-dark-mode)
+
+;; Runs this hack when running macOS to start up with no selected theme.
+(if (string= system-type "darwin")
+    (progn
+      (enable-theme 'atom-one-dark)
+      (disable-theme 'atom-one-dark)))
  #+END_SRC
 * Try
 Handy package that lets you try out packages
@@ -516,7 +522,11 @@ cloning code into an indirect buffer.
   (define-key view-mode-map (kbd "r") 'point-to-register)
   (define-key view-mode-map (kbd "j") 'register-to-point)
   (define-key view-mode-map (kbd "TAB") 'hs-toggle-hiding)
-  (define-key view-mode-map (kbd "i") 'clone-indirect-buffer))
+  (define-key view-mode-map (kbd "i") 'clone-indirect-buffer)
+  (if (string= system-type "darwin")    ; For Mac only
+      (progn 
+        (define-key view-mode-map (kbd "<C-M-tab>") 'hs-hide-level)
+        (define-key view-mode-map (kbd "<backtab>") 'hs-show-all))))
 (add-hook 'view-mode-hook 'view-mode-add-custom-keybindings)
 (global-set-key (kbd "C-x C-v") 'view-mode)
 #+END_SRC
