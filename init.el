@@ -19,8 +19,24 @@
 ;; Git repo.
 (setq vc-follow-symlinks t)
 
-(require 'org)
-(org-babel-load-file
- (expand-file-name "myinit.org"
-                   user-emacs-directory))
+(defvar init-org-file-path
+  (expand-file-name "myinit.org"
+                    user-emacs-directory)
+  "Path to Org file where I keep my general Emacs
+  customizations. Note that this file gets all its Elisp
+  extracted into its own Elisp file, which then gets executed.")
 
+(defvar work-init-org-file-path
+  (expand-file-name "myworkinit.org"
+                    user-emacs-directory)
+  "Path to Org file where I keep my work-specific Emacs
+  customizations. Note that this file gets all its Elisp
+  extracted into its own Elisp file, which then gets executed.")
+
+(require 'org)
+(if (file-exists-p init-org-file-path)
+    (org-babel-load-file init-org-file-path)
+  (message "Couldn't find Org init file: %s" init-org-file-path))
+(if (file-exists-p work-init-org-file-path)
+    (org-babel-load-file work-init-org-file-path)
+  (message "Couldn't find Org init file: %s" work-init-org-file-path))
