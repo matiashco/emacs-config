@@ -846,15 +846,16 @@ much.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-M-/") 'undo)
 #+END_SRC
-* Web Browser (EWW)
-Trying to use this more to quickly find webpage.
+* Web
+** EWW
+Trying to use this more!
 #+BEGIN_SRC emacs-lisp
 (add-hook 'eww-mode-hook
           (lambda ()
             (local-set-key "c" 'avy-goto-char)))
 #+END_SRC
-** EWW Variables
-*** Set EWW as default web browser
+*** EWW Variables
+**** Set EWW as default web browser
 I like this because it gives me a clean look for webpages. That being said, I
 should find a way to use firefox for certain pages too.
 #+BEGIN_SRC emacs-lisp
