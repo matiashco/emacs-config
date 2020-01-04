@@ -904,9 +904,3 @@ works almost right out of the box.
 	  "https://www.gatesnotes.com/home/rss"
 	  "https://www.boston.com/tag/local-news/?feed=rss")))
 #+END_SRC
-* TODOS
-Try out the following keybindings:
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "M-z") 'avy-goto-char-timer)
-
-#+END_SRC
