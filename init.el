@@ -10,6 +10,11 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+;; Remove annoying prompt asking to follow the symlink to a Git repository,
+;; especially before loading myinit.org, a file that I usually symlink from a
+;; Git repo.
+(setq vc-follow-symlinks t)
+
 (require 'org)
 (org-babel-load-file
  (expand-file-name "myinit.org"
