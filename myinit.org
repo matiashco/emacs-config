@@ -686,7 +686,6 @@ Powerful package to navigate between files and perform operations on files.
 #+BEGIN_SRC emacs-lisp
 (setq gdb-many-windows t)
 #+END_SRC
-* Version Control
 * TRAMP
 ** Verbose
 #+BEGIN_SRC emacs-lisp
