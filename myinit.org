@@ -813,9 +813,6 @@ Turn all prompts from yes-or-no to y-or-n
 #+BEGIN_SRC emacs-lisp
 (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
-
-
-[[http://www.google.com]]
 ** Kill Emacs With Prompt
 Prevents from closing Emacs accidentally.
 #+BEGIN_SRC emacs-lisp
