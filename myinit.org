@@ -230,11 +230,12 @@ from lines like: #+PROPERTY: value"
   "Get the value of a KEYWORD in the form of #+KEYWORD: value"
   (cdr (assoc KEYWORD (matiash-org-keywords))))
 
-(defun add-journal-entry ()
+(defun matiash-add-journal-entry ()
   (interactive)
-  "Assumes point is in an org buffer. Adds a journal entry with the timestamp \
-   under the current day in the datetree, adding a heading for the current \
-   day if necessary. Point is set to right after timestamp."
+  "Assumes point is in an org buffer. Adds a journal entry with
+the timestamp under the current day in the datetree, adding a
+heading for the current day if necessary. Point is moved to the
+right of timestamp."
   (save-restriction
     (widen)                             ;in case current buffer is narrowed
     (if (not (equal "t" (matiash-org-keyword "JOURNAL_FILE")))
@@ -387,7 +388,7 @@ instead.
 #+END_SRC
 **** Create a journal entry
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "s-j") 'add-journal-entry)
+(global-set-key (kbd "s-j") 'matiash-add-journal-entry)
 #+END_SRC
 **** Create a todo entry
 #+BEGIN_SRC emacs-lisp
