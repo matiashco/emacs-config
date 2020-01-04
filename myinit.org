@@ -353,7 +353,7 @@ unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.emacs.
 						       "NOTE")))))
 	  (todo #1# ((org-agenda-overriding-header "\nUnscheduled TODO")
                      (org-agenda-skip-function
-		      '(org-agenda-skip-entry-if 'timestamp 'todo
+		      '(org-agenda-skip-entry-if 'scheduled 'todo
 						 '("DONE"
 						   "CANCELLED"
 						   "NOTE")))))))
