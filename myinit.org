@@ -707,6 +707,10 @@ Some shell configurations.
 (setq eshell-destroy-buffer-when-process-dies t)
 (setq eshell-history-size 1000000)
 #+END_SRC
+** Unbind the M-tab in Eshell mode
+#+BEGIN_SRC emacs-lisp
+(add-hook 'eshell-mode-hook (lambda () (define-key eshell-mode-map (kbd "<M-tab>") nil)))
+#+END_SRC
 * PDF View
 Used to view PDF's
 #+BEGIN_SRC emacs-lisp
