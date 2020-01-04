@@ -56,9 +56,9 @@ Removes the need to call other-window multiples times
 (global-set-key (kbd "M-j") 'register-to-point)
 
 (defun matiash-cycle-point-across-registers ()
-  (interactive)
   "Cycle point across all unique saved registers, filtering out
 those that don't save a point as a marker value."
+  (interactive)
   (let ((valid-marker-list (seq-uniq
 			    (seq-filter (lambda (marker) (markerp marker))
 					(seq-map (lambda (reg) (cdr reg)) register-alist))))
@@ -106,9 +106,9 @@ I'm switching from using =backward-up-list= to moving forward up a list cause I
 use that so much more often.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-forward-up-list (&optional ARG)
-  (interactive "p")
   "Acts like backward-up-list, but point moves to the end of the
 balanced parentheses instead of the beginning."
+  (interactive "p")
   (if ARG
       (backward-up-list (- ARG) t t)
     (backward-up-list (- 1) t t)))
@@ -240,11 +240,11 @@ the property #+JOURNAL_FILE set to t, like so: #+JOURNAL_FILE: t"
   (equal "t" (matiash-org-keyword "JOURNAL_FILE")))
 
 (defun matiash-add-journal-entry ()
-  (interactive)
   "Assumes point is in an org buffer. Adds a journal entry with
 the timestamp under the current day in the datetree, adding a
 heading for the current day if necessary. Point is moved to the
 right of timestamp."
+  (interactive)
   (save-restriction
     (widen)                             ;in case current buffer is narrowed
     (if (not (matiash-is-journal-file))
@@ -260,12 +260,12 @@ right of timestamp."
       (message "Done"))))
 
 (defun matiash-add-todo-entry ()
-  (interactive)
   "Assumes point is in an org buffer. Adds a todo entry with a
 logbook drawer including the time the todo entry was
 created. Adds the heading under the current day in the
 datetree,creating a heading for the current day if
 necessary. Point is set to right after TODO entry."
+  (interactive)
   (save-restriction
     (widen)                             ;in case current buffer is narrowed
     (if (not (matiash-is-journal-file))
@@ -314,8 +314,8 @@ Working with implemented workflow to refile a TODO from inbox to an open org
 buffer and move it to the current day in the datetree.
 #+BEGIN_SRC emacs-lisp
 (defun +org/opened-buffer-files ()
-  (interactive)
   "Return the list of files currently opened in emacs"
+  (interactive)
   (delq nil
         (mapcar (lambda (x)
                   (if (and (buffer-file-name x)
@@ -384,18 +384,18 @@ This function makes use of a hardcoded file name - put this in a variable
 instead.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-jump-to-inbox ()
-  (interactive)
   "Jump to the agenda view for inbox, where Org captured events
 get stored."
+  (interactive)
   (org-agenda nil "b"))
 (global-set-key (kbd "s-i") 'matiash-jump-to-inbox)
 #+END_SRC
 **** Jump to Org Agenda + TODO
 #+BEGIN_SRC emacs-lisp
 (defun matiash-activate-agenda-todo ()
-  (interactive)
   "Jump to org agenda and todo interactive system"
-   (org-agenda nil "d" 'buffer))
+  (interactive)
+  (org-agenda nil "d" 'buffer))
 (global-set-key (kbd "s-a") 'matiash-activate-agenda-todo)
 #+END_SRC
 **** Create a journal entry
@@ -465,8 +465,8 @@ I have this turned off right now - I should check it out more
  Make searching through buffers and finding files easier
  #+BEGIN_SRC emacs-lisp
 (defun matiash-view-file-ido ()
-  (interactive)
   "Runs the view-file function, but with the power of Ido."
+  (interactive)
   (view-file (buffer-file-name (ido-find-file))))
 (global-set-key (kbd "C-x C-r") 'matiash-view-file-ido)
  #+END_SRC
