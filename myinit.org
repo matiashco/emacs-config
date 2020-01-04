@@ -95,13 +95,14 @@ register-to-point in a collapsed buffer."
 I'm switching from using =backward-up-list= to moving forward up a list cause I
 use that so much more often.
 #+BEGIN_SRC emacs-lisp
-(defun forward-up-list (&optional ARG)
+(defun matiash-forward-up-list (&optional ARG)
   (interactive "p")
-  ""
+  "Acts like backward-up-list, but point moves to the end of the
+balanced parentheses instead of the beginning."
   (if ARG
       (backward-up-list (- ARG) t t)
     (backward-up-list (- 1) t t)))
-(global-set-key (kbd "C-M-u") 'forward-up-list)
+(global-set-key (kbd "C-M-u") 'matiash-forward-up-list)
 #+END_SRC
 
 ** Switching Between Buffers
