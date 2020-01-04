@@ -773,6 +773,13 @@ them."
   (interactive "P")
   (insert-pair arg ?\' ?\'))
 (global-set-key (kbd "M-\'") 'matiash-insert-single-quotes)
+
+(defun matiash-insert-balanced-equals (&optional arg)
+  "Insert pair of balanced equals signs. Places point between
+them."
+  (interactive "P")
+  (insert-pair arg ?\= ?\=))
+(global-set-key (kbd "C-=") 'matiash-insert-balanced-equals)
 #+END_SRC
 ** Balanced Chars Remove Extra Space
 Usually I can add the space myself after inserting a pair of balanced chars, so
