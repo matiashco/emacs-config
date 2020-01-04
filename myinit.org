@@ -604,15 +604,15 @@ Run GDB on another frame. Helpful to debug.
 (global-set-key (kbd "<f7>") 'matiash-gdb-mode)
 #+END_SRC
 ** Ag Frame
-Display silver searcher in another frame
+Display silver searcher in another frame.
 #+BEGIN_SRC emacs-lisp
-(defun code-search-mode ()
+(defun matiash-code-search-mode ()
   "Create a new frame with the selected buffer alongside the ag search results buffer."
   (interactive)
   (select-frame (make-frame))
   (ag (ag/read-from-minibuffer "Search string") (read-directory-name "Directory: ")))
-(global-set-key (kbd "C-x 5 s") 'code-search-mode)
-(global-set-key (kbd "<f8>") 'code-search-mode)
+(global-set-key (kbd "C-x 5 s") 'matiash-code-search-mode)
+(global-set-key (kbd "<f8>") 'matiash-code-search-mode)
 #+END_SRC
 ** Shell Mode
 Create a new frame with the shell. Figure out if you want to change this eshell
