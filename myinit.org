@@ -80,11 +80,14 @@ Used to expand Hs block if I'm going to a particular line in a hidden block.
 #+BEGIN_SRC emacs-lisp
 (defadvice goto-line (after expand-after-goto-line
                             activate compile)
-  "hideshow-expand affected block when using goto-line in a collapsed buffer"
+  "Runs hideshow-expand on the affected block when using
+goto-line in a collapsed buffer."
   (save-excursion
     (hs-show-block)))
 (defadvice register-to-point (after expand-after-goto-line
                             activate compile)
+  "Runs hideshow-expand on the affected block when using
+register-to-point in a collapsed buffer."
   (save-excursion
     (hs-show-block)))
 #+END_SRC
