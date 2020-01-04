@@ -888,19 +888,3 @@ Prevents from closing Emacs accidentally.
 #+BEGIN_SRC emacs-lisp
 (setq confirm-kill-emacs 'y-or-n-p)
 #+END_SRC
-* Elfeed
-This package is used to read the news. I tried it out for a bit and love how it
-works almost right out of the box.
-
-#+BEGIN_SRC emacs-lisp
-(use-package elfeed
-  :ensure t
-  :config
-  (setq elfeed-feeds
-	'(
-	  "http://rss.sciam.com/ScientificAmerican-Global"
-	  "https://www.technologyreview.com/topnews.rss"
-	  "https://www.joelonsoftware.com/feed/"
-	  "https://www.gatesnotes.com/home/rss"
-	  "https://www.boston.com/tag/local-news/?feed=rss")))
-#+END_SRC
