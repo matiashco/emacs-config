@@ -30,6 +30,12 @@ installed"
     (enable-theme 'atom-one-dark)))
 (global-set-key (kbd "<f10>") 'matiash-toggle-dark-mode)
  #+END_SRC
+* Try
+Handy package that lets you try out packages
+#+BEGIN_SRC emacs-lisp
+(use-package try
+  :ensure t)
+#+END_SRC
 * Navigation
 ** Avy
 #+BEGIN_SRC emacs-lisp
@@ -677,6 +683,11 @@ Powerful package to navigate between files and perform operations on files.
   :config
   (modern-c++-font-lock-global-mode t))
 #+END_SRC
+*** Basic Offset
+Setting that to 2, at least for my current job.
+#+BEGIN_SRC emacs-lisp
+(setq-default c-basic-offset 2)
+#+END_SRC
 ** Compile
 *** Shortcuts
 #+BEGIN_SRC emacs-lisp
@@ -817,11 +828,32 @@ Trying to use this more!
           (lambda ()
             (local-set-key "c" 'avy-goto-char)))
 #+END_SRC
-* Try
-Handy package that lets you try out packages
+** URLs
+*** Browsing URLs
 #+BEGIN_SRC emacs-lisp
-(use-package try
+(global-set-key (kbd "C-c u") 'browse-url-at-point)   
+#+END_SRC   
+*** Goto Address Mode
+This mode is very handy since it highlights links. Sometimes link appear in
+shell output or in version control logs, so I'll enable that mode in those
+places.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'shell-mode-hook 'goto-address-mode)
+(add-hook 'eshell-mode-hook 'goto-address-mode)
+(add-hook 'log-view-mode-hook 'goto-address-mode)
+#+END_SRC
+* Counsel
+This would be good to setup
+#+BEGIN_SRC emacs-lisp
+(use-package counsel
   :ensure t)
+#+END_SRC
+* Ivy
+Hate to see it, but I should use it!
+#+BEGIN_SRC emacs-lisp
+(use-package ivy
+  :ensure t
+  :init)
 #+END_SRC
 * Misc
 ** Fill Column
