@@ -259,12 +259,13 @@ right of timestamp."
       (insert (format-time-string "[%I:%M%p] " (current-time)))
       (message "Done"))))
 
-(defun add-todo-entry ()
+(defun matiash-add-todo-entry ()
   (interactive)
-  "Assumes point is in an org buffer. Adds a todo entry with a logbook drawer \
-   including the time the todo entry was created. Adds the heading under the \
-   current day in the datetree, creating a heading for the current day if \
-   necessary. Point is set to right after TODO entry."
+  "Assumes point is in an org buffer. Adds a todo entry with a
+logbook drawer including the time the todo entry was
+created. Adds the heading under the current day in the
+datetree,creating a heading for the current day if
+necessary. Point is set to right after TODO entry."
   (save-restriction
     (widen)                             ;in case current buffer is narrowed
     (if (not (matiash-is-journal-file))
@@ -401,7 +402,7 @@ instead.
 #+END_SRC
 **** Create a todo entry
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "s-t") 'add-todo-entry)
+(global-set-key (kbd "s-t") 'matiash-add-todo-entry)
 #+END_SRC
 *** Remove Agenda Cycle Keybinding
 #+BEGIN_SRC emacs-lisp
