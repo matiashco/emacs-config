@@ -567,15 +567,17 @@ Turning on auto revert buffer and removing the confirmation message
 ** Zoom into and out of window - Single Frame
 This is a handy function to expand and compress a buffer momentarily
 #+BEGIN_SRC emacs-lisp
-(defun toggle-zoom () "Zooms into window and zooms out"
-       (interactive)
-       (if (= 1 (length (window-list)))
-           (jump-to-register '_)
-         (progn
-           (window-configuration-to-register '_)
-           (delete-other-windows)
-           )))
-(global-set-key (kbd "C-x 5 z") 'toggle-zoom)
+(defun matiash-toggle-zoom ()
+  "'Zooms' into window and out, restoring the original window
+configuration for the frame."
+  (interactive)
+  (if (= 1 (length (window-list)))
+      (jump-to-register '_)
+    (progn
+      (window-configuration-to-register '_)
+      (delete-other-windows)
+      )))
+(global-set-key (kbd "C-x 5 z") 'matiash-toggle-zoom)
 #+END_SRC
 ** Eyebrowse
  Package that allows for switching between window configurations in the same
