@@ -716,8 +716,9 @@ I use these commands a lot when cycling through code errors or search results.
 #+END_SRC
 * Insert / Delete Text
 ** Delete Sexp
-Sets C-M-Backspace to remove a string expression. Note this key usually calls
-and Xorg command, so you should remove that command first before using this.
+Sets C-M-Backspace to remove a string expression. Note this key usually gets
+caught by the underlying operating system, so be sure to remove that shortcut
+before using this keybinding.
 #+BEGIN_SRC emacs-lisp
 (global-set-key [C-M-backspace] 'backward-kill-sexp)
 #+END_SRC
