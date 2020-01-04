@@ -847,6 +847,11 @@ much.
 (global-set-key (kbd "C-M-/") 'undo)
 #+END_SRC
 * Web
+** Firefox
+This is my main browser, so I'll make it such:
+#+BEGIN_SRC emacs-lisp
+(setq browse-url-generic-program "firefox")
+#+END_SRC
 ** EWW
 Trying to use this more!
 #+BEGIN_SRC emacs-lisp
@@ -904,5 +909,4 @@ Try out the following keybindings:
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-z") 'avy-goto-char-timer)
 
-(setq browse-url-generic-program "firefox")
 #+END_SRC
