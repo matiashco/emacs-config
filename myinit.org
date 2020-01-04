@@ -230,6 +230,15 @@ from lines like: #+PROPERTY: value"
   "Get the value of a KEYWORD in the form of #+KEYWORD: value"
   (cdr (assoc KEYWORD (matiash-org-keywords))))
 
+(defun matiash-is-journal-file ()
+  "Determines if the current file is a 'journal file'. This is an
+Org file that just has a datetree with a particular format that
+fits my workflow. In the journal file, I can add journal entries
+that get added to the right date in the datetree with a timestamp
+automatically (functions shown below). All journal files contain
+the property #+JOURNAL_FILE set to t, like so: #+JOURNAL_FILE: t"
+  (equal "t" (matiash-org-keyword "JOURNAL_FILE")))
+
 (defun matiash-add-journal-entry ()
   (interactive)
   "Assumes point is in an org buffer. Adds a journal entry with
@@ -238,7 +247,7 @@ heading for the current day if necessary. Point is moved to the
 right of timestamp."
   (save-restriction
     (widen)                             ;in case current buffer is narrowed
-    (if (not (equal "t" (matiash-org-keyword "JOURNAL_FILE")))
+    (if (not (matiash-is-journal-file))
         (error "File does not contain #+JOURNAL_FILE set to t")
       (funcall #'org-datetree-find-date-create
 	       (calendar-gregorian-from-absolute (org-today)))
@@ -258,7 +267,7 @@ right of timestamp."
    necessary. Point is set to right after TODO entry."
   (save-restriction
     (widen)                             ;in case current buffer is narrowed
-    (if (not (equal "t" (matiash-org-keyword "JOURNAL_FILE")))
+    (if (not (matiash-is-journal-file))
         (error "File does not contain #+JOURNAL_FILE set to t")
       (funcall #'org-datetree-find-date-create
 	       (calendar-gregorian-from-absolute (org-today)))
@@ -355,7 +364,7 @@ datetree by default.
 #+BEGIN_SRC emacs-lisp
 (defun load-journal-visibility ()
   ""
-  (if (equal "t" (matiash-org-keyword "JOURNAL_FILE"))
+  (if (matiash-is-journal-file)
       (org-shifttab 3)
     nil))
 #+END_SRC
@@ -414,7 +423,7 @@ the agenda view.
 
 #+BEGIN_SRC emacs-lisp
 (defun refile-if-in-journal-and-working () ""
-    (if (and (equal "t" (matiash-org-keyword "JOURNAL_FILE"))
+       (if (and (matiash-is-journal-file)
 	     (equal "WORKING" org-state))
 	(progn (move-subtree-to-current-day)
 	       (org-add-log-setup 'state org-state nil 'time)
