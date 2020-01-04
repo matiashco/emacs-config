@@ -383,11 +383,12 @@ datetree by default.
 This function makes use of a hardcoded file name - put this in a variable
 instead.
 #+BEGIN_SRC emacs-lisp
-(defun jump-to-inbox ()
+(defun matiash-jump-to-inbox ()
   (interactive)
-  "Jump to the agenda view for inbox"
+  "Jump to the agenda view for inbox, where Org captured events
+get stored."
   (org-agenda nil "b"))
-(global-set-key (kbd "s-i") 'jump-to-inbox)
+(global-set-key (kbd "s-i") 'matiash-jump-to-inbox)
 #+END_SRC
 **** Jump to Org Agenda + TODO
 #+BEGIN_SRC emacs-lisp
