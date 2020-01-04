@@ -444,6 +444,16 @@ This is done to allow for a shortcut that will switch buffers quickly.
        (define-key org-mode-map (kbd "C-<tab>") nil))
 (add-hook 'org-mode-hook 'matiash-unmap-org-force-cycle)
 #+END_SRC
+*** AutoFill mode when in Org Mode
+Here I'll set auto fill mode on to a total of 70 characters. Makes filling out
+Org files in general cleaner and easier to read.
+#+BEGIN_SRC emacs-lisp
+(defun matiash-set-org-fill-column ()
+  "Sets 'fill-column' to 70"
+  (setq fill-column 70))
+(add-hook 'org-mode-hook 'auto-fill-mode)
+(add-hook 'org-mode-hook 'matiash-set-org-fill-column)
+#+END_SRC
 ** Flycheck Mode
 I have this turned off right now - I should check it out more
 #+BEGIN_SRC emacs-lisp
