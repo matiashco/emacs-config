@@ -47,18 +47,6 @@ Removes the need to call other-window multiples times
   (setq aw-scope 'frame))
 #+END_SRC
 ** Using Registers
-*** Store to Preset Register
-Sets point to preset register and allows for quick jumping to that register,
-switching the register to the point switched to. Note that I commented out the
-jumping to test my new function that cycles through all possible registers.
-#+BEGIN_SRC emacs-lisp
-(defun ska-point-to-register ()
-  "Store cursorposition _fast_ in a register. Use ska-jump-to-register
-to jump back to the stored position."
-  (interactive)
-  (point-to-register 8))
-(global-set-key (kbd "C-.") 'ska-point-to-register)
-#+END_SRC
 *** Quick-save Point to Register + Cycle Registers
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-r") 'point-to-register)
