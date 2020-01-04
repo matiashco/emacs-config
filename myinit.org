@@ -425,13 +425,17 @@ changed to WORKING in the agenda view, since I usually change the todo status in
 the agenda view.
 
 #+BEGIN_SRC emacs-lisp
-(defun refile-if-in-journal-and-working () ""
-       (if (and (matiash-is-journal-file)
-	     (equal "WORKING" org-state))
-	(progn (matiash-move-subtree-to-current-day)
-	       (org-add-log-setup 'state org-state nil 'time)
-	       (org-agenda-redo-all t))))
-(add-hook 'org-after-todo-state-change-hook 'refile-if-in-journal-and-working)
+(defun matiash-refile-working-state ()
+  "Customization to refile a task when it gets set to the WORKING
+state. This allows for easier viewing of the items that were most
+recently worked on. Item gets refiled to the end of the subtree
+for the current day in the journal file."
+  (if (and (matiash-is-journal-file)
+	   (equal "WORKING" org-state))
+      (progn (matiash-move-subtree-to-current-day)
+	     (org-add-log-setup 'state org-state nil 'time)
+	     (org-agenda-redo-all t))))
+(add-hook 'org-after-todo-state-change-hook 'matiash-refile-working-state)
 #+END_SRC
 *** Remove Org Force Cycle Keybinding
 This is done to allow for a shortcut that will switch buffers quickly.
