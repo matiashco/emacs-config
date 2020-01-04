@@ -4,7 +4,8 @@ This stores all my customizations for emacs that would be in the .emacs file.
 Everything seems to be working right now!
 * GUI Changes
 #+BEGIN_SRC emacs-lisp
-(set-face-attribute 'default nil :height 90) ;; change font size
+(if (string= system-type "gnu/linux")
+    (set-face-attribute 'default nil :height 90)) ;; change font size
 (setq inhibit-startup-message t)
 (tool-bar-mode -1)
 (column-number-mode 1)
