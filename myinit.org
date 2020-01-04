@@ -664,14 +664,6 @@ Powerful package to navigate between files and perform operations on files.
 (global-set-key (kbd "C-x C-j") 'dired-jump)
 #+END_SRC
 * Coding
-** Comment Region
-#+BEGIN_SRC emacs-lisp
-(defun my-comment-region ()
-  "Comments a single line of code"
-  (interactive)
-  (comment-or-uncomment-region (region-beginning) (region-end)))
-(global-set-key (kbd "C-;") 'my-comment-region)
-#+END_SRC
 ** C/C++
 *** C++ Modern Syntax highlighting
 #+BEGIN_SRC emacs-lisp
