@@ -631,22 +631,24 @@ or not.
 Creates a function that will copy a region and put it in a new frame on a
 scratch buffer.
 #+BEGIN_SRC emacs-lisp
-(defun copy-region-to-new-frame() ""
-       (interactive)
-       (let ((original-frame (selected-frame))
-             (frame (make-frame))
-             (line-count (count-lines (region-beginning) (region-end)))
-             (buffer (generate-new-buffer 
-                     (generate-new-buffer-name "untitled"))))
-         (kill-ring-save (region-beginning) (region-end))
-         (select-frame frame)
-         (switch-to-buffer buffer)
-         (yank)
-         (beginning-of-buffer)
-         (fit-frame-to-buffer frame line-count line-count 80 80)
-         (select-frame original-frame)))
-(global-set-key (kbd "C-x 5 r") 'copy-region-to-new-frame)
-(global-set-key (kbd "<f9>") 'copy-region-to-new-frame)
+(defun matiash-copy-region-to-new-frame ()
+  "Assumes a region is selected. Creates a variable size frame
+with a copy of the text from the region."
+  (interactive)
+  (let ((original-frame (selected-frame))
+        (frame (make-frame))
+        (line-count (count-lines (region-beginning) (region-end)))
+        (buffer (generate-new-buffer 
+                 (generate-new-buffer-name "untitled"))))
+    (kill-ring-save (region-beginning) (region-end))
+    (select-frame frame)
+    (switch-to-buffer buffer)
+    (yank)
+    (beginning-of-buffer)
+    (fit-frame-to-buffer frame line-count line-count 80 80)
+    (select-frame original-frame)))
+(global-set-key (kbd "C-x 5 r") 'matiash-copy-region-to-new-frame)
+(global-set-key (kbd "<f9>") 'matiash-copy-region-to-new-frame)
 #+END_SRC   
 ** Delete Frame
 Quick way to delete current frame
