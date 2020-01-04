@@ -696,6 +696,11 @@ Powerful package to navigate between files and perform operations on files.
 (setq password-cache-expiry nil)
 (setq tramp-terminal-type "dumb")
 #+END_SRC
+* Shell
+Some shell configurations.
+#+BEGIN_SRC emacs-lisp
+(define-key shell-mode-map (kbd "<kp-delete>") 'kill-current-buffer)
+#+END_SRC
 * Eshell
 ** Eshell Variables
 #+BEGIN_SRC emacs-lisp
