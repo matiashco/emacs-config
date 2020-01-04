@@ -694,7 +694,6 @@ Powerful package to navigate between files and perform operations on files.
 * Eshell
 ** Eshell Variables
 #+BEGIN_SRC emacs-lisp
-(setq eshell-list-files-after-cd t)
 (setq eshell-destroy-buffer-when-process-dies t)
 (setq eshell-history-size 1000000)
 #+END_SRC
