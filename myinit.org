@@ -54,9 +54,10 @@ Removes the need to call other-window multiples times
 (global-set-key (kbd "M-r") 'point-to-register)
 (global-set-key (kbd "M-j") 'register-to-point)
 
-(defun cycle-point-across-registers ()
+(defun matiash-cycle-point-across-registers ()
   (interactive)
-  "Move point across all possible unique markers in register list."
+  "Cycle point across all unique saved registers, filtering out
+those that don't save a point as a marker value."
   (let ((valid-marker-list (seq-uniq
 			    (seq-filter (lambda (marker) (markerp marker))
 					(seq-map (lambda (reg) (cdr reg)) register-alist))))
@@ -65,8 +66,8 @@ Removes the need to call other-window multiples times
     (setq valid-marker-list-copy valid-marker-list)
     (while (and (setq current-marker (pop valid-marker-list-copy))
 		(not (equal current-marker (point-marker)))))
-    (register-val-jump-to (car (or valid-marker-list-copy valid-marker-list)) nil)))
-(global-set-key (kbd "C-,") 'cycle-point-across-registers)
+    (goto-char (car (or valid-marker-list-copy valid-marker-list)))))
+(global-set-key (kbd "C-,") 'matiash-cycle-point-across-registers)
 #+END_SRC
 ** Frames
 Since I'm starting to use a lot of frames, changing between them quickly is
