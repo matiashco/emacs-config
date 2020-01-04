@@ -594,13 +594,14 @@ Compile the code in another frame. Handy when resolving bugs.
 ** GDB Frame
 Run GDB on another frame. Helpful to debug.
 #+BEGIN_SRC emacs-lisp
-(defun gdb-mode () "Create a new frame with the selected buffer alongside the compile buffer."
+(defun matiash-gdb-mode ()
+  "Create a new frame with the selected buffer alongside the compile buffer."
   (interactive)
   (select-frame (make-frame))
   (split-window-below)
   (gdb (gud-query-cmdline 'gdb)))
-(global-set-key (kbd "C-x 5 d") 'gdb-mode)
-(global-set-key (kbd "<f7>") 'gdb-mode)
+(global-set-key (kbd "C-x 5 d") 'matiash-gdb-mode)
+(global-set-key (kbd "<f7>") 'matiash-gdb-mode)
 #+END_SRC
 ** Ag Frame
 Display silver searcher in another frame
