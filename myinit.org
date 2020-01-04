@@ -76,6 +76,15 @@ critical.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-`") 'other-frame)
 #+END_SRC
+** Frames++
+I tried out this package called =frame-tag=, and I absolutely love it!
+It maps each frame to a number so I easily navigate between
+them. Putting it into the config:
+#+BEGIN_SRC emacs-lisp
+(use-package frame-tag
+  :ensure t
+  :config (frame-tag-mode 1))
+#+END_SRC
 ** (Hs-Mode) Expand Block during Navigation
 Used to expand Hs block if I'm going to a particular line in a hidden block.
 #+BEGIN_SRC emacs-lisp
