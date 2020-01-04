@@ -324,7 +324,7 @@ buffer and move it to the current day in the datetree.
                       (buffer-file-name x)))
                 (buffer-list))))
 
-(defun move-subtree-to-current-day ()
+(defun matiash-move-subtree-to-current-day ()
   ""
   (org-cycle)
   (org-copy-subtree 1 t)
@@ -374,7 +374,7 @@ datetree by default.
 #+BEGIN_SRC emacs-lisp
 (setq org-refile-targets '((+org/opened-buffer-files :level . 0)))
 (setq org-refile-use-outline-path 'file)
-(add-hook 'org-after-refile-insert-hook 'move-subtree-to-current-day)
+(add-hook 'org-after-refile-insert-hook 'matiash-move-subtree-to-current-day)
 (add-hook 'org-mode-hook 'load-journal-visibility)
 (setq org-agenda-window-setup 'current-window)
 #+END_SRC    
@@ -427,7 +427,7 @@ the agenda view.
 (defun refile-if-in-journal-and-working () ""
        (if (and (matiash-is-journal-file)
 	     (equal "WORKING" org-state))
-	(progn (move-subtree-to-current-day)
+	(progn (matiash-move-subtree-to-current-day)
 	       (org-add-log-setup 'state org-state nil 'time)
 	       (org-agenda-redo-all t))))
 (add-hook 'org-after-todo-state-change-hook 'refile-if-in-journal-and-working)
