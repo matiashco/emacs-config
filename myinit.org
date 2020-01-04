@@ -220,16 +220,15 @@ implementing a workflow, so this will be edited soon enough.
 These customizations are used to implement the workflow of using journal Org
 files to house progress and todo's on projects.
 #+BEGIN_SRC emacs-lisp
-(defun org-keywords ()
-  "parse the buffer and return a cons list of (property . value)
-from lines like:
-,#+PROPERTY: value"
+(defun matiash-org-keywords ()
+  "Parse the buffer and return a cons list of (property . value)
+from lines like: #+PROPERTY: value"
   (org-element-map (org-element-parse-buffer 'element) 'keyword
     (lambda (keyword) (cons (org-element-property :key keyword)
                             (org-element-property :value keyword)))))
-(defun org-keyword (KEYWORD)
-  "get the value of a KEYWORD in the form of #+KEYWORD: value"
-  (cdr (assoc KEYWORD (org-keywords))))
+(defun matiash-org-keyword (KEYWORD)
+  "Get the value of a KEYWORD in the form of #+KEYWORD: value"
+  (cdr (assoc KEYWORD (matiash-org-keywords))))
 
 (defun add-journal-entry ()
   (interactive)
@@ -238,7 +237,7 @@ from lines like:
    day if necessary. Point is set to right after timestamp."
   (save-restriction
     (widen)                             ;in case current buffer is narrowed
-    (if (not (equal "t" (org-keyword "JOURNAL_FILE")))
+    (if (not (equal "t" (matiash-org-keyword "JOURNAL_FILE")))
         (error "File does not contain #+JOURNAL_FILE set to t")
       (funcall #'org-datetree-find-date-create
 	       (calendar-gregorian-from-absolute (org-today)))
@@ -258,7 +257,7 @@ from lines like:
    necessary. Point is set to right after TODO entry."
   (save-restriction
     (widen)                             ;in case current buffer is narrowed
-    (if (not (equal "t" (org-keyword "JOURNAL_FILE")))
+    (if (not (equal "t" (matiash-org-keyword "JOURNAL_FILE")))
         (error "File does not contain #+JOURNAL_FILE set to t")
       (funcall #'org-datetree-find-date-create
 	       (calendar-gregorian-from-absolute (org-today)))
@@ -355,7 +354,7 @@ datetree by default.
 #+BEGIN_SRC emacs-lisp
 (defun load-journal-visibility ()
   ""
-  (if (equal "t" (org-keyword "JOURNAL_FILE"))
+  (if (equal "t" (matiash-org-keyword "JOURNAL_FILE"))
       (org-shifttab 3)
     nil))
 #+END_SRC
@@ -414,7 +413,7 @@ the agenda view.
 
 #+BEGIN_SRC emacs-lisp
 (defun refile-if-in-journal-and-working () ""
-    (if (and (equal "t" (org-keyword "JOURNAL_FILE"))
+    (if (and (equal "t" (matiash-org-keyword "JOURNAL_FILE"))
 	     (equal "WORKING" org-state))
 	(progn (move-subtree-to-current-day)
 	       (org-add-log-setup 'state org-state nil 'time)
