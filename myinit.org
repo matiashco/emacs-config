@@ -686,22 +686,6 @@ Powerful package to navigate between files and perform operations on files.
 #+BEGIN_SRC emacs-lisp
 (setq gdb-many-windows t)
 #+END_SRC
-** Dumb Jump
-I'm installing this package because it's a solution to jumping around
-definitions easily and without any setup. I hear it can be slow on big projects,
-but I'm going to try it out and see what happens.
-#+BEGIN_SRC emacs-lisp
-(use-package dumb-jump
-  :ensure t
-  :bind (("M-g o" . dumb-jump-go-other-window)
-         ("M-g j" . dumb-jump-go)
-         ("M-g i" . dumb-jump-go-prompt)
-         ("M-g x" . dumb-jump-go-prefer-external)
-         ("M-g z" . dumb-jump-go-prefer-external-other-window)
-	 ("M-." . dumb-jump-go)
-	 ("M-," . dumb-jump-back)
-	 ))
-#+END_SRC
 * Version Control
 * TRAMP
 ** Verbose
