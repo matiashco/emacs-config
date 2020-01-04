@@ -564,6 +564,10 @@ Turning on auto revert buffer and removing the confirmation message
                               (name . "\*Occur\*")
                               (name . "\**\*"))))))
 #+END_SRC
+** Revert Buffer
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<f5>") 'revert-buffer)
+#+END_SRC
 * Window Management
 ** Zoom into and out of window - Single Frame
 This is a handy function to expand and compress a buffer momentarily
