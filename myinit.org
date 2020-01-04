@@ -724,11 +724,12 @@ before using this keybinding.
 #+END_SRC
 ** Custom Open Line (Electric Indent Mode)
 #+BEGIN_SRC emacs-lisp
-(defun my-open-line() ""
-       (interactive)
-       (save-excursion 
-         (electric-newline-and-maybe-indent)))
-(global-set-key (kbd "C-o") 'my-open-line)
+(defun matiash-open-line()
+  "Aims to create a new line below point yet keep point indented."
+  (interactive)
+  (save-excursion 
+    (electric-newline-and-maybe-indent)))
+(global-set-key (kbd "C-o") 'matiash-open-line)
 #+END_SRC
 ** Insert Balanced Chars
 Really helpful when writing in a programming language, but also just writing
