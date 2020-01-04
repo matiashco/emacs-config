@@ -100,7 +100,7 @@ use that so much more often.
 
 ** Switching Between Buffers
 I usually end up working with two files and going back and forth between
-them. Adding a keybinding to that easily.
+them. Adding a keybinding to make that easier.
 #+BEGIN_SRC emacs-lisp
 (defun switch-to-other-buffer ()
   "Switches to the last buffer used."
