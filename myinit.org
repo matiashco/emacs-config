@@ -109,11 +109,11 @@ balanced parentheses instead of the beginning."
 I usually end up working with two files and going back and forth between
 them. Adding a keybinding to make that easier.
 #+BEGIN_SRC emacs-lisp
-(defun switch-to-other-buffer ()
+(defun matiash-switch-to-other-buffer ()
   "Switches to the last buffer used."
   (interactive)
   (switch-to-buffer (other-buffer)))
-(global-set-key (kbd "C-<tab>") 'switch-to-other-buffer)
+(global-set-key (kbd "C-<tab>") 'matiash-switch-to-other-buffer)
 #+END_SRC
 * Modes
 ** Org Mode
