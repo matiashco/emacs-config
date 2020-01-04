@@ -21,12 +21,14 @@ Everything seems to be working right now!
 #+END_SRC
 ** Theme Changes
  #+BEGIN_SRC emacs-lisp
-(defun toggle-dark-mode () ""
-       (interactive)
-       (if (custom-theme-enabled-p 'atom-one-dark)
-           (disable-theme 'atom-one-dark)
-         (enable-theme 'atom-one-dark)))
-(global-set-key (kbd "<f10>") 'toggle-dark-mode)
+(defun matiash-toggle-dark-mode ()
+  "Toggles ATOM-ONE-DARK custom theme. Assumes theme is
+installed"
+  (interactive)
+  (if (custom-theme-enabled-p 'atom-one-dark)
+      (disable-theme 'atom-one-dark)
+    (enable-theme 'atom-one-dark)))
+(global-set-key (kbd "<f10>") 'matiash-toggle-dark-mode)
  #+END_SRC
 * Navigation
 ** Avy
