@@ -854,13 +854,6 @@ Trying to use this more!
           (lambda ()
             (local-set-key "c" 'avy-goto-char)))
 #+END_SRC
-*** EWW Variables
-**** Set EWW as default web browser
-I like this because it gives me a clean look for webpages. That being said, I
-should find a way to use firefox for certain pages too.
-#+BEGIN_SRC emacs-lisp
-(setq browse-url-browser-function 'eww-browse-url)
-#+END_SRC
 * Try
 Handy package that lets you try out packages
 #+BEGIN_SRC emacs-lisp
