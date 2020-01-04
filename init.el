@@ -24,17 +24,3 @@
  (expand-file-name "myinit.org"
                    user-emacs-directory))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files '("~/Dropbox/org/personal/journal.org"))
- '(package-selected-packages
-   '(dumb-jump mu mu4e try org-pdfview pdf-tools use-package modern-cpp-font-lock flycheck eyebrowse atom-one-dark-theme ag ace-window)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
