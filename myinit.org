@@ -735,25 +735,30 @@ before using this keybinding.
 Really helpful when writing in a programming language, but also just writing
 strings in general.
 #+BEGIN_SRC emacs-lisp
-(defun insert-braces (&optional arg) ""
-       (interactive "P")
-       (insert-pair arg ?\{ ?\}))
-(global-set-key (kbd "C-{") 'insert-braces)
+(defun matiash-insert-braces (&optional arg)
+  "Insert pair of balanced braces. Places point between them."
+  (interactive "P")
+  (insert-pair arg ?\{ ?\}))
+(global-set-key (kbd "C-{") 'matiash-insert-braces)
 
-(defun insert-brackets (&optional arg) ""
-       (interactive "P")
-       (insert-pair arg ?\[ ?\]))
-(global-set-key (kbd "M-[") 'insert-brackets)
+(defun matiash-insert-brackets (&optional arg)
+  "Insert pair of balanced brackets. Places point between them."
+  (interactive "P")
+  (insert-pair arg ?\[ ?\]))
+(global-set-key (kbd "M-[") 'matiash-insert-brackets)
 
-(defun insert-quotes (&optional arg) ""
-       (interactive "P")
-       (insert-pair arg ?\" ?\"))
-(global-set-key (kbd "M-\"") 'insert-quotes)
+(defun matiash-insert-quotes (&optional arg)
+  "Insert pair of balanced quotes. Places point between them."
+  (interactive "P")
+  (insert-pair arg ?\" ?\"))
+(global-set-key (kbd "M-\"") 'matiash-insert-quotes)
 
-(defun insert-single-quotes (&optional arg) ""
+(defun matiash-insert-single-quotes (&optional arg)
+  "Insert pair of balanced single quotes. Places point between
+them."
   (interactive "P")
   (insert-pair arg ?\' ?\'))
-(global-set-key (kbd "M-\'") 'insert-single-quotes)
+(global-set-key (kbd "M-\'") 'matiash-insert-single-quotes)
 #+END_SRC
 ** Balanced Chars Remove Extra Space
 Usually I can add the space myself after inserting a pair of balanced chars, so
