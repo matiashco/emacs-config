@@ -440,9 +440,9 @@ for the current day in the journal file."
 *** Remove Org Force Cycle Keybinding
 This is done to allow for a shortcut that will switch buffers quickly.
 #+BEGIN_SRC emacs-lisp
-(defun unmap-org-force-cycle () ""
+(defun matiash-unmap-org-force-cycle () ""
        (define-key org-mode-map (kbd "C-<tab>") nil))
-(add-hook 'org-mode-hook 'unmap-org-force-cycle)
+(add-hook 'org-mode-hook 'matiash-unmap-org-force-cycle)
 #+END_SRC
 ** Flycheck Mode
 I have this turned off right now - I should check it out more
