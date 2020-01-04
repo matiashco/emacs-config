@@ -297,16 +297,17 @@ Useful to see how much time I'm spending on a project
 *** Org TODO Keywords
 Works with workflow system I'm implementing.
 #+BEGIN_SRC emacs-lisp
-(setq org-todo-keywords '(
-                          (sequence "TODO(t!)" "WAITING(a@)" "NEXT(n!)" "WORKING(w!)" "|" "DONE(d!)" "CANCELLED(c@)")
-                          (sequence "NOTE(o)")))
-(setq org-todo-keyword-faces '(("ENTRY" . "brown")
-                               ("TODO" . org-warning)
-                               ("NOTE" . "purple")
-                               ("NEXT" . "blue")
-                               ("WORKING" . "black")
-                               ("WAITING" . "orange")
-                               ("CANCELLED" . org-warning)))
+(setq org-todo-keywords
+      '((sequence "TODO(t!)" "WAITING(a@)" "NEXT(n!)" "WORKING(w!)" "|" "DONE(d!)" "CANCELLED(c@)")
+	(sequence "NOTE(o)")))
+(setq org-todo-keyword-faces
+      '(("ENTRY" . "brown")
+        ("TODO" . org-warning)
+        ("NOTE" . "purple")
+        ("NEXT" . "blue")
+        ("WORKING" . "black")
+        ("WAITING" . "orange")
+        ("CANCELLED" . org-warning)))
 #+END_SRC
 *** Org TODO Refiling
 Working with implemented workflow to refile a TODO from inbox to an open org
