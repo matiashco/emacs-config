@@ -515,8 +515,10 @@ widening code, easily highlighting function definitions with ".", and
 cloning code into an indirect buffer.
 #+BEGIN_SRC emacs-lisp
 (defun view-mode-add-custom-keybindings ()
-  "Add my preferred keybindings for make view-mode easier to navigate"
-  (hs-minor-mode 1)
+  "Add my preferred keybindings to make view-mode easier to navigate"
+  (if (not (or (string= major-mode "fundamental-mode")
+               (string= major-mode "org-mode")))
+      (hs-minor-mode 1))
   (define-key view-mode-map (kbd "\\") 'avy-goto-char-timer)
   (define-key view-mode-map (kbd "g") 'goto-line)
   (define-key view-mode-map (kbd "r") 'point-to-register)
