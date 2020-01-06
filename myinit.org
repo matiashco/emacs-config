@@ -751,6 +751,13 @@ other modes as well.
             (define-key shell-mode-map
               (kbd "<delete>") 'kill-current-buffer)))
 #+END_SRC
+** Open Shell Buffer in Selected Window
+Opens shell buffer in the selected window, even if the shell buffer is
+already open in another window in the same frame.
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'display-buffer-alist
+             '("\\*shell\\*" . (display-buffer-same-window)))
+#+END_SRC
 * Eshell
 ** Eshell Variables
 #+BEGIN_SRC emacs-lisp
