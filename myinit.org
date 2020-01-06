@@ -912,6 +912,7 @@ Hate to see it, but I should use it!
   :ensure t
   :init)
 #+END_SRC
+* Version Control
 * Misc
 ** Fill Column
 Now set to 80 since that's what most people allow on lines
