@@ -742,6 +742,9 @@ Setting that to 2, at least for my current job.
 #+END_SRC
 * Shell
 Some shell configurations.
+** Redefine <delete> to Kill Shell Buffer
+This rebinding makes it consistent with pressing the =<delete>= key in
+other modes as well.
 #+BEGIN_SRC emacs-lisp
 (add-hook 'shell-mode-hook
           (lambda ()
