@@ -517,7 +517,8 @@ cloning code into an indirect buffer.
 (defun view-mode-add-custom-keybindings ()
   "Add my preferred keybindings to make view-mode easier to navigate"
   (if (not (or (string= major-mode "fundamental-mode")
-               (string= major-mode "org-mode")))
+               (string= major-mode "org-mode")
+               (string= major-mode "markdown-mode")))
       (hs-minor-mode 1))
   (define-key view-mode-map (kbd "\\") 'avy-goto-char-timer)
   (define-key view-mode-map (kbd "g") 'goto-line)
@@ -531,6 +532,14 @@ cloning code into an indirect buffer.
         (define-key view-mode-map (kbd "<backtab>") 'hs-show-all))))
 (add-hook 'view-mode-hook 'view-mode-add-custom-keybindings)
 (global-set-key (kbd "C-x C-v") 'view-mode)
+#+END_SRC
+** Markdown Mode
+I don't use Markdown a lot, but I'll need to start writing it for
+work. I figured it's a handy package to have in general since most
+Github README files are also written in Markdown.
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :ensure t)
 #+END_SRC
 * Searching
 ** Ag
