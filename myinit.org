@@ -913,6 +913,14 @@ Hate to see it, but I should use it!
   :init)
 #+END_SRC
 * Version Control
+** VC Mode
+*** Autofill When Editing Commit Message
+Fill to 70 characters instead of the normal 80 to keep commit messages
+clean.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'log-edit-mode-hook 'auto-fill-mode)
+(add-hook 'log-edit-mode-hook 'matiash-set-fill-column-70)
+#+END_SRC    
 * Misc
 ** Fill Column
 Now set to 80 since that's what most people allow on lines
