@@ -605,6 +605,13 @@ Quick way to delete the current buffer
 (global-set-key (kbd "<delete>") 'kill-current-buffer)
 (global-set-key (kbd "<deletechar>") 'kill-current-buffer) ; for Mac
 #+END_SRC
+** Switch Buffer
+My pinky really gets tired of pressing the control key, and I switch
+buffers really often. I'm going to test mapping to Super-b and see if
+that makes any difference.
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "s-b") 'ido-switch-buffer)
+#+END_SRC
 * Window Management
 ** Zoom into and out of window - Single Frame
 This is a handy function to expand and compress a buffer momentarily
