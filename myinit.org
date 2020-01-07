@@ -541,7 +541,6 @@ cloning code into an indirect buffer.
         (define-key view-mode-map (kbd "<C-M-tab>") 'hs-hide-level)
         (define-key view-mode-map (kbd "<backtab>") 'hs-show-all))))
 (add-hook 'view-mode-hook 'matiash-view-mode-setup)
-(global-set-key (kbd "C-x C-v") 'view-mode)
 
 (defun matiash-view-buffer ()
   "Enable standard 'view-mode' on the current bufer, but defining
@@ -554,6 +553,7 @@ entering view-mode in 'matiash-view-mode-setup'."
                  (switch-to-buffer buffer)
                  (if (matiash-hs-mode-condition)
                      (hs-minor-mode -1)))))
+(global-set-key (kbd "C-x C-v") 'matiash-view-buffer)
 #+END_SRC
 ** Markdown Mode
 I don't use Markdown a lot, but I'll need to start writing it for
