@@ -773,6 +773,15 @@ other modes as well.
             (define-key shell-mode-map
               (kbd "<delete>") 'kill-current-buffer)))
 #+END_SRC
+** Redefine <kp-delete> to Kill Shell Buffer (Mac)
+This customization is solely for Mac, which register a press of the <delete> key
+as <kp-delete>.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (define-key shell-mode-map
+              (kbd "<kp-delete>") 'kill-current-buffer)))
+#+END_SRC   
 ** Open Shell Buffer in Selected Window
 Opens shell buffer in the selected window, even if the shell buffer is
 already open in another window in the same frame.
