@@ -702,7 +702,6 @@ this eshell or not.
   (shell)
   (delete-other-windows))
 (global-set-key (kbd "C-x 5 h") 'matiash-open-shell-mode)
-(global-set-key (kbd "<f5>") 'matiash-open-shell-mode)
 #+END_SRC
 ** Region to New Frame
 Creates a function that will copy a region and put it in a new frame
