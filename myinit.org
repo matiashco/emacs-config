@@ -373,7 +373,7 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 						   "CANCELLED"
 						   "NOTE")))))))
 	("b" "Buffer summary"
-	 ((todo "" ((org-agenda-files '(inbox-path))))))))
+	 ((todo "" ((org-agenda-files `(,inbox-path))))))))
 #+END_SRC
 *** Org Journal Default Visibility
 Used to see journals from workflow better, showing every day entry in
