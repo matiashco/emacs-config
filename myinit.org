@@ -791,6 +791,7 @@ already open in another window in the same frame.
 #+BEGIN_SRC emacs-lisp
 (setq eshell-destroy-buffer-when-process-dies t)
 (setq eshell-history-size 1000000)
+(setq eshell-cmpl-cycle-completions nil)
 #+END_SRC
 ** Change the Default Eshell prompt
 This gives problems when root, but that can be fixed later.
