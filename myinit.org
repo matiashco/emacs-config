@@ -956,7 +956,9 @@ Hate to see it, but I should use it!
 #+BEGIN_SRC emacs-lisp
 (use-package ivy
   :ensure t
-  :init)
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) "))
 #+END_SRC
 * Version Control
 ** VC Mode
