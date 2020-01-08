@@ -946,7 +946,8 @@ Hate to see it, but I should use it!
   :ensure t
   :config
   (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) "))
+  (setq ivy-count-format "(%d/%d) ")
+  (ivy-mode 1))
 #+END_SRC
 * Version Control
 ** VC Mode
