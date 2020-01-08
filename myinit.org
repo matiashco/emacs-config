@@ -505,7 +505,8 @@ cloning code into an indirect buffer.
   "Determines if 'hs-minor-mode' should be enabled in 'view-mode'"
   (not (or (string= major-mode "fundamental-mode")
                (string= major-mode "org-mode")
-               (string= major-mode "markdown-mode"))))
+               (string= major-mode "markdown-mode")
+               (string= major-mode "diff-mode"))))
 
 (defun matiash-view-mode-setup ()
   "Add my preferred keybindings to make view-mode easier to navigate"
