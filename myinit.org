@@ -827,6 +827,13 @@ This gives problems when root, but that can be fixed later.
          "]"
          (if (= (user-uid) 0) "# " " $ "))))
 #+END_SRC
+** Set Pager to cat
+This is done because running some commands assume a complex terminal
+to run less or something.  Setting the PAGER environment variable to
+cat allow for eshell to get full text.
+#+BEGIN_SRC emacs-lisp
+(setenv "PAGER" "cat")
+#+END_SRC
 * PDF View
 Used to view PDF's
 #+BEGIN_SRC emacs-lisp
