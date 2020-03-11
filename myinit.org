@@ -292,7 +292,7 @@ necessary. Point is set to right after TODO entry."
       (org-return)                          ;addresses one line heading
       (delete-blank-lines)                  ;that gets cut otherwise
       (org-insert-heading 4 t)              ;t to move after prev heading
-      (insert (format "TODO \n   :LOGBOOK:\n   - %s%s\n   :END:\n"
+      (insert (format "TODO \n    :LOGBOOK:\n   - %s%s\n   :END:\n"
 		      (matiash-get-entry-format)
 		      (format-time-string
 		       (org-time-stamp-format (current-time) t)
@@ -1007,3 +1007,16 @@ Prevents from closing Emacs accidentally.
 #+BEGIN_SRC emacs-lisp
 (setq-default indent-tabs-mode nil)
 #+END_SRC
+** F
+Looks like Emacs wasn't loading the f package before, so I'll do this
+now:
+#+BEGIN_SRC emacs-lisp
+(use-package f
+  :ensure t)
+#+END_SRC   
+** Isearch Forward to Match Beginning
+It's annoying to not have the point go to the beginning of the
+match. This lambda function will do just that:
+#+BEGIN_SRC emacs-lisp
+(add-hook 'isearch-mode-end-hook (lambda () (if (> (point) isearch-other-end) (goto-char isearch-other-end))))
+#+END_SRC   
