@@ -1020,3 +1020,19 @@ match. This lambda function will do just that:
 #+BEGIN_SRC emacs-lisp
 (add-hook 'isearch-mode-end-hook (lambda () (if (> (point) isearch-other-end) (goto-char isearch-other-end))))
 #+END_SRC   
+** Save using f13
+   This is a customization specific for Mac. I can rebind a key that
+   osX can't understand to f13 using Karabiner, and then map f13 to
+   save in Emacs.
+   #+BEGIN_SRC emacs-lisp
+   (global-set-key (kbd "<f13>") 'save-buffer)
+   #+END_SRC
+** Save File Path to Kill Ring
+
+   #+BEGIN_SRC emacs-lisp
+   (defun kill-file-path ()
+     (interactive)
+     (let ((file-path (buffer-file-name)))
+       (kill-new file-path)))
+   (global-set-key (kbd "C-x M-f") 'kill-file-path)
+   #+END_SRC
