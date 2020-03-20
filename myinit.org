@@ -292,7 +292,7 @@ necessary. Point is set to right after TODO entry."
       (org-return)                          ;addresses one line heading
       (delete-blank-lines)                  ;that gets cut otherwise
       (org-insert-heading 4 t)              ;t to move after prev heading
-      (insert (format "TODO \n   :LOGBOOK:\n   - %s%s\n   :END:\n"
+      (insert (format "TODO \n    :LOGBOOK:\n   - %s%s\n   :END:\n"
 		      (matiash-get-entry-format)
 		      (format-time-string
 		       (org-time-stamp-format (current-time) t)
@@ -1000,6 +1000,35 @@ Prevents from closing Emacs accidentally.
 #+BEGIN_SRC emacs-lisp
 (setq-default indent-tabs-mode nil)
 #+END_SRC
+** F
+Looks like Emacs wasn't loading the f package before, so I'll do this
+now:
+#+BEGIN_SRC emacs-lisp
+(use-package f
+  :ensure t)
+#+END_SRC   
+** Isearch Forward to Match Beginning
+It's annoying to not have the point go to the beginning of the
+match. This lambda function will do just that:
+#+BEGIN_SRC emacs-lisp
+(add-hook 'isearch-mode-end-hook (lambda () (if (> (point) isearch-other-end) (goto-char isearch-other-end))))
+#+END_SRC   
+** Save using f13
+   This is a customization specific for Mac. I can rebind a key that
+   osX can't understand to f13 using Karabiner, and then map f13 to
+   save in Emacs.
+   #+BEGIN_SRC emacs-lisp
+   (global-set-key (kbd "<f13>") 'save-buffer)
+   #+END_SRC
+** Save File Path to Kill Ring
+
+   #+BEGIN_SRC emacs-lisp
+   (defun kill-file-path ()
+     (interactive)
+     (let ((file-path (buffer-file-name)))
+       (kill-new file-path)))
+   (global-set-key (kbd "C-x M-f") 'kill-file-path)
+   #+END_SRC
 ** hs-minor-mode shortcuts
 I'm really starting to think that to read code you need to hide
 everything else except what you're interested in. Also, reading code
@@ -1027,3 +1056,4 @@ respect to the buffer as a whole. Shows all blocks when ARG is
     (error "Error: Negative arguments not supported"))))
 (global-set-key (kbd "C-c TAB") 'matiash-toggle-block-hiding)
 #+END_SRC
+

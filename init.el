@@ -33,10 +33,20 @@
   customizations. Note that this file gets all its Elisp
   extracted into its own Elisp file, which then gets executed.")
 
+(defvar extra-init-org-file-path
+  (expand-file-name "myextrainit.org"
+                    user-emacs-directory)
+  "Path to Org file where I have extra configurations that are
+  unlrelated. Note that this file gets all its Elisp extracted
+  into its own Elisp file, which then gets executed.")
+
 (require 'org)
 (if (file-exists-p init-org-file-path)
     (org-babel-load-file init-org-file-path)
   (message "Couldn't find Org init file: %s" init-org-file-path))
 (if (file-exists-p work-init-org-file-path)
     (org-babel-load-file work-init-org-file-path)
+  (message "Couldn't find Org init file: %s" work-init-org-file-path))
+(if (file-exists-p extra-init-org-file-path)
+    (org-babel-load-file extra-init-org-file-path)
   (message "Couldn't find Org init file: %s" work-init-org-file-path))
