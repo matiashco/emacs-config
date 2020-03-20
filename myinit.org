@@ -915,13 +915,6 @@ chars, so let's turn this off.
 #+BEGIN_SRC emacs-lisp
 (setq parens-require-spaces nil)
 #+END_SRC
-** New Delete Keybindings
-I'm keeping the backspace keybindings as is, but I'm going to try out
-these new keybindings for deleting text too.
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-/") 'delete-backward-char)
-(global-set-key (kbd "M-/") 'backward-kill-word)
-#+END_SRC
 ** Change Undo keybinding
 This one is going to be hard to get used to, but I just hope I don't
 undo that much.
