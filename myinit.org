@@ -1000,3 +1000,30 @@ Prevents from closing Emacs accidentally.
 #+BEGIN_SRC emacs-lisp
 (setq-default indent-tabs-mode nil)
 #+END_SRC
+** hs-minor-mode shortcuts
+I'm really starting to think that to read code you need to hide
+everything else except what you're interested in. Also, reading code
+is easier when you can select the level to which you want to
+read. That means being able to show or hide blocks of code is very
+important.
+#+BEGIN_SRC emacs-lisp
+(defun matiash-toggle-block-hiding (arg)
+  "If ARG is 1, toggle the showing of the block associated with point.
+If ARG is > 1, toggles the hiding of a level of blocks, with
+respect to the buffer as a whole. Shows all blocks when ARG is
+0."
+  (interactive "p")
+  (message "arg is %s" arg)
+  (cond
+   ((> arg 1)
+    (save-excursion
+      (beginning-of-buffer)
+      (hs-hide-level arg)))
+   ((= arg 1)
+    (hs-toggle-hiding))
+   ((= arg 0)
+    (hs-show-all))
+   ((< arg 0)
+    (error "Error: Negative arguments not supported"))))
+(global-set-key (kbd "C-c TAB") 'matiash-toggle-block-hiding)
+#+END_SRC
