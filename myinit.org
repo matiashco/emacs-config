@@ -744,6 +744,7 @@ files.
 (define-key dired-mode-map (kbd "l") 'dired-up-directory)
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 (global-set-key (kbd "C-x C-j") 'dired-jump)
+(setq dired-listing-switches "-alth")
 #+END_SRC
 * Coding
 ** C/C++
