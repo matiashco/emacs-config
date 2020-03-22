@@ -49,7 +49,8 @@ Handy package that lets you try out packages
 #+BEGIN_SRC emacs-lisp
 (use-package avy
   :ensure t
-  :bind (("\\" . 'avy-goto-char-timer))
+  :bind (("\\" . 'avy-goto-char-timer)
+         ("s-h" . 'avy-goto-char-timer))
   :config
   (setq avy-all-windows nil)
   (setq avy-single-candidate-jump nil))
