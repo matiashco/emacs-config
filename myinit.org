@@ -765,6 +765,7 @@ buffers according to the rules I gave for different buffers.
         ("\\*e?shell.*" . (display-buffer-same-window))
         ("\\*info\\*" (display-buffer-pop-up-frame))
         ("\\*vc-log\\*" (display-buffer-same-window))
+        ("\\*vc-diff\\*" (display-buffer-in-side-window) (side . right) (window-width . 0.5))
         ("\\*vc-.*\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.5))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.25))
         (".*" (display-buffer-use-some-frame)
