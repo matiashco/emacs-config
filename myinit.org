@@ -628,6 +628,7 @@ Quick way to delete the current buffer
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<delete>") 'kill-current-buffer)
 (global-set-key (kbd "<deletechar>") 'kill-current-buffer) ; for Mac
+(global-set-key (kbd "s-k") 'kill-current-buffer)
 #+END_SRC
 ** Switch Buffer
 My pinky really gets tired of pressing the control key, and I switch
@@ -656,6 +657,7 @@ configuration for the frame."
 Quick way to delete the current window
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-<delete>") 'delete-window)
+(global-set-key (kbd "C-s-k") 'delete-window)
 #+END_SRC
 * Frame Management
 ** Compile Frame
@@ -732,6 +734,7 @@ with a copy of the text from the region."
 Quick way to delete current frame
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-<delete>") 'delete-frame)
+(global-set-key (kbd "M-s-k") 'delete-frame)
 #+END_SRC
 * Dired
 Powerful package to navigate between files and perform operations on
