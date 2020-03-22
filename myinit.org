@@ -736,6 +736,45 @@ Quick way to delete current frame
 (global-set-key (kbd "M-<delete>") 'delete-frame)
 (global-set-key (kbd "M-s-k") 'delete-frame)
 #+END_SRC
+* Window
+The window package is used to decide which window or frame to display
+a buffer. Here I set the =display-buffer-alist=, which will open
+buffers according to the rules I gave for different buffers.
+** Helper Predicate
+#+BEGIN_SRC emacs-lisp
+(defun matiash-use-some-frame-predicate (frame)
+  "Returns t on the first frame that does not have a visible
+  buffer running shell or eshell, returning nil otherwise."
+  (let ((windows (window-list frame))
+        (current-window)
+        (valid-frame t))
+    (while windows
+      (setq current-window (car windows))
+      (setq windows (cdr windows))
+      (with-current-buffer (window-buffer current-window)
+        (if (or
+             (string= major-mode "eshell-mode")
+             (string= major-mode "shell-mode"))
+            (setq valid-frame nil))))
+    valid-frame))
+#+END_SRC
+** Display Buffer Alist
+#+BEGIN_SRC emacs-lisp
+(setq display-buffer-alist
+      '(("\\*Org Src.*\\*" . (display-buffer-same-window))
+        ("\\*e?shell.*" . (display-buffer-same-window))
+        ("\\*info\\*" (display-buffer-pop-up-frame))
+        ("\\*vc-log\\*" (display-buffer-same-window))
+        ("\\*vc-.*\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.5))
+        ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.25))
+        (".*" (display-buffer-use-some-frame)
+         (frame-predicate . matiash-use-some-frame-predicate))))
+#+END_SRC
+** Toggle Side Windows
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "s-<menu>") 'window-toggle-side-windows)
+(global-set-key (kbd "s-<f13>") 'window-toggle-side-windows) ; for Mac
+#+END_SRC
 * Dired
 Powerful package to navigate between files and perform operations on
 files.
@@ -803,13 +842,6 @@ as <kp-delete>.
             (define-key shell-mode-map
               (kbd "<kp-delete>") 'kill-current-buffer)))
 #+END_SRC   
-** Open Shell Buffer in Selected Window
-Opens shell buffer in the selected window, even if the shell buffer is
-already open in another window in the same frame.
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'display-buffer-alist
-             '("\\*shell\\*" . (display-buffer-same-window)))
-#+END_SRC
 * Eshell
 ** Eshell Variables
 #+BEGIN_SRC emacs-lisp
