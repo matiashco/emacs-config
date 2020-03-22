@@ -49,8 +49,7 @@ Handy package that lets you try out packages
 #+BEGIN_SRC emacs-lisp
 (use-package avy
   :ensure t
-  :bind (("\\" . 'avy-goto-char-timer)
-         ("s-h" . 'avy-goto-char-timer))
+  :bind (("s-h" . 'avy-goto-char-timer))
   :config
   (setq avy-all-windows nil)
   (setq avy-single-candidate-jump nil))
@@ -532,7 +531,6 @@ cloning code into an indirect buffer.
   "Add my preferred keybindings to make view-mode easier to navigate"
   (if (matiash-hs-mode-condition)
       (hs-minor-mode 1))
-  (define-key view-mode-map (kbd "\\") 'avy-goto-char-timer)
   (define-key view-mode-map (kbd "g") 'goto-line)
   (define-key view-mode-map (kbd "r") 'point-to-register)
   (define-key view-mode-map (kbd "j") 'register-to-point)
@@ -951,13 +949,6 @@ undo that much.
 This is my main browser, so I'll make it such:
 #+BEGIN_SRC emacs-lisp
 (setq browse-url-generic-program "firefox")
-#+END_SRC
-** EWW
-Trying to use this more!
-#+BEGIN_SRC emacs-lisp
-(add-hook 'eww-mode-hook
-          (lambda ()
-            (local-set-key "c" 'avy-goto-char)))
 #+END_SRC
 ** URLs
 *** Browsing URLs
