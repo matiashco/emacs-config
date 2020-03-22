@@ -635,8 +635,6 @@ Turning on auto revert buffer and removing the confirmation message
 ** Delete Buffer
 Quick way to delete the current buffer
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<delete>") 'kill-current-buffer)
-(global-set-key (kbd "<deletechar>") 'kill-current-buffer) ; for Mac
 (global-set-key (kbd "s-k") 'kill-current-buffer)
 #+END_SRC
 ** Switch Buffer
@@ -665,7 +663,6 @@ configuration for the frame."
 ** Delete Window
 Quick way to delete the current window
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-<delete>") 'delete-window)
 (global-set-key (kbd "C-s-k") 'delete-window)
 #+END_SRC
 * Frame Management
@@ -742,7 +739,6 @@ with a copy of the text from the region."
 ** Delete Frame
 Quick way to delete current frame
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "M-<delete>") 'delete-frame)
 (global-set-key (kbd "M-s-k") 'delete-frame)
 #+END_SRC
 * Window
@@ -834,24 +830,6 @@ Setting that to 2, at least for my current job.
 #+END_SRC
 * Shell
 Some shell configurations.
-** Redefine <delete> to Kill Shell Buffer
-This rebinding makes it consistent with pressing the =<delete>= key in
-other modes as well.
-#+BEGIN_SRC emacs-lisp
-(add-hook 'shell-mode-hook
-          (lambda ()
-            (define-key shell-mode-map
-              (kbd "<delete>") 'kill-current-buffer)))
-#+END_SRC
-** Redefine <kp-delete> to Kill Shell Buffer (Mac)
-This customization is solely for Mac, which register a press of the <delete> key
-as <kp-delete>.
-#+BEGIN_SRC emacs-lisp
-(add-hook 'shell-mode-hook
-          (lambda ()
-            (define-key shell-mode-map
-              (kbd "<kp-delete>") 'kill-current-buffer)))
-#+END_SRC   
 * Eshell
 ** Eshell Variables
 #+BEGIN_SRC emacs-lisp
