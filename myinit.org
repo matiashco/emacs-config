@@ -565,6 +565,15 @@ Github README files are also written in Markdown.
 (use-package markdown-mode
   :ensure t)
 #+END_SRC
+** Beacon Mode
+I've been trying this package out lately, and its been super useful to
+have. It basically shows you the point easily.
+#+BEGIN_SRC emacs-lisp
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode))
+#+END_SRC
 * Searching
 ** Ag
 Uses the silver searcher shell program to search quickly. Good for
