@@ -859,6 +859,17 @@ cat allow for eshell to get full text.
 #+BEGIN_SRC emacs-lisp
 (setenv "PAGER" "cat")
 #+END_SRC
+** Add Exec Path From Shell
+When you load Emacs independently, particularly on MacOS, the path is
+not the same as when you open Emacs in a terminal. I'm importing this
+package to get that path since I sometimes can't find certain
+commands.
+#+BEGIN_SRC emacs-lisp
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
+#+END_SRC
 * PDF View
 Used to view PDF's
 #+BEGIN_SRC emacs-lisp
