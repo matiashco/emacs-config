@@ -662,6 +662,7 @@ configuration for the frame."
 Quick way to delete the current window
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-s-k") 'delete-window)
+(global-set-key (kbd "<C-s-268632075>") 'delete-window) ;; for Mac
 #+END_SRC
 * Frame Management
 ** Compile Frame
@@ -738,6 +739,7 @@ with a copy of the text from the region."
 Quick way to delete current frame
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-s-k") 'delete-frame)
+(global-set-key (kbd "M-s-˚") 'delete-frame) ;; for Mac
 #+END_SRC
 * Window
 The window package is used to decide which window or frame to display
