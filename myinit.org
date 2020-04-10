@@ -61,6 +61,7 @@ Removes the need to call other-window multiples times
   :ensure t
   :bind ("`" . 'ace-window)
   :config
+  (ace-window-display-mode)
   (setq aw-scope 'frame))
 #+END_SRC
 ** Using Registers
@@ -601,7 +602,7 @@ Turning on auto revert buffer and removing the confirmation message
 ** Ibuffer
 *** Shortcuts
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-b") 'list-buffers)
 #+END_SRC
 *** Customization
 #+BEGIN_SRC emacs-lisp
@@ -609,7 +610,8 @@ Turning on auto revert buffer and removing the confirmation message
 (add-hook 'ibuffer-mode-hook
 	  '(lambda ()
 	     (ibuffer-auto-mode 1)
-	     (ibuffer-switch-to-saved-filter-groups "home")))
+	     (ibuffer-switch-to-saved-filter-groups "home")
+	     (define-key ibuffer-mode-map (kbd "`") 'ace-window)))
 (setq ibuffer-saved-filter-groups
       '(("home"
 	 ("emacs-config" (or (filename . ".emacs.d")
@@ -628,6 +630,8 @@ Turning on auto revert buffer and removing the confirmation message
                               (name . "\*Messages\*")
                               (name . "\*Occur\*")
                               (name . "\**\*"))))))
+(setq ibuffer-formats '((mark " " name)
+                        (mark " " name)))
 #+END_SRC
 ** Revert Buffer
 #+BEGIN_SRC emacs-lisp
@@ -666,6 +670,16 @@ Quick way to delete the current window
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-s-k") 'delete-window)
 (global-set-key (kbd "<C-s-268632075>") 'delete-window) ;; for Mac
+#+END_SRC
+** Winner Mode
+I'm going to check our =winner-mode= now that I'm displaying things in
+side windows and I think it could be useful.
+#+BEGIN_SRC emacs-lisp
+(use-package winner
+  :config
+  (global-set-key (kbd "s-<left>") 'winner-undo)
+  (global-set-key (kbd "s-<right>") 'winner-redo)
+  (winner-mode))
 #+END_SRC
 * Frame Management
 ** Compile Frame
@@ -770,14 +784,18 @@ buffers according to the rules I gave for different buffers.
 #+BEGIN_SRC emacs-lisp
 (setq display-buffer-alist
       '(("\\*Org Src.*\\*" . (display-buffer-same-window))
-        ("\\*e?shell.*" . (display-buffer-same-window))
-        ("\\*info\\*" (display-buffer-pop-up-frame))
+        ("\\*e?shell\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.20) (slot . 0))
+        ("\\*info\\*" (display-buffer-in-child-frame))
         ("\\*vc-log\\*" (display-buffer-same-window))
         ("\\*.*diff\\*" (display-buffer-in-side-window) (side . right) (window-width . 0.5))
+        ("\\*monky:.*\\*" (display-buffer-same-window))
         ("\\*vc-.*\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.5))
-        ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.25))
-        (".*" (display-buffer-use-some-frame)
-         (frame-predicate . matiash-use-some-frame-predicate))))
+        ("\\*Buffer List\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.15))
+        ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 1))
+        (".*" (display-buffer-use-some-window)
+         ;; (display-buffer-use-some-frame)
+         ;; (frame-predicate . matiash-use-some-frame-predicate)
+         )))
 #+END_SRC
 ** Toggle Side Windows
 #+BEGIN_SRC emacs-lisp
@@ -833,12 +851,25 @@ Setting that to 2, at least for my current job.
 #+END_SRC
 * Shell
 Some shell configurations.
+** Setup Bash Profile Variable
+Sets up bash profile. I can now call 'remote-bash using
+=connection-local-set-profiles=.
+#+BEGIN_SRC emacs-lisp
+(connection-local-set-profile-variables
+       'remote-bash
+       '((explicit-shell-file-name . "/bin/bash")
+         (explicit-bash-args . ("-i"))))
+(connection-local-set-profiles
+       '(:application tramp :protocol "sshx" :machine "devf")
+       'remote-bash)
+#+END_SRC
 * Eshell
 ** Eshell Variables
 #+BEGIN_SRC emacs-lisp
 (setq eshell-destroy-buffer-when-process-dies t)
 (setq eshell-history-size 1000000)
 (setq eshell-cmpl-cycle-completions nil)
+(setq eshell-cmpl-ignore-case t)
 #+END_SRC
 ** Change the Default Eshell prompt
 This gives problems when root, but that can be fixed later.
@@ -877,6 +908,21 @@ commands.
   :ensure t
   :config
   (exec-path-from-shell-initialize))
+#+END_SRC
+** Open Shell Using s-s
+
+   I'm thinking of moving from my current workflow that centers around
+   the the shell, to moving the shell to a side window. I only use the
+   shell for version control, and sometimes running things, and as
+   long as I have enough space, I should be fine right?
+#+BEGIN_SRC emacs-lisp
+(defun matiash-toggle-eshell-mode ()
+  "Toggle between closing and opening eshell"
+  (interactive)
+  (if (string= major-mode "eshell-mode")
+      (window-toggle-side-windows)
+    (eshell)))
+(global-set-key (kbd "s-s") 'matiash-toggle-eshell-mode)
 #+END_SRC
 * PDF View
 Used to view PDF's
@@ -1091,4 +1137,7 @@ respect to the buffer as a whole. Shows all blocks when ARG is
     (error "Error: Negative arguments not supported"))))
 (global-set-key (kbd "C-c TAB") 'matiash-toggle-block-hiding)
 #+END_SRC
-
+** Comment with C-;
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-;") 'comment-line)
+#+END_SRC
