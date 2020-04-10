@@ -485,9 +485,12 @@ I have this turned off right now - I should check it out more
 *** Enable
 #+BEGIN_SRC emacs-lisp
 (use-package ido
-  :config
+  :config  
   (setq ido-default-buffer-method 'selected-window)
   (setq ido-default-file-method 'selected-window)
+  (setq ido-auto-merge-work-directories-length -1)
+  (setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
   (ido-mode 1))
 #+END_SRC
 
@@ -768,7 +771,7 @@ buffers according to the rules I gave for different buffers.
         ("\\*e?shell.*" . (display-buffer-same-window))
         ("\\*info\\*" (display-buffer-pop-up-frame))
         ("\\*vc-log\\*" (display-buffer-same-window))
-        ("\\*vc-diff\\*" (display-buffer-in-side-window) (side . right) (window-width . 0.5))
+        ("\\*.*diff\\*" (display-buffer-in-side-window) (side . right) (window-width . 0.5))
         ("\\*vc-.*\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.5))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.25))
         (".*" (display-buffer-use-some-frame)
