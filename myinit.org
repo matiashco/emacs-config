@@ -909,7 +909,7 @@ commands.
   :config
   (exec-path-from-shell-initialize))
 #+END_SRC
-** Open Shell Using s-s
+** Open Shell Using s-l
 
    I'm thinking of moving from my current workflow that centers around
    the the shell, to moving the shell to a side window. I only use the
@@ -922,7 +922,7 @@ commands.
   (if (string= major-mode "eshell-mode")
       (window-toggle-side-windows)
     (eshell)))
-(global-set-key (kbd "s-s") 'matiash-toggle-eshell-mode)
+(global-set-key (kbd "s-l") 'matiash-toggle-eshell-mode)
 #+END_SRC
 * PDF View
 Used to view PDF's
