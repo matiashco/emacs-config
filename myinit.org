@@ -785,16 +785,15 @@ buffers according to the rules I gave for different buffers.
 (setq display-buffer-alist
       '(("\\*Org Src.*\\*" . (display-buffer-same-window))
         ("\\*e?shell\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.20) (slot . 0))
-        ("\\*info\\*" (display-buffer-in-child-frame))
+        ("\\*info\\*"  (display-buffer-pop-up-frame))
         ("\\*vc-log\\*" (display-buffer-same-window))
-        ("\\*.*diff\\*" (display-buffer-in-side-window) (side . right) (window-width . 0.5))
         ("\\*monky:.*\\*" (display-buffer-same-window))
         ("\\*vc-.*\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.5))
+        ("\\*diff\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.5))
         ("\\*Buffer List\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.15))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 1))
-        (".*" (display-buffer-use-some-window)
-         ;; (display-buffer-use-some-frame)
-         ;; (frame-predicate . matiash-use-some-frame-predicate)
+        (".*" (display-buffer-use-some-window) ;; (display-buffer-use-some-frame) 
+                                               ;;   (frame-predicate . matiash-use-some-frame-predicate)
          )))
 #+END_SRC
 ** Toggle Side Windows
