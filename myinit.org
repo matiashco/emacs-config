@@ -492,7 +492,8 @@ I have this turned off right now - I should check it out more
   (setq ido-default-file-method 'selected-window)
   (setq ido-auto-merge-work-directories-length -1)
   (setq ido-enable-flex-matching t)
-  (setq ido-everywhere t))
+  (setq ido-everywhere t)
+  (setq ido-max-prospects 5))
 #+END_SRC
 
 *** View File Ido
