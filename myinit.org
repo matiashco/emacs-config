@@ -486,13 +486,13 @@ I have this turned off right now - I should check it out more
 *** Enable
 #+BEGIN_SRC emacs-lisp
 (use-package ido
-  :config  
+  :config
+  (ido-mode 1)
   (setq ido-default-buffer-method 'selected-window)
   (setq ido-default-file-method 'selected-window)
   (setq ido-auto-merge-work-directories-length -1)
   (setq ido-enable-flex-matching t)
-  (setq ido-everywhere t)
-  (ido-mode 1))
+  (setq ido-everywhere t))
 #+END_SRC
 
 *** View File Ido
