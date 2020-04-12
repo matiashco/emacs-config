@@ -758,6 +758,10 @@ Quick way to delete current frame
 (global-set-key (kbd "M-s-k") 'delete-frame)
 (global-set-key (kbd "M-s-˚") 'delete-frame) ;; for Mac
 #+END_SRC
+** New Frame with s-n
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "s-n") 'make-frame)
+#+END_SRC   
 * Window
 The window package is used to decide which window or frame to display
 a buffer. Here I set the =display-buffer-alist=, which will open
