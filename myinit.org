@@ -1058,6 +1058,13 @@ clean.
 (add-hook 'log-edit-mode-hook 'auto-fill-mode)
 (add-hook 'log-edit-mode-hook 'matiash-set-fill-column-70)
 #+END_SRC    
+* Mail
+I'm going to try using email in Emacs again - I think it will make
+sifting through it much faster.
+#+BEGIN_SRC emacs-lisp
+(use-package notmuch
+  :ensure t)
+#+END_SRC
 * Misc
 ** Fill Column
 Now set to 80 since that's what most people allow on lines
