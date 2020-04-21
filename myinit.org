@@ -1063,7 +1063,12 @@ I'm going to try using email in Emacs again - I think it will make
 sifting through it much faster.
 #+BEGIN_SRC emacs-lisp
 (use-package notmuch
-  :ensure t)
+  :ensure t
+  :config
+  (setq notmuch-fcc-dirs "Sent")
+  (setq notmuch-show-logo nil)
+  (setq notmuch-message-queued-tag-changes
+        '(("from:matiashco@gmail.com" "+sent"))))
 #+END_SRC
 * Misc
 ** Fill Column
