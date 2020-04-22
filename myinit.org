@@ -1159,3 +1159,16 @@ respect to the buffer as a whole. Shows all blocks when ARG is
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-;") 'comment-line)
 #+END_SRC
+** Toggle Line Spacing
+I'm starting to find it hard to read lines when they're squished
+together. I'm creating this line spacing function to see if adding
+line spacing helps.
+#+BEGIN_SRC emacs-lisp
+(defun matiash-toggle-line-spacing ()
+  "Toggle adding space between lines"
+  (interactive)
+  (if (null line-spacing)
+      (setq-default line-spacing 0.5)
+    (setq-default line-spacing nil)))
+(global-set-key (kbd "<f12>") 'matiash-toggle-line-spacing)
+  #+END_SRC   
