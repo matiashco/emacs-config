@@ -559,6 +559,8 @@ entering view-mode in 'matiash-view-mode-setup'."
                  (if (matiash-hs-mode-condition)
                      (hs-minor-mode -1)))))
 (global-set-key (kbd "C-x C-v") 'matiash-view-buffer)
+
+(global-set-key (kbd "s-o") 'view-mode)
 #+END_SRC
 ** Markdown Mode
 I don't use Markdown a lot, but I'll need to start writing it for
