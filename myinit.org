@@ -1068,7 +1068,8 @@ sifting through it much faster.
   (setq notmuch-fcc-dirs "Sent")
   (setq notmuch-show-logo nil)
   (setq notmuch-message-queued-tag-changes
-        '(("from:matiashco@gmail.com" "+sent"))))
+        `((,(concat "from:" matiash-gmail-address) "+sent")))
+  (setq notmuch-message-replied-tags '("+replied" "+sent")))
 #+END_SRC
 * Misc
 ** Fill Column
