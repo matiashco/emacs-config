@@ -38,6 +38,12 @@ installed"
       (enable-theme 'atom-one-dark)
       (disable-theme 'atom-one-dark)))
  #+END_SRC
+** Adwaita
+Enable the Adwaita Theme. I recently started using it and really enjoy
+it!
+#+BEGIN_SRC emacs-lisp
+(load-theme 'adwaita)
+#+END_SRC
 * Try
 Handy package that lets you try out packages
 #+BEGIN_SRC emacs-lisp
