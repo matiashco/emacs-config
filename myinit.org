@@ -541,8 +541,6 @@ cloning code into an indirect buffer.
 
 (defun matiash-view-mode-setup ()
   "Add my preferred keybindings to make view-mode easier to navigate"
-  (if (matiash-hs-mode-condition)
-      (hs-minor-mode 1))
   (define-key view-mode-map (kbd "g") 'goto-line)
   (define-key view-mode-map (kbd "r") 'point-to-register)
   (define-key view-mode-map (kbd "j") 'register-to-point)
