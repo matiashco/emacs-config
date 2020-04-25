@@ -565,7 +565,24 @@ entering view-mode in 'matiash-view-mode-setup'."
                      (hs-minor-mode -1)))))
 (global-set-key (kbd "C-x C-v") 'matiash-view-buffer)
 
-(global-set-key (kbd "s-o") 'view-mode)
+(defun matiash-should-do-view-mode ()
+  "Determines whether view-mode should be turned on"
+  (if (or (string= major-mode "eshell-mode")
+          (string= major-mode "shell-mode"))
+      nil
+    t))
+(defun matiash-toggle-view-mode ()
+  "Toggle View mode"
+  (if view-mode
+      (view-mode -1)
+    (view-mode 1)))
+(defun matiash-safe-view-mode ()
+  "Toggles view mode unless certain mode is on"
+  (interactive)
+  (if (matiash-should-do-view-mode)
+      (matiash-toggle-view-mode)
+    (message "Cannot enable view mode for this buffer.")))
+(global-set-key (kbd "s-m") 'matiash-safe-view-mode)
 #+END_SRC
 ** Markdown Mode
 I don't use Markdown a lot, but I'll need to start writing it for
