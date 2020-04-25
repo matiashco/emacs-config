@@ -1226,3 +1226,8 @@ line spacing helps.
     (setq-default line-spacing nil)))
 (global-set-key (kbd "<f12>") 'matiash-toggle-line-spacing)
   #+END_SRC   
+** Move Point to Help
+I like having the point in the Help buffer when I open it up.
+#+BEGIN_SRC emacs-lisp
+(setq help-window-select t)
+#+END_SRC
