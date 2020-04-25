@@ -832,6 +832,28 @@ buffers according to the rules I gave for different buffers.
 (global-set-key (kbd "s-<menu>") 'window-toggle-side-windows)
 (global-set-key (kbd "s-<f13>") 'window-toggle-side-windows) ; for Mac
 #+END_SRC
+** Enlarge Side Window
+Make it easier to enlarge a side window if you need to read the text
+more. Specific to side windows that are positioned at the bottom of
+the frame.
+#+BEGIN_SRC emacs-lisp
+(defun matiash-enlarge-side-window ()
+  "Specific only to side windows positioned at the bottom of the
+  frame. Enlarges side window"
+  (interactive)
+  (if (< 20 (window-max-delta))
+      (enlarge-window 20)
+    (message "Cannot enlarge window any further.")))
+(defun matiash-reduce-side-window ()
+  "Specific only to side windows positioned at the bottom of the
+  frame. Reduces side window"
+  (interactive)
+  (if (< 20 (window-min-delta))
+      (enlarge-window (- 20))
+    (message "Cannot enlarge window any further.")))
+(global-set-key (kbd "s-=") 'matiash-enlarge-side-window)
+(global-set-key (kbd "s--") 'matiash-reduce-side-window)
+#+END_SRC
 * Dired
 Powerful package to navigate between files and perform operations on
 files.
