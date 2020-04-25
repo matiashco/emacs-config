@@ -1175,6 +1175,13 @@ match. This lambda function will do just that:
        (kill-new file-path)))
    (global-set-key (kbd "C-x M-f") 'kill-file-path)
    #+END_SRC
+** Save Buffer Name to Kill Ring
+#+BEGIN_SRC emacs-lisp
+(defun matiash-kill-buffer-name ()
+  (interactive)
+  (kill-new (buffer-name)))
+(global-set-key (kbd "C-x M-b") 'matiash-kill-buffer-name)
+#+END_SRC   
 ** hs-minor-mode shortcuts
 I'm really starting to think that to read code you need to hide
 everything else except what you're interested in. Also, reading code
