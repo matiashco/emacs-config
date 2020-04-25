@@ -661,6 +661,7 @@ Turning on auto revert buffer and removing the confirmation message
 ** Revert Buffer
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<f5>") 'revert-buffer)
+(global-set-key (kbd "s-r") 'revert-buffer)
 #+END_SRC
 ** Delete Buffer
 Quick way to delete the current buffer
