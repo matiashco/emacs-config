@@ -1259,3 +1259,12 @@ region isn't active).
     (backward-kill-word region)))
 (global-set-key (kbd "M-w") 'matiash-m-w-dwim)
 #+END_SRC
+** Measuring Time
+I'm trying to find ways to measure the amount of time I spend doing
+something, particularly for work.  I'm going to start generally and try
+to measure the amount of time I work every day.  For this I'll use the
+=timeclock= functions, with some configuration
+*** Don't Aggregate Unworked Time
+#+BEGIN_SRC emacs-lisp
+(setq timeclock-relative nil)
+#+END_SRC
