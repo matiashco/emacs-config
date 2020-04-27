@@ -482,6 +482,11 @@ filling out Org files in general cleaner and easier to read.
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (add-hook 'org-mode-hook 'matiash-set-fill-column-70)
 #+END_SRC
+*** Flyspell Mode When in Org Mode
+It helps to keep the text free from spelling mistakes.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook 'flyspell-mode)
+#+END_SRC
 ** Flycheck Mode
 I have this turned off right now - I should check it out more
 #+BEGIN_SRC emacs-lisp
