@@ -482,6 +482,11 @@ filling out Org files in general cleaner and easier to read.
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (add-hook 'org-mode-hook 'matiash-set-fill-column-70)
 #+END_SRC
+*** Flyspell Mode When in Org Mode
+It helps to keep the text free from spelling mistakes.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook 'flyspell-mode)
+#+END_SRC
 ** Flycheck Mode
 I have this turned off right now - I should check it out more
 #+BEGIN_SRC emacs-lisp
@@ -940,8 +945,9 @@ This gives problems when root, but that can be fixed later.
           (replace-regexp-in-string "^.*:" "" (eshell/pwd))
           "]"
           (if (= (user-uid) 0) "# " " $ "))
-         'face `,(if (null custom-enabled-themes) '(:foreground "red")
-                  '(:foreground "yellow")))))
+         'face `,(if (seq-contains custom-enabled-themes 'atom-one-dark)
+                     '(:foreground "yellow")
+                  '(:foreground "red")))))
 #+END_SRC
 ** Set Pager to cat
 This is done because running some commands assume a complex terminal
