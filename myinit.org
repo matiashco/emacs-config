@@ -1237,3 +1237,25 @@ I like having the point in the Help buffer when I open it up.
 #+BEGIN_SRC emacs-lisp
 (setq help-window-select t)
 #+END_SRC
+** Make C-w and M-w delete chars
+I'm noticing that backspace is pretty hard to reach from the home
+row. I know I removed a previous key-binding before, but now I'm going
+to try something that's easier to reach: =C-w= and =M-w= (assuming the
+region isn't active).
+#+BEGIN_SRC emacs-lisp
+(defun matiash-c-w-dwim (beg end &optional region arg)
+  "Kills region if region is active, otherwise deletes char."
+  (interactive (list (mark) (point) 'region (prefix-numeric-value current-prefix-arg)))
+  (if (region-active-p)
+      (kill-region beg end region)
+    (backward-delete-char arg)))
+(global-set-key (kbd "C-w") 'matiash-c-w-dwim)
+
+(defun matiash-m-w-dwim (beg end &optional region)
+  "Copies the region if region is active, otherwise deletes words."
+  (interactive (list (mark) (point) (prefix-numeric-value current-prefix-arg)))
+  (if (region-active-p)
+      (kill-ring-save beg end region)
+    (backward-kill-word region)))
+(global-set-key (kbd "M-w") 'matiash-m-w-dwim)
+#+END_SRC
