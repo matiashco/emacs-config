@@ -487,6 +487,12 @@ It helps to keep the text free from spelling mistakes.
 #+BEGIN_SRC emacs-lisp
 (add-hook 'org-mode-hook 'flyspell-mode)
 #+END_SRC
+*** Org Mode Face Customizations
+**** Source Blocks
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'org-block nil :background "pale goldenrod")
+(set-face-attribute 'org-block-begin-line nil :background "gray85")
+#+END_SRC
 ** Flycheck Mode
 I have this turned off right now - I should check it out more
 #+BEGIN_SRC emacs-lisp
