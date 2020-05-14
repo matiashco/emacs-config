@@ -15,12 +15,14 @@ Everything seems to be working right now!
 (show-paren-mode 1)
 (display-time-mode -1)
 #+END_SRC
+
 * Themes
 ** Atom One Dark Theme
 #+BEGIN_SRC emacs-lisp
 (use-package atom-one-dark-theme
   :ensure t)
 #+END_SRC
+
 ** Theme Changes
  #+BEGIN_SRC emacs-lisp
 (defun matiash-toggle-dark-mode ()
@@ -38,18 +40,21 @@ installed"
       (enable-theme 'atom-one-dark)
       (disable-theme 'atom-one-dark)))
  #+END_SRC
+ 
 ** Adwaita
 Enable the Adwaita Theme. I recently started using it and really enjoy
 it!
 #+BEGIN_SRC emacs-lisp
 (load-theme 'adwaita)
 #+END_SRC
+
 * Try
 Handy package that lets you try out packages
 #+BEGIN_SRC emacs-lisp
 (use-package try
   :ensure t)
 #+END_SRC
+
 * Navigation
 ** Avy
 #+BEGIN_SRC emacs-lisp
@@ -70,6 +75,7 @@ Removes the need to call other-window multiples times
   (ace-window-display-mode)
   (setq aw-scope 'frame))
 #+END_SRC
+
 ** Using Registers
 *** Quick-save Point to Register + Cycle Registers
 #+BEGIN_SRC emacs-lisp
@@ -91,12 +97,14 @@ those that don't save a point as a marker value."
     (goto-char (car (or valid-marker-list-copy valid-marker-list)))))
 (global-set-key (kbd "C-,") 'matiash-cycle-point-across-registers)
 #+END_SRC
+
 ** Frames
 Since I'm starting to use a lot of frames, changing between them
 quickly is critical.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-`") 'other-frame)
 #+END_SRC
+
 ** Frames++
 I tried out this package called =frame-tag=, and I absolutely love it!
 It maps each frame to a number so I easily navigate between
@@ -106,6 +114,7 @@ them. Putting it into the config:
   :ensure t
   :config (frame-tag-mode 1))
 #+END_SRC
+
 ** (Hs-Mode) Expand Block during Navigation
 Used to expand Hs block if I'm going to a particular line in a hidden
 block.
@@ -123,6 +132,7 @@ register-to-point in a collapsed buffer."
   (save-excursion
     (hs-show-block)))
 #+END_SRC
+
 ** Forward Up List
 I'm switching from using =backward-up-list= to moving forward up a
 list cause I use that so much more often.
@@ -147,6 +157,7 @@ between them. Adding a keybinding to make that easier.
   (switch-to-buffer (other-buffer)))
 (global-set-key (kbd "C-<tab>") 'matiash-switch-to-other-buffer)
 #+END_SRC
+
 * Modes
 ** Org Mode
 Used to organize myself, especially for project management.
@@ -172,6 +183,7 @@ Used to organize myself, especially for project management.
 	(clock-out . "")))
 (setq org-src-window-setup 'current-window)
 #+END_SRC
+
 *** My Org Mode Variables
 This section holds the variables for paths to different org mode files
 I reference in this init file. Change these to fit your needs!
@@ -185,6 +197,7 @@ I reference in this init file. Change these to fit your needs!
   stored. Referenced when customizing Org capture templates and
   viewing Org Agenda files.")
 #+END_SRC
+
 *** Key shorcuts
  #+BEGIN_SRC emacs-lisp
 (global-set-key "\C-cl" 'org-store-link)
@@ -192,6 +205,7 @@ I reference in this init file. Change these to fit your needs!
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-cb" 'org-switchb)
  #+END_SRC
+
 *** Export settings
 #+BEGIN_SRC emacs-lisp
 (require 'ox-latex)
@@ -211,6 +225,7 @@ I reference in this init file. Change these to fit your needs!
         "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex --shell-escape -interaction nonstopmode -output-directory %o %f"))
 #+END_SRC
+
 *** Code Block Execution
 #+BEGIN_SRC emacs-lisp
 (with-eval-after-load 'org
@@ -226,6 +241,7 @@ I reference in this init file. Change these to fit your needs!
     org-src-tab-acts-natively t
     org-confirm-babel-evaluate nil)
 #+END_SRC
+
 *** Org Capture Templates
 Used to capture ideas and things to do. Right now I'm in the middle of
 implementing a workflow, so this will be edited soon enough.
@@ -238,6 +254,7 @@ implementing a workflow, so this will be edited soon enough.
         ("e" "Entry" entry (file+headline inbox-path "Inbox")
          "* TODO %?\n:LOGBOOK:\n- %(matiash-get-entry-format)%U\n:END:\n")))
 #+END_SRC
+
 *** Org Journal Workflow
 These customizations are used to implement the workflow of using
 journal Org files to house progress and todo's on projects.
@@ -310,12 +327,14 @@ necessary. Point is set to right after TODO entry."
       (org-end-of-line)
       (message "Done"))))
 #+END_SRC
+
 *** Org Clocking
 Useful to see how much time I'm spending on a project
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c C-x TAB") 'org-clock-in)
 (global-set-key (kbd "C-c C-x C-o") 'org-clock-out)
 #+END_SRC
+
 *** Org TODO Keywords
 Works with workflow system I'm implementing.
 #+BEGIN_SRC emacs-lisp
@@ -331,6 +350,7 @@ Works with workflow system I'm implementing.
         ("WAITING" . "orange")
         ("CANCELLED" . org-warning)))
 #+END_SRC
+
 *** Org TODO Refiling
 Working with implemented workflow to refile a TODO from inbox to an
 open org buffer and move it to the current day in the datetree.
@@ -361,6 +381,7 @@ open org buffer and move it to the current day in the datetree.
   (org-paste-subtree 4)
   (widen))
 #+END_SRC
+
 *** Org Agenda View Customizations
 I ended up creating an agenda view that shows the current day todos
 plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.emacs.d/blob/master/michael.org][this guy's emacs config]].
@@ -382,6 +403,7 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 	("b" "Buffer summary"
 	 ((todo "" ((org-agenda-files `(,inbox-path))))))))
 #+END_SRC
+
 *** Org Journal Default Visibility
 Used to see journals from workflow better, showing every day entry in
 the datetree by default.
@@ -392,6 +414,7 @@ the datetree by default.
       (org-shifttab 3)
     nil))
 #+END_SRC
+
 *** Org Workflow Variables
 #+BEGIN_SRC emacs-lisp
 (setq org-refile-targets '((+org/opened-buffer-files :level . 0)))
@@ -399,7 +422,8 @@ the datetree by default.
 (add-hook 'org-after-refile-insert-hook 'matiash-move-subtree-to-current-day)
 (add-hook 'org-mode-hook 'load-journal-visibility)
 (setq org-agenda-window-setup 'current-window)
-#+END_SRC    
+#+END_SRC
+
 *** Org Workflow Shortcuts
 **** Jump to Inbox
 This function makes use of a hardcoded file name - put this in a
@@ -412,6 +436,7 @@ get stored."
   (org-agenda nil "b"))
 (global-set-key (kbd "s-i") 'matiash-jump-to-inbox)
 #+END_SRC
+
 **** Jump to Org Agenda + TODO
 #+BEGIN_SRC emacs-lisp
 (defun matiash-activate-agenda-todo ()
@@ -420,26 +445,31 @@ get stored."
   (org-agenda nil "d" 'buffer))
 (global-set-key (kbd "s-a") 'matiash-activate-agenda-todo)
 #+END_SRC
+
 **** Create a journal entry
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "s-j") 'matiash-add-journal-entry)
 #+END_SRC
+
 **** Create a todo entry
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "s-t") 'matiash-add-todo-entry)
 #+END_SRC
+
 *** Remove Agenda Cycle Keybinding
 #+BEGIN_SRC emacs-lisp
 (defun matiash-unmap-agenda-cycle () ""
        (define-key org-mode-map (kbd "C-,") nil))
 (add-hook 'org-mode-hook 'matiash-unmap-agenda-cycle)
 #+END_SRC
+
 *** Remap C-tab to switch between buffers
 #+BEGIN_SRC emacs-lisp
 (add-hook 'org-mode-hook
           (lambda ()
             (define-key org-mode-map (kbd "<C-tab>") 'matiash-switch-to-other-buffer)))
-#+END_SRC    
+#+END_SRC
+
 *** Refile when state changed to WORKING
 I want to refile the todo item when I change its state to WORKING.
 
@@ -465,6 +495,7 @@ for the current day in the journal file."
 	     (org-agenda-redo-all t))))
 (add-hook 'org-after-todo-state-change-hook 'matiash-refile-working-state)
 #+END_SRC
+
 *** Remove Org Force Cycle Keybinding
 This is done to allow for a shortcut that will switch buffers quickly.
 #+BEGIN_SRC emacs-lisp
@@ -472,6 +503,7 @@ This is done to allow for a shortcut that will switch buffers quickly.
        (define-key org-mode-map (kbd "C-<tab>") nil))
 (add-hook 'org-mode-hook 'matiash-unmap-org-force-cycle)
 #+END_SRC
+
 *** AutoFill mode when in Org Mode
 Here I'll set auto fill mode on to a total of 70 characters. Makes
 filling out Org files in general cleaner and easier to read.
@@ -482,17 +514,27 @@ filling out Org files in general cleaner and easier to read.
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (add-hook 'org-mode-hook 'matiash-set-fill-column-70)
 #+END_SRC
+
 *** Flyspell Mode When in Org Mode
 It helps to keep the text free from spelling mistakes.
 #+BEGIN_SRC emacs-lisp
 (add-hook 'org-mode-hook 'flyspell-mode)
 #+END_SRC
+
+*** Org Mode Face Customizations
+**** Source Blocks
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'org-block nil :background "pale goldenrod")
+(set-face-attribute 'org-block-begin-line nil :background "gray85")
+#+END_SRC
+
 ** Flycheck Mode
 I have this turned off right now - I should check it out more
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
   :ensure t)
 #+END_SRC
+
 ** Ido Mode
 *** Enable
 #+BEGIN_SRC emacs-lisp
@@ -516,6 +558,7 @@ Make searching through buffers and finding files easier
   (view-file (buffer-file-name (ido-find-file))))
 (global-set-key (kbd "C-x C-r") 'matiash-view-file-ido)
 #+END_SRC
+
 ** Electric Indent Mode
 I'm trying to replace RET with C-j to remove some of the burden on my
 right pinky, which feels the most pain when I type on Emacs for a
@@ -524,12 +567,14 @@ press C-j.
 #+BEGIN_SRC emacs-lisp
 (electric-indent-mode -1)
 #+END_SRC
+
 ** Subword Mode
 Excellent when I'm in Java or anything with camel case strings. Allows
 for movement across subwords.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c C-w") 'subword-mode)
 #+END_SRC
+
 ** View Mode
 Mode to view files. I'm customizing this mode to help me efficiently
 look through source code. I'm currently trying out narrowing code,
@@ -589,6 +634,7 @@ entering view-mode in 'matiash-view-mode-setup'."
     (message "Cannot enable view mode for this buffer.")))
 (global-set-key (kbd "s-m") 'matiash-safe-view-mode)
 #+END_SRC
+
 ** Markdown Mode
 I don't use Markdown a lot, but I'll need to start writing it for
 work. I figured it's a handy package to have in general since most
@@ -597,6 +643,7 @@ Github README files are also written in Markdown.
 (use-package markdown-mode
   :ensure t)
 #+END_SRC
+
 ** Beacon Mode
 I've been trying this package out lately, and its been super useful to
 have. It basically shows you the point easily.
@@ -606,6 +653,7 @@ have. It basically shows you the point easily.
   :config
   (beacon-mode))
 #+END_SRC
+
 * Searching
 ** Ag
 Uses the silver searcher shell program to search quickly. Good for
@@ -617,23 +665,27 @@ finding references of strings in many files.
   (setq ag-reuse-buffers t)
   (setq ag-reuse-window t))
 #+END_SRC
+
 * Buffer Management
 ** Saving Buffer
 Easily the most used key I use. Small tweak but huge payoff.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<menu>") 'save-buffer)
-#+END_SRC  
+#+END_SRC
+
 ** Global Auto Revert Mode
 Turning on auto revert buffer and removing the confirmation message
 #+BEGIN_SRC emacs-lisp
 (global-auto-revert-mode t)
 (setq auto-revert-verbose nil)
 #+END_SRC
+
 ** Ibuffer
 *** Shortcuts
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x C-b") 'list-buffers)
 #+END_SRC
+
 *** Customization
 #+BEGIN_SRC emacs-lisp
 (setq ibuffer-show-empty-filter-groups nil)
@@ -663,16 +715,19 @@ Turning on auto revert buffer and removing the confirmation message
 (setq ibuffer-formats '((mark " " name)
                         (mark " " name)))
 #+END_SRC
+
 ** Revert Buffer
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<f5>") 'revert-buffer)
 (global-set-key (kbd "s-r") 'revert-buffer)
 #+END_SRC
+
 ** Delete Buffer
 Quick way to delete the current buffer
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "s-k") 'kill-current-buffer)
 #+END_SRC
+
 ** Switch Buffer
 My pinky really gets tired of pressing the control key, and I switch
 buffers really often. I'm going to test mapping to Super-b and see if
@@ -680,6 +735,7 @@ that makes any difference.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "s-b") 'ido-switch-buffer)
 #+END_SRC
+
 * Window Management
 ** Zoom into and out of window - Single Frame
 This is a handy function to expand and compress a buffer momentarily
@@ -696,12 +752,14 @@ configuration for the frame."
       )))
 (global-set-key (kbd "C-x 5 z") 'matiash-toggle-zoom)
 #+END_SRC
+
 ** Delete Window
 Quick way to delete the current window
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-s-k") 'delete-window)
 (global-set-key (kbd "<C-s-268632075>") 'delete-window) ;; for Mac
 #+END_SRC
+
 ** Winner Mode
 I'm going to check our =winner-mode= now that I'm displaying things in
 side windows and I think it could be useful.
@@ -712,6 +770,7 @@ side windows and I think it could be useful.
   (global-set-key (kbd "s-<right>") 'winner-redo)
   (winner-mode))
 #+END_SRC
+
 * Frame Management
 ** Compile Frame
 Compile the code in another frame. Handy when resolving bugs.
@@ -724,6 +783,7 @@ Compile the code in another frame. Handy when resolving bugs.
 (global-set-key (kbd "C-x 5 c") 'matiash-compile-mode)
 (global-set-key (kbd "<f6>") 'matiash-compile-mode)
 #+END_SRC
+
 ** GDB Frame
 Run GDB on another frame. Helpful to debug.
 #+BEGIN_SRC emacs-lisp
@@ -736,6 +796,7 @@ Run GDB on another frame. Helpful to debug.
 (global-set-key (kbd "C-x 5 d") 'matiash-gdb-mode)
 (global-set-key (kbd "<f7>") 'matiash-gdb-mode)
 #+END_SRC
+
 ** Ag Frame
 Display silver searcher in another frame.
 #+BEGIN_SRC emacs-lisp
@@ -748,6 +809,7 @@ search results buffer."
 (global-set-key (kbd "C-x 5 s") 'matiash-code-search-mode)
 (global-set-key (kbd "<f8>") 'matiash-code-search-mode)
 #+END_SRC
+
 ** Shell Mode
 Create a new frame with the shell. Figure out if you want to change
 this eshell or not.
@@ -760,6 +822,7 @@ this eshell or not.
   (delete-other-windows))
 (global-set-key (kbd "C-x 5 h") 'matiash-open-shell-mode)
 #+END_SRC
+
 ** Region to New Frame
 Creates a function that will copy a region and put it in a new frame
 on a scratch buffer.
@@ -782,17 +845,20 @@ with a copy of the text from the region."
     (select-frame original-frame)))
 (global-set-key (kbd "C-x 5 r") 'matiash-copy-region-to-new-frame)
 (global-set-key (kbd "<f9>") 'matiash-copy-region-to-new-frame)
-#+END_SRC   
+#+END_SRC
+
 ** Delete Frame
 Quick way to delete current frame
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-s-k") 'delete-frame)
 (global-set-key (kbd "M-s-˚") 'delete-frame) ;; for Mac
 #+END_SRC
+
 ** New Frame with s-n
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "s-n") 'make-frame)
-#+END_SRC   
+#+END_SRC
+
 * Window
 The window package is used to decide which window or frame to display
 a buffer. Here I set the =display-buffer-alist=, which will open
@@ -815,6 +881,7 @@ buffers according to the rules I gave for different buffers.
             (setq valid-frame nil))))
     valid-frame))
 #+END_SRC
+
 ** Display Buffer Alist
 #+BEGIN_SRC emacs-lisp
 (setq display-buffer-alist
@@ -832,11 +899,13 @@ buffers according to the rules I gave for different buffers.
                                                ;;   (frame-predicate . matiash-use-some-frame-predicate)
          )))
 #+END_SRC
+
 ** Toggle Side Windows
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "s-<menu>") 'window-toggle-side-windows)
 (global-set-key (kbd "s-<f13>") 'window-toggle-side-windows) ; for Mac
 #+END_SRC
+
 ** Enlarge Side Window
 Make it easier to enlarge a side window if you need to read the text
 more. Specific to side windows that are positioned at the bottom of
@@ -859,6 +928,7 @@ the frame.
 (global-set-key (kbd "s-=") 'matiash-enlarge-side-window)
 (global-set-key (kbd "s--") 'matiash-reduce-side-window)
 #+END_SRC
+
 * Dired
 Powerful package to navigate between files and perform operations on
 files.
@@ -869,6 +939,7 @@ files.
 (global-set-key (kbd "C-x C-j") 'dired-jump)
 (setq dired-listing-switches "-alth")
 #+END_SRC
+
 * Coding
 ** C/C++
 *** C++ Modern Syntax highlighting
@@ -878,25 +949,30 @@ files.
   :config
   (modern-c++-font-lock-global-mode t))
 #+END_SRC
+
 *** Basic Offset
 Setting that to 2, at least for my current job.
 #+BEGIN_SRC emacs-lisp
 (setq-default c-basic-offset 2)
 #+END_SRC
+
 ** Compile
 *** Shortcuts
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<f6>") 'compile)
 #+END_SRC
+
 *** Compile Variables
 #+BEGIN_SRC emacs-lisp
 (setq compilation-always-kill t)
 (setq compilation-scroll-output 'first-error)
 #+END_SRC
+
 ** GDB
 #+BEGIN_SRC emacs-lisp
 (setq gdb-many-windows t)
 #+END_SRC
+
 * TRAMP
 ** Verbose
 #+BEGIN_SRC emacs-lisp
@@ -906,6 +982,7 @@ Setting that to 2, at least for my current job.
 (setq password-cache-expiry nil)
 (setq tramp-terminal-type "dumb")
 #+END_SRC
+
 * Shell
 Some shell configurations.
 ** Setup Bash Profile Variable
@@ -920,6 +997,7 @@ Sets up bash profile. I can now call 'remote-bash using
        '(:application tramp :protocol "sshx" :machine "devf")
        'remote-bash)
 #+END_SRC
+
 * Eshell
 ** Eshell Variables
 #+BEGIN_SRC emacs-lisp
@@ -928,6 +1006,7 @@ Sets up bash profile. I can now call 'remote-bash using
 (setq eshell-cmpl-cycle-completions nil)
 (setq eshell-cmpl-ignore-case t)
 #+END_SRC
+
 ** Change the Default Eshell prompt
 This gives problems when root, but that can be fixed later.
 #+BEGIN_SRC emacs-lisp
@@ -949,6 +1028,7 @@ This gives problems when root, but that can be fixed later.
                      '(:foreground "yellow")
                   '(:foreground "red")))))
 #+END_SRC
+
 ** Set Pager to cat
 This is done because running some commands assume a complex terminal
 to run less or something.  Setting the PAGER environment variable to
@@ -956,6 +1036,7 @@ cat allow for eshell to get full text.
 #+BEGIN_SRC emacs-lisp
 (setenv "PAGER" "cat")
 #+END_SRC
+
 ** Add Exec Path From Shell
 When you load Emacs independently, particularly on MacOS, the path is
 not the same as when you open Emacs in a terminal. I'm importing this
@@ -967,6 +1048,7 @@ commands.
   :config
   (exec-path-from-shell-initialize))
 #+END_SRC
+
 ** Open Shell Using s-l
 
    I'm thinking of moving from my current workflow that centers around
@@ -982,6 +1064,7 @@ commands.
     (eshell)))
 (global-set-key (kbd "s-l") 'matiash-toggle-eshell-mode)
 #+END_SRC
+
 * PDF View
 Used to view PDF's
 #+BEGIN_SRC emacs-lisp
@@ -994,6 +1077,7 @@ Used to view PDF's
 (use-package org-pdfview
   :ensure t)
 #+END_SRC
+
 * Cycling through Errors/Results
 I use these commands a lot when cycling through code errors or search
 results.
@@ -1001,6 +1085,7 @@ results.
 (global-set-key (kbd "C-`") 'next-error)
 (global-set-key (kbd "C-M-`") 'previous-error)
 #+END_SRC
+
 * Insert / Delete Text
 ** Delete Sexp
 Sets C-M-Backspace to remove a string expression. Note this key
@@ -1009,6 +1094,7 @@ remove that shortcut before using this keybinding.
 #+BEGIN_SRC emacs-lisp
 (global-set-key [C-M-backspace] 'backward-kill-sexp)
 #+END_SRC
+
 ** Custom Open Line (Electric Indent Mode)
 #+BEGIN_SRC emacs-lisp
 (defun matiash-open-line()
@@ -1019,6 +1105,7 @@ indented."
     (electric-newline-and-maybe-indent)))
 (global-set-key (kbd "C-o") 'matiash-open-line)
 #+END_SRC
+
 ** Insert Balanced Chars
 Really helpful when writing in a programming language, but also just
 writing strings in general.
@@ -1055,29 +1142,34 @@ them."
   (insert-pair arg ?\= ?\=))
 (global-set-key (kbd "C-=") 'matiash-insert-balanced-equals)
 #+END_SRC
+
 ** Balanced Chars Remove Extra Space
 Usually I can add the space myself after inserting a pair of balanced
 chars, so let's turn this off.
 #+BEGIN_SRC emacs-lisp
 (setq parens-require-spaces nil)
 #+END_SRC
+
 ** Change Undo keybinding
 This one is going to be hard to get used to, but I just hope I don't
 undo that much.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-M-/") 'undo)
 #+END_SRC
+
 * Web
 ** Firefox
 This is my main browser, so I'll make it such:
 #+BEGIN_SRC emacs-lisp
 (setq browse-url-generic-program "firefox")
 #+END_SRC
+
 ** URLs
 *** Browsing URLs
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c u") 'browse-url-at-point)   
-#+END_SRC   
+#+END_SRC
+
 *** Goto Address Mode
 This mode is very handy since it highlights links. Sometimes link
 appear in shell output or in version control logs, so I'll enable that
@@ -1087,12 +1179,14 @@ mode in those places.
 (add-hook 'eshell-mode-hook 'goto-address-mode)
 (add-hook 'log-view-mode-hook 'goto-address-mode)
 #+END_SRC
+
 * Counsel
 This would be good to setup
 #+BEGIN_SRC emacs-lisp
 (use-package counsel
   :ensure t)
 #+END_SRC
+
 * Ivy
 Hate to see it, but I should use it!
 #+BEGIN_SRC emacs-lisp
@@ -1102,6 +1196,7 @@ Hate to see it, but I should use it!
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) "))
 #+END_SRC
+
 * Version Control
 ** VC Mode
 *** Autofill When Editing Commit Message
@@ -1110,7 +1205,8 @@ clean.
 #+BEGIN_SRC emacs-lisp
 (add-hook 'log-edit-mode-hook 'auto-fill-mode)
 (add-hook 'log-edit-mode-hook 'matiash-set-fill-column-70)
-#+END_SRC    
+#+END_SRC
+
 * Mail
 I'm going to try using email in Emacs again - I think it will make
 sifting through it much faster.
@@ -1128,47 +1224,56 @@ sifting through it much faster.
   (setq notmuch-message-replied-tags '("+replied" "+sent"))
   (define-key notmuch-search-mode-map (kbd "i") 'matiash-notmuch-remove-inbox-tag))
 #+END_SRC
+
 * Misc
 ** Fill Column
 Now set to 80 since that's what most people allow on lines
 #+BEGIN_SRC emacs-lisp
 (setq-default fill-column 80)
 #+END_SRC
+
 ** Narrow Region
 #+BEGIN_SRC emacs-lisp
 (put 'narrow-to-region 'disabled nil)
 #+END_SRC
+
 ** Prompt Change
 Turn all prompts from yes-or-no to y-or-n
 #+BEGIN_SRC emacs-lisp
 (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
+
 ** Kill Emacs With Prompt
 Prevents from closing Emacs accidentally.
 #+BEGIN_SRC emacs-lisp
 (setq confirm-kill-emacs 'y-or-n-p)
 #+END_SRC
+
 ** Ignore Bell
 #+BEGIN_SRC emacs-lisp   
 (setq ring-bell-function 'ignore)
 #+END_SRC
+
 ** Indentation
 #+BEGIN_SRC emacs-lisp
 (setq-default indent-tabs-mode nil)
 #+END_SRC
+
 ** F
 Looks like Emacs wasn't loading the f package before, so I'll do this
 now:
 #+BEGIN_SRC emacs-lisp
 (use-package f
   :ensure t)
-#+END_SRC   
+#+END_SRC
+
 ** Isearch Forward to Match Beginning
 It's annoying to not have the point go to the beginning of the
 match. This lambda function will do just that:
 #+BEGIN_SRC emacs-lisp
 (add-hook 'isearch-mode-end-hook (lambda () (if (> (point) isearch-other-end) (goto-char isearch-other-end))))
-#+END_SRC   
+#+END_SRC
+
 ** Save using f13
    This is a customization specific for Mac. I can rebind a key that
    osX can't understand to f13 using Karabiner, and then map f13 to
@@ -1176,6 +1281,7 @@ match. This lambda function will do just that:
    #+BEGIN_SRC emacs-lisp
    (global-set-key (kbd "<f13>") 'save-buffer)
    #+END_SRC
+
 ** Save File Path to Kill Ring
 
    #+BEGIN_SRC emacs-lisp
@@ -1185,13 +1291,15 @@ match. This lambda function will do just that:
        (kill-new file-path)))
    (global-set-key (kbd "C-x M-f") 'kill-file-path)
    #+END_SRC
+
 ** Save Buffer Name to Kill Ring
 #+BEGIN_SRC emacs-lisp
 (defun matiash-kill-buffer-name ()
   (interactive)
   (kill-new (buffer-name)))
 (global-set-key (kbd "C-x M-b") 'matiash-kill-buffer-name)
-#+END_SRC   
+#+END_SRC
+
 ** hs-minor-mode shortcuts
 I'm really starting to think that to read code you need to hide
 everything else except what you're interested in. Also, reading code
@@ -1219,10 +1327,12 @@ respect to the buffer as a whole. Shows all blocks when ARG is
     (error "Error: Negative arguments not supported"))))
 (global-set-key (kbd "C-c TAB") 'matiash-toggle-block-hiding)
 #+END_SRC
+
 ** Comment with C-;
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-;") 'comment-line)
 #+END_SRC
+
 ** Toggle Line Spacing
 I'm starting to find it hard to read lines when they're squished
 together. I'm creating this line spacing function to see if adding
@@ -1235,12 +1345,14 @@ line spacing helps.
       (setq-default line-spacing 0.5)
     (setq-default line-spacing nil)))
 (global-set-key (kbd "<f12>") 'matiash-toggle-line-spacing)
-  #+END_SRC   
+  #+END_SRC
+
 ** Move Point to Help
 I like having the point in the Help buffer when I open it up.
 #+BEGIN_SRC emacs-lisp
 (setq help-window-select t)
 #+END_SRC
+
 ** Make C-w and M-w delete chars
 I'm noticing that backspace is pretty hard to reach from the home
 row. I know I removed a previous key-binding before, but now I'm going
@@ -1263,6 +1375,7 @@ region isn't active).
     (backward-kill-word region)))
 (global-set-key (kbd "M-w") 'matiash-m-w-dwim)
 #+END_SRC
+
 ** Measuring Time
 I'm trying to find ways to measure the amount of time I spend doing
 something, particularly for work.  I'm going to start generally and try
@@ -1272,3 +1385,4 @@ to measure the amount of time I work every day.  For this I'll use the
 #+BEGIN_SRC emacs-lisp
 (setq timeclock-relative nil)
 #+END_SRC
+
