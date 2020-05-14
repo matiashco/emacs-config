@@ -1115,6 +1115,9 @@ clean.
 I'm going to try using email in Emacs again - I think it will make
 sifting through it much faster.
 #+BEGIN_SRC emacs-lisp
+(defun matiash-notmuch-remove-inbox-tag () ""
+       (interactive)
+       (notmuch-search-remove-tag '("-inbox")))
 (use-package notmuch
   :ensure t
   :config
@@ -1122,7 +1125,8 @@ sifting through it much faster.
   (setq notmuch-show-logo nil)
   (setq notmuch-message-queued-tag-changes
         `((,(concat "from:" matiash-gmail-address) "+sent")))
-  (setq notmuch-message-replied-tags '("+replied" "+sent")))
+  (setq notmuch-message-replied-tags '("+replied" "+sent"))
+  (define-key notmuch-search-mode-map (kbd "i") 'matiash-notmuch-remove-inbox-tag))
 #+END_SRC
 * Misc
 ** Fill Column
