@@ -1386,4 +1386,17 @@ to measure the amount of time I work every day.  For this I'll use the
 #+BEGIN_SRC emacs-lisp
 (setq timeclock-relative nil)
 #+END_SRC
-
+** LSP for Java
+   I'm experimenting with LSP for Java. So far I have the minimum
+   needed to set it up. Commenting for now so it's not automatically
+   loaded.
+   #+BEGIN_SRC emacs-lisp
+;;(use-package lsp-java)                  ;need
+;;(add-hook 'java-mode-hook #'lsp)        ;need
+;;(use-package company)                   ;really handy, I think you need
+;;(use-package yasnippet)                 ;also think you need
+;;(use-package lsp-ui)                    ;don't need, but useful
+;;(use-package projectile)                ;don't think you need, but also seems useful
+;;(global-set-key (kbd "C-c .") 'lsp-execute-code-action) ; needed to make things run smoothly
+;; also use flycheck with flycheck-list-errors
+   #+END_SRC
