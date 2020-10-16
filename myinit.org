@@ -1399,4 +1399,8 @@ to measure the amount of time I work every day.  For this I'll use the
 ;;(use-package projectile)                ;don't think you need, but also seems useful
 ;;(global-set-key (kbd "C-c .") 'lsp-execute-code-action) ; needed to make things run smoothly
 ;; also use flycheck with flycheck-list-errors
+;; Also try this out to get completion within lsp
+;; (use-package ido-completing-read+
+;;   :config
+;;   (ido-ubiquitous-mode))
    #+END_SRC
