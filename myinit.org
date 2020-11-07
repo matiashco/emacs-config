@@ -903,6 +903,7 @@ buffers according to the rules I gave for different buffers.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "s-<menu>") 'window-toggle-side-windows)
 (global-set-key (kbd "s-<f13>") 'window-toggle-side-windows) ; for Mac
+(global-set-key (kbd "s-.") 'window-toggle-side-windows) ; for new keyboard
 #+END_SRC
 
 ** Enlarge Side Window
