@@ -896,9 +896,7 @@ buffers according to the rules I gave for different buffers.
         ("\\*Buffer List\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.15))
         ("\\*Flycheck errors\\*" (display-buffer-in-side-window) (side . bottom) (slot . -1))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 1))
-        (".*" (display-buffer-use-some-window) ;; (display-buffer-use-some-frame) 
-                                               ;;   (frame-predicate . matiash-use-some-frame-predicate)
-         )))
+        (".*" (display-buffer-same-window))))
 #+END_SRC
 
 ** Toggle Side Windows
