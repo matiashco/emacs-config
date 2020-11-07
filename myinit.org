@@ -929,7 +929,6 @@ the frame.
 (global-set-key (kbd "s-=") 'matiash-enlarge-side-window)
 (global-set-key (kbd "s--") 'matiash-reduce-side-window)
 #+END_SRC
-
 * Dired
 Powerful package to navigate between files and perform operations on
 files.
@@ -1386,6 +1385,7 @@ to measure the amount of time I work every day.  For this I'll use the
 #+BEGIN_SRC emacs-lisp
 (setq timeclock-relative nil)
 #+END_SRC
+
 ** LSP for Java
    I'm experimenting with LSP for Java. So far I have the minimum
    needed to set it up. Commenting for now so it's not automatically
@@ -1404,3 +1404,4 @@ to measure the amount of time I work every day.  For this I'll use the
 ;;   :config
 ;;   (ido-ubiquitous-mode))
    #+END_SRC
+
