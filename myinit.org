@@ -154,7 +154,9 @@ between them. Adding a keybinding to make that easier.
 (defun matiash-switch-to-other-buffer ()
   "Switches to the last buffer used."
   (interactive)
-  (switch-to-buffer (other-buffer)))
+  (if (window-at-side-p)
+      (error "Can not switch buffers in a side window")
+    (switch-to-buffer (other-buffer))))
 (global-set-key (kbd "C-<tab>") 'matiash-switch-to-other-buffer)
 #+END_SRC
 
