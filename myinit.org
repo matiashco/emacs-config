@@ -1404,3 +1404,12 @@ to measure the amount of time I work every day.  For this I'll use the
 ;;   (ido-ubiquitous-mode))
    #+END_SRC
 
+** Easier Handling of Mark Pop
+I find it difficult to pop the mark if I want to do it many
+times. This variable allows me to only hit the universal argument once
+and continue popping with C-SPC.
+   
+   #+BEGIN_SRC emacs-lisp
+(setq set-mark-command-repeat-pop t)
+   #+END_SRC
+
