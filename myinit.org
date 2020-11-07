@@ -903,7 +903,7 @@ consider selecting by special buffer name."
       '(("\\*Org Src.*\\*" . (display-buffer-same-window))
         (matiash-is-shell-mode-buffer
          (display-buffer-in-side-window)
-         (side . bottom)  (window-height . 0.20) (slot . 0))
+         (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
         ("\\*info\\*"  (display-buffer-pop-up-frame))
         ("\\*Man.*\\*" (display-buffer-pop-up-frame))
         ("\\*monky:.*\\*" (display-buffer-same-window))
