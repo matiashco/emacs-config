@@ -881,12 +881,29 @@ buffers according to the rules I gave for different buffers.
             (setq valid-frame nil))))
     valid-frame))
 #+END_SRC
+ 
+** Condition For Shell Mode Buffers
+#+BEGIN_SRC emacs-lisp
+(defun matiash-is-shell-mode-buffer (buffer-name action)
+  "Condition function, which returns t if the buffer is using a
+shell mode.  This includes eshell mode as well.  Note that this
+condition doesn't work when the buffer hasn't been created yet -
+consider selecting by special buffer name."
+  (let ((current-mode (with-current-buffer buffer-name major-mode)))
+    (if (or
+         (string= current-mode "eshell-mode")
+         (string= current-mode "shell-mode"))
+        t
+      nil)))
+#+END_SRC
 
 ** Display Buffer Alist
 #+BEGIN_SRC emacs-lisp
 (setq display-buffer-alist
       '(("\\*Org Src.*\\*" . (display-buffer-same-window))
-        ("\\*e?shell\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.20) (slot . 0))
+        (matiash-is-shell-mode-buffer
+         (display-buffer-in-side-window)
+         (side . bottom)  (window-height . 0.20) (slot . 0))
         ("\\*info\\*"  (display-buffer-pop-up-frame))
         ("\\*Man.*\\*" (display-buffer-pop-up-frame))
         ("\\*monky:.*\\*" (display-buffer-same-window))
