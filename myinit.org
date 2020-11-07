@@ -652,6 +652,7 @@ have. It basically shows you the point easily.
 #+BEGIN_SRC emacs-lisp
 (use-package beacon
   :ensure t
+  :bind (("<f1>" . 'beacon-blink))
   :config
   (beacon-mode))
 #+END_SRC
