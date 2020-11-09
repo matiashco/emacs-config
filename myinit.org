@@ -154,7 +154,9 @@ between them. Adding a keybinding to make that easier.
 (defun matiash-switch-to-other-buffer ()
   "Switches to the last buffer used."
   (interactive)
-  (switch-to-buffer (other-buffer)))
+  (if (window-at-side-p)
+      (error "Can not switch buffers in a side window")
+    (switch-to-buffer (other-buffer))))
 (global-set-key (kbd "C-<tab>") 'matiash-switch-to-other-buffer)
 #+END_SRC
 
@@ -645,6 +647,7 @@ have. It basically shows you the point easily.
 #+BEGIN_SRC emacs-lisp
 (use-package beacon
   :ensure t
+  :bind (("<f1>" . 'beacon-blink))
   :config
   (beacon-mode))
 #+END_SRC
@@ -876,12 +879,29 @@ buffers according to the rules I gave for different buffers.
             (setq valid-frame nil))))
     valid-frame))
 #+END_SRC
+ 
+** Condition For Shell Mode Buffers
+#+BEGIN_SRC emacs-lisp
+(defun matiash-is-shell-mode-buffer (buffer-name action)
+  "Condition function, which returns t if the buffer is using a
+shell mode.  This includes eshell mode as well.  Note that this
+condition doesn't work when the buffer hasn't been created yet -
+consider selecting by special buffer name."
+  (let ((current-mode (with-current-buffer buffer-name major-mode)))
+    (if (or
+         (string= current-mode "eshell-mode")
+         (string= current-mode "shell-mode"))
+        t
+      nil)))
+#+END_SRC
 
 ** Display Buffer Alist
 #+BEGIN_SRC emacs-lisp
 (setq display-buffer-alist
       '(("\\*Org Src.*\\*" . (display-buffer-same-window))
-        ("\\*e?shell\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.20) (slot . 0))
+        (matiash-is-shell-mode-buffer
+         (display-buffer-in-side-window)
+         (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
         ("\\*info\\*"  (display-buffer-pop-up-frame))
         ("\\*Man.*\\*" (display-buffer-pop-up-frame))
         ("\\*monky:.*\\*" (display-buffer-same-window))
@@ -891,15 +911,14 @@ buffers according to the rules I gave for different buffers.
         ("\\*Buffer List\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.15))
         ("\\*Flycheck errors\\*" (display-buffer-in-side-window) (side . bottom) (slot . -1))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 1))
-        (".*" (display-buffer-use-some-window) ;; (display-buffer-use-some-frame) 
-                                               ;;   (frame-predicate . matiash-use-some-frame-predicate)
-         )))
+        (".*" (display-buffer-same-window))))
 #+END_SRC
 
 ** Toggle Side Windows
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "s-<menu>") 'window-toggle-side-windows)
 (global-set-key (kbd "s-<f13>") 'window-toggle-side-windows) ; for Mac
+(global-set-key (kbd "s-.") 'window-toggle-side-windows) ; for new keyboard
 #+END_SRC
 
 ** Enlarge Side Window
@@ -924,7 +943,6 @@ the frame.
 (global-set-key (kbd "s-=") 'matiash-enlarge-side-window)
 (global-set-key (kbd "s--") 'matiash-reduce-side-window)
 #+END_SRC
-
 * Dired
 Powerful package to navigate between files and perform operations on
 files.
@@ -1381,6 +1399,7 @@ to measure the amount of time I work every day.  For this I'll use the
 #+BEGIN_SRC emacs-lisp
 (setq timeclock-relative nil)
 #+END_SRC
+
 ** LSP for Java
    I'm experimenting with LSP for Java. So far I have the minimum
    needed to set it up. Commenting for now so it's not automatically
@@ -1399,3 +1418,13 @@ to measure the amount of time I work every day.  For this I'll use the
 ;;   :config
 ;;   (ido-ubiquitous-mode))
    #+END_SRC
+
+** Easier Handling of Mark Pop
+I find it difficult to pop the mark if I want to do it many
+times. This variable allows me to only hit the universal argument once
+and continue popping with C-SPC.
+   
+   #+BEGIN_SRC emacs-lisp
+(setq set-mark-command-repeat-pop t)
+   #+END_SRC
+
