@@ -388,7 +388,9 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 						   "CANCELLED"
 						   "NOTE")))))))
 	("b" "Buffer summary"
-	 ((todo "" ((org-agenda-files `(,inbox-path))))))))
+	 ((todo "" ((org-agenda-files `(,inbox-path))))))
+        ("w" "Buffer summary"
+	 ((todo "" ((org-agenda-files `(,work-inbox-path))))))))
 #+END_SRC
 
 *** Org Journal Default Visibility
@@ -421,7 +423,13 @@ variable instead.
 get stored."
   (interactive)
   (org-agenda nil "b"))
-(global-set-key (kbd "s-i") 'matiash-jump-to-inbox)
+(global-set-key (kbd "s-p") 'matiash-jump-to-inbox)
+(defun matiash-jump-to-work-inbox ()
+  "Jump to the agenda view for work inbox, where Org captured
+events get stored."
+  (interactive)
+  (org-agenda nil "w"))
+(global-set-key (kbd "s-i") 'matiash-jump-to-work-inbox)
 #+END_SRC
 
 **** Jump to Org Agenda + TODO
