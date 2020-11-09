@@ -238,7 +238,8 @@ implementing a workflow, so this will be edited soon enough.
       '(("p" "Personal Journal" entry (file+datetree personal-journal-path)
 	 "* [%<%I:%M%p>] %?\n\n")
         ("e" "Entry" entry (file+headline inbox-path "Inbox")
-         "* TODO %?\n:LOGBOOK:\n- %(matiash-get-entry-format)%U\n:END:\n")))
+         "* TODO %?\n:LOGBOOK:\n- %(matiash-get-entry-format)%U\n:END:\n")
+        ("w" "Work Note" entry (file+headline work-inbox-path "Inbox") "* TODO %?")))
 #+END_SRC
 
 *** Org Journal Workflow
