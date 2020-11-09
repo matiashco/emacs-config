@@ -184,20 +184,6 @@ Used to organize myself, especially for project management.
 (setq org-src-window-setup 'current-window)
 #+END_SRC
 
-*** My Org Mode Variables
-This section holds the variables for paths to different org mode files
-I reference in this init file. Change these to fit your needs!
-#+BEGIN_SRC emacs-lisp
-(defvar personal-journal-path
-  "/home/dropbox/Dropbox/org/personal/journal.org"
-  "Path to my personal journal Org file. Referenced when
-  customizing Org capture templates.")
-(defvar inbox-path "/home/dropbox/Dropbox/org/inbox.org"
-  "Path to my inbox Org file, where newly captured items are
-  stored. Referenced when customizing Org capture templates and
-  viewing Org Agenda files.")
-#+END_SRC
-
 *** Key shorcuts
  #+BEGIN_SRC emacs-lisp
 (global-set-key "\C-cl" 'org-store-link)
