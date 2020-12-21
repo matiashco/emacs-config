@@ -154,9 +154,7 @@ between them. Adding a keybinding to make that easier.
 (defun matiash-switch-to-other-buffer ()
   "Switches to the last buffer used."
   (interactive)
-  (if (window-at-side-p)
-      (error "Can not switch buffers in a side window")
-    (switch-to-buffer (other-buffer))))
+  (switch-to-buffer (other-buffer)))
 (global-set-key (kbd "C-<tab>") 'matiash-switch-to-other-buffer)
 #+END_SRC
 
@@ -184,20 +182,6 @@ Used to organize myself, especially for project management.
 	(refile . "Refiled on %t")
 	(clock-out . "")))
 (setq org-src-window-setup 'current-window)
-#+END_SRC
-
-*** My Org Mode Variables
-This section holds the variables for paths to different org mode files
-I reference in this init file. Change these to fit your needs!
-#+BEGIN_SRC emacs-lisp
-(defvar personal-journal-path
-  "/home/dropbox/Dropbox/org/personal/journal.org"
-  "Path to my personal journal Org file. Referenced when
-  customizing Org capture templates.")
-(defvar inbox-path "/home/dropbox/Dropbox/org/inbox.org"
-  "Path to my inbox Org file, where newly captured items are
-  stored. Referenced when customizing Org capture templates and
-  viewing Org Agenda files.")
 #+END_SRC
 
 *** Key shorcuts
@@ -254,7 +238,8 @@ implementing a workflow, so this will be edited soon enough.
       '(("p" "Personal Journal" entry (file+datetree personal-journal-path)
 	 "* [%<%I:%M%p>] %?\n\n")
         ("e" "Entry" entry (file+headline inbox-path "Inbox")
-         "* TODO %?\n:LOGBOOK:\n- %(matiash-get-entry-format)%U\n:END:\n")))
+         "* TODO %?\n:LOGBOOK:\n- %(matiash-get-entry-format)%U\n:END:\n")
+        ("w" "Work Note" entry (file+headline work-inbox-path "Inbox") "* TODO %?")))
 #+END_SRC
 
 *** Org Journal Workflow
@@ -403,7 +388,9 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 						   "CANCELLED"
 						   "NOTE")))))))
 	("b" "Buffer summary"
-	 ((todo "" ((org-agenda-files `(,inbox-path))))))))
+	 ((todo "" ((org-agenda-files `(,inbox-path))))))
+        ("w" "Buffer summary"
+	 ((todo "" ((org-agenda-files `(,work-inbox-path))))))))
 #+END_SRC
 
 *** Org Journal Default Visibility
@@ -436,7 +423,13 @@ variable instead.
 get stored."
   (interactive)
   (org-agenda nil "b"))
-(global-set-key (kbd "s-i") 'matiash-jump-to-inbox)
+(global-set-key (kbd "s-p") 'matiash-jump-to-inbox)
+(defun matiash-jump-to-work-inbox ()
+  "Jump to the agenda view for work inbox, where Org captured
+events get stored."
+  (interactive)
+  (org-agenda nil "w"))
+(global-set-key (kbd "s-i") 'matiash-jump-to-work-inbox)
 #+END_SRC
 
 **** Jump to Org Agenda + TODO
@@ -1433,7 +1426,7 @@ to measure the amount of time I work every day.  For this I'll use the
 ;;(use-package yasnippet)                 ;also think you need
 ;;(use-package lsp-ui)                    ;don't need, but useful
 ;;(use-package projectile)                ;don't think you need, but also seems useful
-;;(global-set-key (kbd "C-c .") 'lsp-execute-code-action) ; needed to make things run smoothly
+;;(global-set-key (kbd "C-c `") 'lsp-execute-code-action) ; needed to make things run smoothly
 ;; also use flycheck with flycheck-list-errors
 ;; Also try this out to get completion within lsp
 ;; (use-package ido-completing-read+
