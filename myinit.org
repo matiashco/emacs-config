@@ -923,6 +923,8 @@ consider selecting by special buffer name."
         ("\\*diff\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.5))
         ("\\*Buffer List\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.15))
         ("\\*Flycheck errors\\*" (display-buffer-in-side-window) (side . bottom) (slot . -1))
+        ("\\*notmuch-.*\\*" (display-buffer-same-window))
+        ("\\*Org Agenda\\*" (display-buffer-same-window))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 1))
         (".*" (display-buffer-same-window))))
 #+END_SRC
