@@ -529,6 +529,14 @@ It helps to keep the text free from spelling mistakes.
 (set-face-attribute 'org-block nil :background "pale goldenrod")
 (set-face-attribute 'org-block-begin-line nil :background "gray85")
 #+END_SRC
+*** Add Org Indent Shortcuts Back In
+Looks like when I updated to that latest version of org mode,
+expanding an org source block with =<s= didn't work. After looking at
+[[https://github.com/syl20bnr/spacemacs/issues/11798][this bug report]], looks like the following fixes the issue:
+#+begin_src emacs-lisp
+(when (version<= "9.2" (org-version))
+    (require 'org-tempo))
+#+end_src
 
 ** Flycheck Mode
 I have this turned off right now - I should check it out more
