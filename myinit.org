@@ -423,7 +423,7 @@ variable instead.
 get stored."
   (interactive)
   (org-agenda nil "b"))
-(global-set-key (kbd "s-p") 'matiash-jump-to-inbox)
+(global-set-key (kbd "s-,") 'matiash-jump-to-inbox)
 (defun matiash-jump-to-work-inbox ()
   "Jump to the agenda view for work inbox, where Org captured
 events get stored."
