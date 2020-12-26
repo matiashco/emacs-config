@@ -1183,6 +1183,8 @@ sifting through it much faster.
   (setq notmuch-message-queued-tag-changes
         `((,(concat "from:" matiash-gmail-address) "+sent")))
   (setq notmuch-message-replied-tags '("+replied" "+sent"))
+  (setq notmuch-saved-searches '((:name "inbox" :query "tag:inbox" :key "i")
+                                 (:name "all mail" :query "*" :key "a")))
   (define-key notmuch-search-mode-map (kbd "i") 'matiash-notmuch-remove-inbox-tag))
 #+END_SRC
 
