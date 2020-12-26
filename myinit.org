@@ -1384,3 +1384,7 @@ and continue popping with C-SPC.
 (setq set-mark-command-repeat-pop t)
    #+END_SRC
 
+** Load Gnuplot Files
+   #+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/gnuplot")
+   #+end_src
