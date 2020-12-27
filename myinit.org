@@ -1426,3 +1426,10 @@ and continue popping with C-SPC.
 (setq set-mark-command-repeat-pop t)
    #+END_SRC
 
+** Fast Find File at Point
+   I'm starting to use this one a lot, so it's worth assigning a key
+   to it.
+   #+BEGIN_SRC emacs-lisp
+   (global-set-key (kbd "<C-M-return>") 'ffap)
+   #+END_SRC
+   
