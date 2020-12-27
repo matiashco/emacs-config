@@ -163,13 +163,13 @@ between them. Adding a keybinding to make that easier.
 Used to organize myself, especially for project management.
 *** Org Mode Customizations
 #+BEGIN_SRC emacs-lisp
-(setq org-agenda-files '())
 (setq org-agenda-sorting-strategy
-      '((agenda habit-down time-up priority-down category-keep)
-	(todo priority-down todo-state-down)
+      '((agenda priority-down todo-state-down deadline-up)
+	(todo priority-down todo-state-down deadline-up)
 	(tags priority-down category-keep)
 	(search category-keep)))
 (setq org-clock-mode-line-total 'today)
+(setq org-log-done 'time)
 (setq org-log-into-drawer t)
 (setq org-log-note-headings
       '((done . "CLOSING NOTE %t")
@@ -182,6 +182,8 @@ Used to organize myself, especially for project management.
 	(refile . "Refiled on %t")
 	(clock-out . "")))
 (setq org-src-window-setup 'current-window)
+(setq org-archive-location "%s_archive::datetree/")
+(setq org-deadline-warning-days 0)
 #+END_SRC
 
 *** Key shorcuts
@@ -233,13 +235,11 @@ Used to capture ideas and things to do. Right now I'm in the middle of
 implementing a workflow, so this will be edited soon enough.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-get-entry-format () ""
-       (format "%-13s" "\"TODO\""))
+       (format "%-13s" "\"MAYBE\""))
 (setq org-capture-templates
-      '(("p" "Personal Journal" entry (file+datetree personal-journal-path)
-	 "* [%<%I:%M%p>] %?\n\n")
-        ("e" "Entry" entry (file+headline inbox-path "Inbox")
-         "* TODO %?\n:LOGBOOK:\n- %(matiash-get-entry-format)%U\n:END:\n")
-        ("w" "Work Note" entry (file+headline work-inbox-path "Inbox") "* TODO %?")))
+      '(("e" "Entry" entry (file inbox-path)
+         "* MAYBE %?\n:LOGBOOK:\n- %(matiash-get-entry-format)%U\n:END:\n")
+        ("w" "Work Note" entry (file+headline work-inbox-path "Inbox") "* MAYBE %?")))
 #+END_SRC
 
 *** Org Journal Workflow
@@ -284,35 +284,6 @@ right of timestamp."
       (org-insert-heading 4 t)              ;t to move after prev heading
       (insert (format-time-string "[%I:%M%p] " (current-time)))
       (message "Done"))))
-
-(defun matiash-add-todo-entry ()
-  "Assumes point is in an org buffer. Adds a todo entry with a
-logbook drawer including the time the todo entry was
-created. Adds the heading under the current day in the
-datetree,creating a heading for the current day if
-necessary. Point is set to right after TODO entry."
-  (interactive)
-  (save-restriction
-    (widen)                             ;in case current buffer is narrowed
-    (if (not (matiash-is-journal-file))
-        (error "File does not contain #+JOURNAL_FILE set to t")
-      (funcall #'org-datetree-find-date-create
-	       (calendar-gregorian-from-absolute (org-today)))
-      (org-narrow-to-subtree)
-      (end-of-buffer)
-      (org-return)                          ;addresses one line heading
-      (delete-blank-lines)                  ;that gets cut otherwise
-      (org-insert-heading 4 t)              ;t to move after prev heading
-      (insert (format "TODO \n    :LOGBOOK:\n   - %s%s\n   :END:\n"
-		      (matiash-get-entry-format)
-		      (format-time-string
-		       (org-time-stamp-format (current-time) t)
-		       (current-time))))
-      (end-of-buffer)
-      (org-previous-visible-heading 1)
-      (org-cycle)
-      (org-end-of-line)
-      (message "Done"))))
 #+END_SRC
 
 *** Org Clocking
@@ -326,14 +297,16 @@ Useful to see how much time I'm spending on a project
 Works with workflow system I'm implementing.
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords
-      '((sequence "TODO(t!)" "WAITING(a@)" "NEXT(n!)" "WORKING(w!)" "|" "DONE(d!)" "CANCELLED(c@)")
+      '((sequence "MAYBE(m!)" "PROJECT(p!)" "FUTURE(f!)" "TALKTO(t!)"  "WAITING(w@)" "NEXT(n!)" "|" "DONE(d!)" "CANCELLED(c@)")
 	(sequence "NOTE(o)")))
 (setq org-todo-keyword-faces
       '(("ENTRY" . "brown")
-        ("TODO" . org-warning)
+        ("MAYBE" . org-warning)
         ("NOTE" . "purple")
+        ("PROJECT" . "purple")
+        ("TALKTO" . "green")
+        ("FUTURE" . "brown")
         ("NEXT" . "blue")
-        ("WORKING" . "black")
         ("WAITING" . "orange")
         ("CANCELLED" . org-warning)))
 #+END_SRC
@@ -375,15 +348,10 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands
       '(("d" "Day Agenda with Current-day and Unscheduled TODOs"
-	 ((agenda #1="" ((org-agenda-span 1)
-			 (org-agenda-skip-function
-			  '(org-agenda-skip-entry-if 'todo
-						     '("DONE"
-						       "CANCELLED"
-						       "NOTE")))))
-	  (todo #1# ((org-agenda-overriding-header "\nUnscheduled TODO")
+	 ((agenda #1="" ((org-agenda-span 1)))
+	  (todo #1# ((org-agenda-overriding-header "\nUndeadlined TODO")
                      (org-agenda-skip-function
-		      '(org-agenda-skip-entry-if 'scheduled 'todo
+		      '(org-agenda-skip-entry-if 'deadline 'todo
 						 '("DONE"
 						   "CANCELLED"
 						   "NOTE")))))))
@@ -406,9 +374,6 @@ the datetree by default.
 
 *** Org Workflow Variables
 #+BEGIN_SRC emacs-lisp
-(setq org-refile-targets '((+org/opened-buffer-files :level . 0)))
-(setq org-refile-use-outline-path 'file)
-(add-hook 'org-after-refile-insert-hook 'matiash-move-subtree-to-current-day)
 (add-hook 'org-mode-hook 'load-journal-visibility)
 (setq org-agenda-window-setup 'current-window)
 #+END_SRC
@@ -423,7 +388,7 @@ variable instead.
 get stored."
   (interactive)
   (org-agenda nil "b"))
-(global-set-key (kbd "s-p") 'matiash-jump-to-inbox)
+(global-set-key (kbd "s-,") 'matiash-jump-to-inbox)
 (defun matiash-jump-to-work-inbox ()
   "Jump to the agenda view for work inbox, where Org captured
 events get stored."
@@ -465,32 +430,6 @@ events get stored."
             (define-key org-mode-map (kbd "<C-tab>") 'matiash-switch-to-other-buffer)))
 #+END_SRC
 
-*** Refile when state changed to WORKING
-I want to refile the todo item when I change its state to WORKING.
-
-This is just for refiling a todo when I'm in a workflow journal and am
-changing to the WORKING state. Note that the =org-add-log-setup= is
-taken from the =org-todo= source code and assumes that I want to
-record the time of state change when switching to the WORKING state.
-
-=org-agenda-redo-all= is called to refresh the agenda to see that the
-todo was changed to WORKING in the agenda view, since I usually change
-the todo status in the agenda view.
-
-#+BEGIN_SRC emacs-lisp
-(defun matiash-refile-working-state ()
-  "Customization to refile a task when it gets set to the WORKING
-state. This allows for easier viewing of the items that were most
-recently worked on. Item gets refiled to the end of the subtree
-for the current day in the journal file."
-  (if (and (matiash-is-journal-file)
-	   (equal "WORKING" org-state))
-      (progn (matiash-move-subtree-to-current-day)
-	     (org-add-log-setup 'state org-state nil 'time)
-	     (org-agenda-redo-all t))))
-(add-hook 'org-after-todo-state-change-hook 'matiash-refile-working-state)
-#+END_SRC
-
 *** Remove Org Force Cycle Keybinding
 This is done to allow for a shortcut that will switch buffers quickly.
 #+BEGIN_SRC emacs-lisp
@@ -522,6 +461,14 @@ It helps to keep the text free from spelling mistakes.
 (set-face-attribute 'org-block nil :background "pale goldenrod")
 (set-face-attribute 'org-block-begin-line nil :background "gray85")
 #+END_SRC
+*** Add Org Indent Shortcuts Back In
+Looks like when I updated to that latest version of org mode,
+expanding an org source block with =<s= didn't work. After looking at
+[[https://github.com/syl20bnr/spacemacs/issues/11798][this bug report]], looks like the following fixes the issue:
+#+begin_src emacs-lisp
+(when (version<= "9.2" (org-version))
+    (require 'org-tempo))
+#+end_src
 
 ** Flycheck Mode
 I have this turned off right now - I should check it out more
@@ -908,6 +855,8 @@ consider selecting by special buffer name."
         ("\\*diff\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.5))
         ("\\*Buffer List\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.15))
         ("\\*Flycheck errors\\*" (display-buffer-in-side-window) (side . bottom) (slot . -1))
+        ("\\*notmuch-.*\\*" (display-buffer-same-window))
+        ("\\*Org Agenda\\*" (display-buffer-same-window))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 1))
         (".*" (display-buffer-same-window))))
 #+END_SRC
@@ -1234,9 +1183,18 @@ sifting through it much faster.
   (setq notmuch-message-queued-tag-changes
         `((,(concat "from:" matiash-gmail-address) "+sent")))
   (setq notmuch-message-replied-tags '("+replied" "+sent"))
+  (setq notmuch-saved-searches '((:name "inbox" :query "tag:inbox" :key "i")
+                                 (:name "all mail" :query "*" :key "a")))
   (define-key notmuch-search-mode-map (kbd "i") 'matiash-notmuch-remove-inbox-tag))
 #+END_SRC
 
+This piece of code will allow for using org mode linking with notmuch
+emails.
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/org/") ; location of ol-notmuch.el
+(require 'ol-notmuch)
+#+END_SRC
 * Misc
 ** Fill Column
 Now set to 80 since that's what most people allow on lines
@@ -1433,3 +1391,7 @@ and continue popping with C-SPC.
    (global-set-key (kbd "<C-M-return>") 'ffap)
    #+END_SRC
    
+** Load Gnuplot Files
+   #+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/gnuplot")
+   #+end_src
