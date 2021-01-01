@@ -1033,7 +1033,10 @@ Used to view PDF's
 (use-package pdf-tools
   :ensure t
   :config
-  (if (not (string= system-type "darwin"))
+  (if (not (string= system-type "darwin")) ; Looks like pdf-tools can work with
+                                           ; OS X - first run "brew install
+                                           ; poppler automake", then run
+                                           ; pdf-tools-install
       (pdf-tools-install)))
 
 (use-package org-pdfview
