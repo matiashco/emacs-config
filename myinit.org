@@ -359,6 +359,7 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 	 ((todo "" ((org-agenda-files `(,inbox-path))))))
         ("w" "Buffer summary"
 	 ((todo "" ((org-agenda-files `(,work-inbox-path))))))))
+(setq org-agenda-start-with-follow-mode t)
 #+END_SRC
 
 *** Org Journal Default Visibility
