@@ -326,37 +326,6 @@ Works with workflow system I'm implementing.
         ("CANCELLED" . org-warning)))
 #+END_SRC
 
-*** Org TODO Refiling
-Working with implemented workflow to refile a TODO from inbox to an
-open org buffer and move it to the current day in the datetree.
-#+BEGIN_SRC emacs-lisp
-(defun +org/opened-buffer-files ()
-  "Return the list of files currently opened in emacs"
-  (interactive)
-  (delq nil
-        (mapcar (lambda (x)
-                  (if (and (buffer-file-name x)
-                           (string-match "\\.org$"
-                                         (buffer-file-name x)))
-                      (buffer-file-name x)))
-                (buffer-list))))
-
-(defun matiash-move-subtree-to-current-day ()
-  ""
-  (org-cycle)
-  (org-copy-subtree 1 t)
-  (funcall #'org-datetree-find-date-create
-	   ;; Current date, possibly corrected for late night
-	   ;; workers.
-	   (calendar-gregorian-from-absolute (org-today)))
-  (org-narrow-to-subtree)
-  (end-of-buffer)
-  (org-return)                          ;addresses one line heading
-  (delete-blank-lines)                  ;that gets cut otherwise
-  (org-paste-subtree 4)
-  (widen))
-#+END_SRC
-
 *** Org Agenda View Customizations
 I ended up creating an agenda view that shows the current day todos
 plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.emacs.d/blob/master/michael.org][this guy's emacs config]].
