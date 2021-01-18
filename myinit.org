@@ -364,9 +364,9 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 (setq org-agenda-custom-commands
       '(("d" "Day Agenda with Current-day and Unscheduled TODOs"
 	 ((agenda #1="" ((org-agenda-span 1)))
-	  (todo #1# ((org-agenda-overriding-header "\nUndeadlined TODO")
+	  (todo #1# ((org-agenda-overriding-header "\nUnscheduled/Undeadlined TODO")
                      (org-agenda-skip-function
-		      '(org-agenda-skip-entry-if 'deadline 'todo
+		      '(org-agenda-skip-entry-if 'deadline 'scheduled 'todo
 						 '("DONE"
 						   "CANCELLED"
 						   "NOTE")))))))
