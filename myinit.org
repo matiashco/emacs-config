@@ -197,6 +197,8 @@ Used to organize myself, especially for project management.
 (setq org-src-window-setup 'current-window)
 (setq org-archive-location "%s_archive::datetree/")
 (setq org-deadline-warning-days 0)
+(setq org-todo-repeat-to-state "NEXT")
+(setq org-startup-with-inline-images t)
 #+END_SRC
 
 *** Key shorcuts
