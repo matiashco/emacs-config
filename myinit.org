@@ -1,3 +1,4 @@
+#+STARTUP: fold
 * Current Status
 This stores all my customizations for emacs that would be in the
 .emacs file.
@@ -25,13 +26,22 @@ Everything seems to be working right now!
 
 ** Theme Changes
  #+BEGIN_SRC emacs-lisp
+(setq custom-safe-themes t)
 (defun matiash-toggle-dark-mode ()
   "Toggles ATOM-ONE-DARK custom theme. Assumes theme is
 installed"
   (interactive)
   (if (custom-theme-enabled-p 'atom-one-dark)
-      (disable-theme 'atom-one-dark)
-    (enable-theme 'atom-one-dark)))
+      (progn
+        (disable-theme 'atom-one-dark)
+        (load-theme 'adwaita)
+        (set-face-attribute 'org-block nil :background "pale goldenrod")
+        (set-face-attribute 'org-block-begin-line nil :background "gray85"))
+    (progn
+      (disable-theme 'adwaita)
+      (load-theme 'atom-one-dark)
+      (set-face-attribute 'org-block nil :background "gray18")
+      (set-face-attribute 'org-block-begin-line nil :background "gray24"))))
 (global-set-key (kbd "<f10>") 'matiash-toggle-dark-mode)
 
 ;; Runs this hack when running macOS to start up with no selected theme.
@@ -39,7 +49,10 @@ installed"
     (progn
       (enable-theme 'atom-one-dark)
       (disable-theme 'atom-one-dark)))
- #+END_SRC
+
+(set-face-attribute 'org-block nil :background "pale goldenrod")
+(set-face-attribute 'org-block-begin-line nil :background "gray85")
+#+END_SRC
  
 ** Adwaita
 Enable the Adwaita Theme. I recently started using it and really enjoy
@@ -184,6 +197,8 @@ Used to organize myself, especially for project management.
 (setq org-src-window-setup 'current-window)
 (setq org-archive-location "%s_archive::datetree/")
 (setq org-deadline-warning-days 0)
+(setq org-todo-repeat-to-state "NEXT")
+(setq org-startup-with-inline-images t)
 #+END_SRC
 
 *** Key shorcuts
@@ -311,37 +326,6 @@ Works with workflow system I'm implementing.
         ("CANCELLED" . org-warning)))
 #+END_SRC
 
-*** Org TODO Refiling
-Working with implemented workflow to refile a TODO from inbox to an
-open org buffer and move it to the current day in the datetree.
-#+BEGIN_SRC emacs-lisp
-(defun +org/opened-buffer-files ()
-  "Return the list of files currently opened in emacs"
-  (interactive)
-  (delq nil
-        (mapcar (lambda (x)
-                  (if (and (buffer-file-name x)
-                           (string-match "\\.org$"
-                                         (buffer-file-name x)))
-                      (buffer-file-name x)))
-                (buffer-list))))
-
-(defun matiash-move-subtree-to-current-day ()
-  ""
-  (org-cycle)
-  (org-copy-subtree 1 t)
-  (funcall #'org-datetree-find-date-create
-	   ;; Current date, possibly corrected for late night
-	   ;; workers.
-	   (calendar-gregorian-from-absolute (org-today)))
-  (org-narrow-to-subtree)
-  (end-of-buffer)
-  (org-return)                          ;addresses one line heading
-  (delete-blank-lines)                  ;that gets cut otherwise
-  (org-paste-subtree 4)
-  (widen))
-#+END_SRC
-
 *** Org Agenda View Customizations
 I ended up creating an agenda view that shows the current day todos
 plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.emacs.d/blob/master/michael.org][this guy's emacs config]].
@@ -349,9 +333,9 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 (setq org-agenda-custom-commands
       '(("d" "Day Agenda with Current-day and Unscheduled TODOs"
 	 ((agenda #1="" ((org-agenda-span 1)))
-	  (todo #1# ((org-agenda-overriding-header "\nUndeadlined TODO")
+	  (todo #1# ((org-agenda-overriding-header "\nUnscheduled/Undeadlined TODO")
                      (org-agenda-skip-function
-		      '(org-agenda-skip-entry-if 'deadline 'todo
+		      '(org-agenda-skip-entry-if 'deadline 'scheduled 'todo
 						 '("DONE"
 						   "CANCELLED"
 						   "NOTE")))))))
@@ -456,12 +440,6 @@ It helps to keep the text free from spelling mistakes.
 (add-hook 'org-mode-hook 'flyspell-mode)
 #+END_SRC
 
-*** Org Mode Face Customizations
-**** Source Blocks
-#+BEGIN_SRC emacs-lisp
-(set-face-attribute 'org-block nil :background "pale goldenrod")
-(set-face-attribute 'org-block-begin-line nil :background "gray85")
-#+END_SRC
 *** Add Org Indent Shortcuts Back In
 Looks like when I updated to that latest version of org mode,
 expanding an org source block with =<s= didn't work. After looking at
@@ -1192,13 +1170,6 @@ sifting through it much faster.
   (define-key notmuch-search-mode-map (kbd "i") 'matiash-notmuch-remove-inbox-tag))
 #+END_SRC
 
-This piece of code will allow for using org mode linking with notmuch
-emails.
-
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/org/") ; location of ol-notmuch.el
-(require 'ol-notmuch)
-#+END_SRC
 * Misc
 ** Fill Column
 Now set to 80 since that's what most people allow on lines
@@ -1395,7 +1366,3 @@ and continue popping with C-SPC.
    (global-set-key (kbd "<C-M-return>") 'ffap)
    #+END_SRC
    
-** Load Gnuplot Files
-   #+begin_src emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/gnuplot")
-   #+end_src
