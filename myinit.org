@@ -591,7 +591,7 @@ finding references of strings in many files.
 ** Saving Buffer
 Easily the most used key I use. Small tweak but huge payoff.
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<menu>") 'save-buffer)
+(global-set-key (kbd "<print>") 'save-buffer)
 #+END_SRC
 
 ** Global Auto Revert Mode
@@ -1013,8 +1013,8 @@ Used to view PDF's
   (if (not (string= system-type "darwin"))
       (pdf-tools-install)))
 
-(use-package org-pdfview
-  :ensure t)
+;; (use-package org-pdfview
+;;   :ensure t)
 #+END_SRC
 
 * Cycling through Errors/Results
