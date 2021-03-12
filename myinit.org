@@ -183,7 +183,7 @@ Used to organize myself, especially for project management.
 	(search category-keep)))
 (setq org-clock-mode-line-total 'today)
 (setq org-log-done 'time)
-(setq org-log-into-drawer t)
+(setq org-log-into-drawer nil)
 (setq org-log-note-headings
       '((done . "CLOSING NOTE %t")
 	(state . "%-12s %t")
@@ -253,8 +253,8 @@ implementing a workflow, so this will be edited soon enough.
        (format "%-13s" "\"MAYBE\""))
 (setq org-capture-templates
       '(("e" "Entry" entry (file inbox-path)
-         "* MAYBE %?\n:LOGBOOK:\n- %(matiash-get-entry-format)%U\n:END:\n")
-        ("w" "Work Note" entry (file+headline work-inbox-path "Inbox") "* MAYBE %?")))
+         "* NEXT %?\n- %(matiash-get-entry-format)%U\n")
+        ("w" "Work Note" entry (file work-inbox-path) "* NEXT %?")))
 #+END_SRC
 
 *** Org Journal Workflow
@@ -313,7 +313,8 @@ Works with workflow system I'm implementing.
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords
       '((sequence "MAYBE(m!)" "PROJECT(p!)" "FUTURE(f!)" "TALKTO(t!)"  "WAITING(w@)" "NEXT(n!)" "|" "DONE(d!)" "CANCELLED(c@)")
-	(sequence "NOTE(o)")))
+	(sequence "NOTE(o)")
+        (sequence "GOAL")))
 (setq org-todo-keyword-faces
       '(("ENTRY" . "brown")
         ("MAYBE" . org-warning)
@@ -343,7 +344,6 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 	 ((todo "" ((org-agenda-files `(,inbox-path))))))
         ("w" "Buffer summary"
 	 ((todo "" ((org-agenda-files `(,work-inbox-path))))))))
-(setq org-agenda-start-with-follow-mode t)
 #+END_SRC
 
 *** Org Journal Default Visibility
