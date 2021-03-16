@@ -250,7 +250,7 @@ Used to capture ideas and things to do. Right now I'm in the middle of
 implementing a workflow, so this will be edited soon enough.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-get-entry-format () ""
-       (format "%-13s" "\"MAYBE\""))
+       (format "%-13s" "\"NEXT\""))
 (setq org-capture-templates
       '(("e" "Entry" entry (file inbox-path)
          "* NEXT %?\n- %(matiash-get-entry-format)%U\n")
