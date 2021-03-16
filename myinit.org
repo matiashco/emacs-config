@@ -299,6 +299,30 @@ right of timestamp."
       (org-insert-heading 4 t)              ;t to move after prev heading
       (insert (format-time-string "[%I:%M%p] " (current-time)))
       (message "Done"))))
+
+(defun matiash-add-todo-entry ()
+  (interactive)
+  "Assumes point is in an org buffer. Adds a todo entry with a
+logbook drawer including the time the todo entry was
+created. Adds the heading under the current day in the
+datetree,creating a heading for the current day if
+necessary. Point is set to right after TODO entry."
+  (save-restriction
+    (widen)                             ;in case current buffer is narrowed
+    (if (not (string= major-mode "org-mode"))
+        (error "You are not in an org mode file!")
+      (end-of-buffer)
+      (org-insert-heading 1 t)
+      (insert (format "NEXT \n  - %s%s\n"
+		      (matiash-get-entry-format)
+		      (format-time-string
+		       (org-time-stamp-format (current-time) t)
+		       (current-time))))
+      (end-of-buffer)
+      (org-previous-visible-heading 1)
+      (org-cycle)
+      (org-end-of-line)
+      (message "Done"))))
 #+END_SRC
 
 *** Org Clocking
@@ -1170,6 +1194,13 @@ sifting through it much faster.
   (define-key notmuch-search-mode-map (kbd "i") 'matiash-notmuch-remove-inbox-tag))
 #+END_SRC
 
+* Encryption
+  #+BEGIN_SRC emacs-lisp
+(require 'epa-file)
+(if (string= system-type "darwin")
+    (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg")))
+(epa-file-enable)
+  #+END_SRC
 * Misc
 ** Fill Column
 Now set to 80 since that's what most people allow on lines
