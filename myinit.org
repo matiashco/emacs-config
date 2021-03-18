@@ -336,9 +336,8 @@ Useful to see how much time I'm spending on a project
 Works with workflow system I'm implementing.
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords
-      '((sequence "MAYBE(m!)" "PROJECT(p!)" "FUTURE(f!)" "TALKTO(t!)"  "WAITING(w@)" "NEXT(n!)" "|" "DONE(d!)" "CANCELLED(c@)")
-	(sequence "NOTE(o)")
-        (sequence "GOAL")))
+      '((sequence "GOAL(g)" "MAYBE(m!)" "PROJECT(p!)" "FUTURE(f!)" "TALKTO(t!)"  "WAITING(w@)" "NEXT(n!)" "|" "DONE(d!)" "CANCELLED(c@)")
+	(sequence "NOTE(o)")))
 (setq org-todo-keyword-faces
       '(("ENTRY" . "brown")
         ("MAYBE" . org-warning)
@@ -358,7 +357,15 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 (setq org-agenda-custom-commands
       '(("d" "Day Agenda with Current-day and Unscheduled TODOs"
 	 ((agenda #1="" ((org-agenda-span 1)))
-	  (todo #1# ((org-agenda-overriding-header "\nUnscheduled/Undeadlined TODO")
+          (todo #1# ((org-agenda-overriding-header "\nGoals")
+                     (org-agenda-skip-function
+		      '(org-agenda-skip-entry-if 'nottodo
+						 '("GOAL")))))
+          (todo #1# ((org-agenda-overriding-header "\nProjects")
+                     (org-agenda-skip-function
+		      '(org-agenda-skip-entry-if 'nottodo
+						 '("PROJECT")))))
+          (todo #1# ((org-agenda-overriding-header "\nUnscheduled/Undeadlined TODO")
                      (org-agenda-skip-function
 		      '(org-agenda-skip-entry-if 'deadline 'scheduled 'todo
 						 '("DONE"
@@ -1201,6 +1208,7 @@ sifting through it much faster.
     (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg")))
 (epa-file-enable)
   #+END_SRC
+  
 * Misc
 ** Fill Column
 Now set to 80 since that's what most people allow on lines
