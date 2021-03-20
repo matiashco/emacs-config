@@ -418,8 +418,8 @@ events get stored."
 (defun matiash-activate-agenda-todo ()
   "Jump to org agenda and todo interactive system"
   (interactive)
-  (org-agenda nil "d" 'buffer))
-(global-set-key (kbd "s-a") 'matiash-activate-agenda-todo)
+  (org-agenda nil "d"))
+(global-set-key (kbd "s-;") 'matiash-activate-agenda-todo)
 #+END_SRC
 
 **** Create a journal entry
