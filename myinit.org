@@ -1187,7 +1187,8 @@ sifting through it much faster.
 #+BEGIN_SRC emacs-lisp
 (defun matiash-notmuch-remove-inbox-tag () ""
        (interactive)
-       (notmuch-search-remove-tag '("-inbox")))
+       (notmuch-search-remove-tag '("-inbox"))
+       (notmuch-search-next-thread))
 (use-package notmuch
   :ensure t
   :config
