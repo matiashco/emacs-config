@@ -177,7 +177,7 @@ between them. Adding a keybinding to make that easier.
 *** Org Mode Customizations
 #+BEGIN_SRC emacs-lisp
 (setq org-clock-mode-line-total 'today)
-(setq org-agenda-log-mode-items '(closed state clock))
+(setq org-agenda-log-mode-items '(state clock))
 (setq org-log-done 'time)
 (setq org-log-into-drawer t)
 (setq org-src-window-setup 'current-window)
