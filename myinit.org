@@ -184,6 +184,7 @@ between them. Adding a keybinding to make that easier.
 (setq org-deadline-warning-days 0)
 (setq org-todo-repeat-to-state "NEXT")
 (setq org-startup-with-inline-images t)
+(setq org-log-redeadline 'note)
 #+END_SRC
 
 *** Key shorcuts
