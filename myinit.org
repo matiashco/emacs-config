@@ -173,29 +173,14 @@ between them. Adding a keybinding to make that easier.
 
 * Modes
 ** Org Mode
-Used to organize myself, especially for project management.
+   Used to organize myself, especially for project management.
 *** Org Mode Customizations
 #+BEGIN_SRC emacs-lisp
-(setq org-agenda-sorting-strategy
-      '((agenda priority-down todo-state-down deadline-up)
-	(todo priority-down todo-state-down deadline-up)
-	(tags priority-down category-keep)
-	(search category-keep)))
 (setq org-clock-mode-line-total 'today)
+(setq org-agenda-log-mode-items '(closed state clock))
 (setq org-log-done 'time)
-(setq org-log-into-drawer nil)
-(setq org-log-note-headings
-      '((done . "CLOSING NOTE %t")
-	(state . "%-12s %t")
-	(note . "Note taken on %t")
-	(reschedule . "Rescheduled from %S on %t")
-	(delschedule . "Not scheduled, was %S on %t")
-	(redeadline . "New deadline from %S on %t")
-	(deldeadline . "Removed deadline, was %S on %t")
-	(refile . "Refiled on %t")
-	(clock-out . "")))
+(setq org-log-into-drawer t)
 (setq org-src-window-setup 'current-window)
-(setq org-archive-location "%s_archive::datetree/")
 (setq org-deadline-warning-days 0)
 (setq org-todo-repeat-to-state "NEXT")
 (setq org-startup-with-inline-images t)
@@ -249,11 +234,8 @@ Used to organize myself, especially for project management.
 Used to capture ideas and things to do. Right now I'm in the middle of
 implementing a workflow, so this will be edited soon enough.
 #+BEGIN_SRC emacs-lisp
-(defun matiash-get-entry-format () ""
-       (format "%-13s" "\"NEXT\""))
 (setq org-capture-templates
-      '(("e" "Entry" entry (file inbox-path)
-         "* NEXT %?\n- %(matiash-get-entry-format)%U\n")
+      '(("e" "Entry" entry (file inbox-path) "* NEXT %?")
         ("w" "Work Note" entry (file work-inbox-path) "* NEXT %?")))
 #+END_SRC
 
