@@ -237,7 +237,16 @@ implementing a workflow, so this will be edited soon enough.
 #+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
       '(("e" "Entry" entry (file inbox-path) "* NEXT %?")
-        ("w" "Work Note" entry (file work-inbox-path) "* NEXT %?")))
+        ("w" "Work Entry" entry (file work-inbox-path) "* NEXT %?")
+        ("p" "Journal Entry" plain 
+         (file+datetree+prompt personal-journal-path)
+         "    %?" :empty-lines-before 1)
+        ("n" "Work Note" entry (file work-inbox-path) "* NOTE %? %^g")
+        ("j" "Work Journal Entry" plain 
+         (file+datetree+prompt work-journal-path)
+         "    %?" :empty-lines-before 1)
+        ("c" "Clocked Entry" plain (clock) "  %?" :empty-lines-before 1)
+        ("o" "Oncall Log Entry" plain (file oncall-log-path) "%U %?" :empty-lines-after 1 :prepend t)))
 #+END_SRC
 
 *** Org Journal Workflow
