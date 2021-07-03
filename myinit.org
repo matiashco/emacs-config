@@ -353,10 +353,12 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
                      (org-agenda-skip-function
 		      '(org-agenda-skip-entry-if 'nottodo
 						 '("GOAL")))))
-          (todo #1# ((org-agenda-overriding-header "\nProjects")
+          (agenda #1="" ((org-agenda-overriding-header "\nProjects")
                      (org-agenda-skip-function
 		      '(org-agenda-skip-entry-if 'nottodo
-						 '("PROJECT")))))
+						 '("PROJECT"))) 
+                     (org-deadline-warning-days 365)
+                     (org-agenda-span 1)))
           (todo #1# ((org-agenda-overriding-header "\nUnscheduled/Undeadlined TODO")
                      (org-agenda-skip-function
 		      '(org-agenda-skip-entry-if 'deadline 'scheduled 'todo
