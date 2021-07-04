@@ -1390,3 +1390,16 @@ and continue popping with C-SPC.
    (global-set-key (kbd "<C-M-return>") 'ffap)
    #+END_SRC
    
+** Open Shells in Correct Buffer
+   #+BEGIN_SRC emacs-lisp
+(defun matiash-display-and-switch-to-buffer (arg) "Display the
+buffer correctly in the frame, then switch to the buffer.  Use
+universal argument to switch to buffer in the same window"
+(interactive "P")
+(if arg
+    (ido-switch-buffer)
+  (progn
+    (select-window (ido-display-buffer)))))
+(global-set-key (kbd "s-b") 'matiash-display-and-switch-to-buffer)
+   #+END_SRC
+   
