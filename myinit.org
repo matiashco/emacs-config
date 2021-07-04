@@ -391,14 +391,8 @@ variable instead.
   "Jump to the agenda view for inbox, where Org captured events
 get stored."
   (interactive)
-  (org-agenda nil "b"))
-(global-set-key (kbd "s-,") 'matiash-jump-to-inbox)
-(defun matiash-jump-to-work-inbox ()
-  "Jump to the agenda view for work inbox, where Org captured
-events get stored."
-  (interactive)
-  (org-agenda nil "w"))
-(global-set-key (kbd "s-i") 'matiash-jump-to-work-inbox)
+  (org-agenda nil "d"))
+(global-set-key (kbd "s-i") 'matiash-jump-to-inbox)
 #+END_SRC
 
 **** Jump to Org Agenda + TODO
