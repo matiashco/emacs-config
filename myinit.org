@@ -348,7 +348,7 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands
       '(("d" "Day Agenda with Current-day and Unscheduled TODOs"
-	 ((agenda #1="" ((org-agenda-span 1) (use-time-grid nil)))
+	 ((agenda #1="" ((org-agenda-span 1) (org-agenda-use-time-grid nil)))
           (agenda #1="" ((org-agenda-overriding-header "\nProjects")
                      (org-agenda-skip-function
 		      '(org-agenda-skip-entry-if 'nottodo
