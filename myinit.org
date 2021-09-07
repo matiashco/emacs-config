@@ -850,7 +850,7 @@ consider selecting by special buffer name."
         ("\\*Buffer List\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.15))
         ("\\*Flycheck errors\\*" (display-buffer-in-side-window) (side . bottom) (slot . -1))
         ("\\*notmuch-.*\\*" (display-buffer-same-window))
-        ("\\*Org Agenda\\*" (display-buffer-in-side-window))
+        ("\\*Org Agenda\\*" (display-buffer-at-bottom) (window-height . 0.25))
         ("\\*scratch\\*" (display-buffer-same-window))
         ("shell-.*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 1))
