@@ -348,21 +348,23 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands
       '(("d" "Day Agenda with Current-day and Unscheduled TODOs"
-	 ((agenda #1="" ((org-agenda-span 1) (org-agenda-use-time-grid nil)))
-          (agenda #1="" ((org-agenda-overriding-header "\nProjects")
+	 ((agenda #1="" ((org-agenda-span 1) (org-agenda-use-time-grid nil)))))
+	("n" "Notes"
+	 ((todo "NOTE" ((org-agenda-files `(,work-notes-path))))))
+        ("p" "Projects"
+         ((agenda #1="" ((org-agenda-overriding-header "\nProjects")
                      (org-agenda-skip-function
 		      '(org-agenda-skip-entry-if 'nottodo
 						 '("PROJECT"))) 
                      (org-deadline-warning-days 365)
-                     (org-agenda-span 1)))
-          (todo #1# ((org-agenda-overriding-header "\nUnscheduled/Undeadlined TODO")
+                     (org-agenda-span 1)))))
+        ("u" "Unscheduled TODOs"
+         ((todo #1# ((org-agenda-overriding-header "\nUnscheduled/Undeadlined TODO")
                      (org-agenda-skip-function
 		      '(org-agenda-skip-entry-if 'deadline 'scheduled 'todo
 						 '("DONE"
 						   "CANCELLED"
-						   "NOTE")))))))
-	("n" "Notes"
-	 ((todo "NOTE" ((org-agenda-files `(,work-notes-path))))))))
+						   "NOTE")))))))))
 #+END_SRC
 
 *** Org Journal Default Visibility
@@ -848,7 +850,7 @@ consider selecting by special buffer name."
         ("\\*Buffer List\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.15))
         ("\\*Flycheck errors\\*" (display-buffer-in-side-window) (side . bottom) (slot . -1))
         ("\\*notmuch-.*\\*" (display-buffer-same-window))
-        ("\\*Org Agenda\\*" (display-buffer-same-window))
+        ("\\*Org Agenda\\*" (display-buffer-in-side-window))
         ("\\*scratch\\*" (display-buffer-same-window))
         ("shell-.*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 1))
