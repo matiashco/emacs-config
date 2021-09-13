@@ -348,7 +348,7 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands
       '(("d" "Day Agenda with Current-day and Unscheduled TODOs"
-	 ((agenda #1="" ((org-agenda-span 1) (use-time-grid nil)))
+	 ((agenda #1="" ((org-agenda-span 1) (org-agenda-use-time-grid nil)))
           (agenda #1="" ((org-agenda-overriding-header "\nProjects")
                      (org-agenda-skip-function
 		      '(org-agenda-skip-entry-if 'nottodo
@@ -364,7 +364,9 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 	("b" "Buffer summary"
 	 ((todo "" ((org-agenda-files `(,inbox-path))))))
         ("w" "Buffer summary"
-	 ((todo "" ((org-agenda-files `(,work-inbox-path))))))))
+	 ((todo "" ((org-agenda-files `(,work-inbox-path))))))
+        ("n" "Notes"
+         ((todo "NOTE")))))
 #+END_SRC
 
 *** Org Journal Default Visibility
@@ -620,7 +622,7 @@ Turning on auto revert buffer and removing the confirmation message
 ** Ibuffer
 *** Shortcuts
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x C-b") 'list-buffers)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 #+END_SRC
 
 *** Customization
@@ -641,7 +643,10 @@ Turning on auto revert buffer and removing the confirmation message
                      (mode . c-mode)
                      (mode . python-mode)
                      (mode . java-mode)
-                     (mode . latex-mode)))
+                     (mode . latex-mode)
+                     (mode . js-mode)
+                     (mode . hack-mode)
+                     (mode . kotlin-mode)))
 	 ("Emacs Buffers" (or (name . "\*Help\*")
                               (name . "\*Apropos\*")
                               (name . "\*info\*")
@@ -847,12 +852,13 @@ consider selecting by special buffer name."
         ("\\*vc-log\\*" (display-buffer-same-window))
         ("\\*vc-.*\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.5))
         ("\\*diff\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.5))
-        ("\\*Buffer List\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.15))
+        ("\\*Ibuffer\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.5))
         ("\\*Flycheck errors\\*" (display-buffer-in-side-window) (side . bottom) (slot . -1))
         ("\\*notmuch-.*\\*" (display-buffer-same-window))
         ("\\*Org Agenda\\*" (display-buffer-same-window))
         ("\\*scratch\\*" (display-buffer-same-window))
         ("shell-.*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
+        ("\\*ansi-term.*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 1))
         (".*" (display-buffer-same-window))))
 #+END_SRC
@@ -955,6 +961,10 @@ Sets up bash profile. I can now call 'remote-bash using
        'remote-bash)
 #+END_SRC
 
+** Integrate with Org Mode Better
+#+BEGIN_SRC emacs-lisp
+(define-key shell-mode-map (kbd "C-c C-x") nil)
+#+END_SRC
 * Eshell
 ** Eshell Variables
 #+BEGIN_SRC emacs-lisp
