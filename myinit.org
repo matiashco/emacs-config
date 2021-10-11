@@ -328,7 +328,7 @@ Useful to see how much time I'm spending on a project
 Works with workflow system I'm implementing.
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords
-      '((sequence "GOAL(g)" "MAYBE(m!)" "PROJECT(p@)" "FUTURE(f!)" "TALKTO(t!)"  "WAITING(w@)" "NEXT(n!)" "|" "DONE(d@)" "CANCELLED(c@)")
+      '((sequence "GOAL(g)" "MAYBE(m!)" "PROJECT(p!)" "FUTURE(f!)" "TALKTO(t!)"  "WAITING(w@)" "NEXT(n!)" "|" "DONE(d!)" "CANCELLED(c@)")
 	(sequence "NOTE(o)")))
 (setq org-todo-keyword-faces
       '(("ENTRY" . "brown")
