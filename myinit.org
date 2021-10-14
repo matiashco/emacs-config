@@ -464,6 +464,13 @@ expanding an org source block with =<s= didn't work. After looking at
     (require 'org-tempo))
 #+end_src
 
+*** Handle Mail URLs
+    #+BEGIN_SRC emacs-lisp
+(org-add-link-type "message"
+                   (lambda (id)
+                     (shell-command
+                      (concat "open message:" "%3c" id "%3e"))))
+    #+END_SRC
 ** Flycheck Mode
 I have this turned off right now - I should check it out more
 #+BEGIN_SRC emacs-lisp
