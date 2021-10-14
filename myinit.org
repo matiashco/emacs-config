@@ -328,7 +328,7 @@ Useful to see how much time I'm spending on a project
 Works with workflow system I'm implementing.
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords
-      '((sequence "GOAL(g)" "MAYBE(m!)" "PROJECT(p@)" "FUTURE(f!)" "TALKTO(t!)"  "WAITING(w@)" "NEXT(n!)" "|" "DONE(d@)" "CANCELLED(c@)")
+      '((sequence "GOAL(g)" "MAYBE(m!)" "PROJECT(p!)" "FUTURE(f!)" "TALKTO(t!)"  "WAITING(w@)" "NEXT(n!)" "|" "DONE(d!)" "CANCELLED(c@)")
 	(sequence "NOTE(o)")))
 (setq org-todo-keyword-faces
       '(("ENTRY" . "brown")
@@ -598,6 +598,16 @@ have. It basically shows you the point easily.
   (beacon-mode))
 #+END_SRC
 
+*** Always Save Org Mode Files
+    Usually performing actions on tasks causes the buffers to be out
+    of date.  That eats up time when I call some command that tries to
+    save all the buffers.
+    #+BEGIN_SRC emacs-lisp
+(defun matiash-always-save-this-file ()
+  "Sets a variable so that this file is always saved"
+  (setq buffer-save-without-query t))
+(add-hook 'org-mode-hook 'matiash-always-save-this-file)
+    #+END_SRC
 * Searching
 ** Ag
 Uses the silver searcher shell program to search quickly. Good for
@@ -863,7 +873,8 @@ consider selecting by special buffer name."
         ("\\*Org Agenda\\*" (display-buffer-at-bottom) (window-height . 0.25))
         ("\\*scratch\\*" (display-buffer-same-window))
         ("shell-.*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
-        ("\\*ansi-term.*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
+        ("\\*compilation\\*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
+        ("\\*ansi-term.*\\*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 1))
         (".*" (display-buffer-same-window))))
 #+END_SRC
@@ -1209,6 +1220,8 @@ sifting through it much faster.
 (if (string= system-type "darwin")
     (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg")))
 (epa-file-enable)
+(if (string= system-type "darwin")
+    (setq epa-pinentry-mode 'loopback))
   #+END_SRC
   
 * Misc
