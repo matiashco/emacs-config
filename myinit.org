@@ -466,6 +466,13 @@ expanding an org source block with =<s= didn't work. After looking at
     (require 'org-tempo))
 #+end_src
 
+*** Handle Mail URLs
+    #+BEGIN_SRC emacs-lisp
+(org-add-link-type "message"
+                   (lambda (id)
+                     (shell-command
+                      (concat "open message:" "%3c" id "%3e"))))
+    #+END_SRC
 ** Flycheck Mode
 I have this turned off right now - I should check it out more
 #+BEGIN_SRC emacs-lisp
@@ -593,6 +600,16 @@ have. It basically shows you the point easily.
   (beacon-mode))
 #+END_SRC
 
+*** Always Save Org Mode Files
+    Usually performing actions on tasks causes the buffers to be out
+    of date.  That eats up time when I call some command that tries to
+    save all the buffers.
+    #+BEGIN_SRC emacs-lisp
+(defun matiash-always-save-this-file ()
+  "Sets a variable so that this file is always saved"
+  (setq buffer-save-without-query t))
+(add-hook 'org-mode-hook 'matiash-always-save-this-file)
+    #+END_SRC
 * Searching
 ** Ag
 Uses the silver searcher shell program to search quickly. Good for
@@ -622,7 +639,7 @@ Turning on auto revert buffer and removing the confirmation message
 ** Ibuffer
 *** Shortcuts
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x C-b") 'list-buffers)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 #+END_SRC
 
 *** Customization
@@ -643,7 +660,10 @@ Turning on auto revert buffer and removing the confirmation message
                      (mode . c-mode)
                      (mode . python-mode)
                      (mode . java-mode)
-                     (mode . latex-mode)))
+                     (mode . latex-mode)
+                     (mode . js-mode)
+                     (mode . hack-mode)
+                     (mode . kotlin-mode)))
 	 ("Emacs Buffers" (or (name . "\*Help\*")
                               (name . "\*Apropos\*")
                               (name . "\*info\*")
@@ -849,12 +869,14 @@ consider selecting by special buffer name."
         ("\\*vc-log\\*" (display-buffer-same-window))
         ("\\*vc-.*\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.5))
         ("\\*diff\\*" (display-buffer-in-side-window) (side . bottom) (window-height . 0.5))
-        ("\\*Buffer List\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.15))
+        ("\\*Ibuffer\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.5))
         ("\\*Flycheck errors\\*" (display-buffer-in-side-window) (side . bottom) (slot . -1))
         ("\\*notmuch-.*\\*" (display-buffer-same-window))
         ("\\*Org Agenda\\*" (display-buffer-at-bottom) (window-height . 0.25))
         ("\\*scratch\\*" (display-buffer-same-window))
         ("shell-.*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
+        ("\\*compilation\\*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
+        ("\\*ansi-term.*\\*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 1))
         (".*" (display-buffer-same-window))))
 #+END_SRC
@@ -957,6 +979,10 @@ Sets up bash profile. I can now call 'remote-bash using
        'remote-bash)
 #+END_SRC
 
+** Integrate with Org Mode Better
+#+BEGIN_SRC emacs-lisp
+(define-key shell-mode-map (kbd "C-c C-x") nil)
+#+END_SRC
 * Eshell
 ** Eshell Variables
 #+BEGIN_SRC emacs-lisp
@@ -1196,6 +1222,8 @@ sifting through it much faster.
 (if (string= system-type "darwin")
     (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg")))
 (epa-file-enable)
+(if (string= system-type "darwin")
+    (setq epa-pinentry-mode 'loopback))
   #+END_SRC
   
 * Misc
