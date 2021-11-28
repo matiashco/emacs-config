@@ -185,6 +185,7 @@ between them. Adding a keybinding to make that easier.
 (setq org-todo-repeat-to-state "NEXT")
 (setq org-startup-with-inline-images t)
 (setq org-log-redeadline 'note)
+(setq org-stuck-projects '("+LEVEL=1/PROJECT" ("NEXT") nil ""))
 #+END_SRC
 
 *** Key shorcuts
@@ -348,7 +349,8 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands
       '(("d" "Day Agenda with Current-day and Unscheduled TODOs"
-	 ((agenda #1="" ((org-agenda-span 1) (org-agenda-use-time-grid nil)))))
+	 ((agenda #1="" ((org-agenda-span 1) (org-agenda-use-time-grid nil)))
+          (stuck #1="" ((org-agenda-span 1) (org-agenda-use-time-grid nil)))))
 	("n" "Notes"
 	 ((todo "NOTE" ((org-agenda-files `(,work-notes-path))))))
         ("p" "Projects"
