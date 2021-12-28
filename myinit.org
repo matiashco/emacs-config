@@ -329,7 +329,7 @@ Useful to see how much time I'm spending on a project
 Works with workflow system I'm implementing.
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords
-      '((sequence "GOAL(g)" "MAYBE(m!)" "PROJECT(p!)" "FUTURE(f!)" "TALKTO(t!)"  "WAITING(w@)" "NEXT(n!)" "|" "DONE(d!)" "CANCELLED(c@)")
+      '((sequence "GOAL(g)" "MAYBE(m!)" "PROJECT(p!)" "FUTURE(f!)" "TALKTO(t!)"  "WAITING(w@)" "NEXT(n!)" "|" "DONE(d!)" "CANCELLED(c!)")
 	(sequence "NOTE(o)")))
 (setq org-todo-keyword-faces
       '(("ENTRY" . "brown")
@@ -349,7 +349,8 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands
       '(("d" "Day Agenda with Current-day and Unscheduled TODOs"
-	 ((agenda #1="" ((org-agenda-span 1) (org-agenda-use-time-grid nil)))
+	 ((agenda #1="" ((org-agenda-span 1) ;; (org-agenda-use-time-grid nil)
+                         ))
           (stuck #1="" ((org-agenda-span 1) (org-agenda-use-time-grid nil)))))
 	("n" "Notes"
 	 ((todo "NOTE" ((org-agenda-files `(,work-notes-path))))))
@@ -1272,7 +1273,7 @@ now:
 It's annoying to not have the point go to the beginning of the
 match. This lambda function will do just that:
 #+BEGIN_SRC emacs-lisp
-(add-hook 'isearch-mode-end-hook (lambda () (if (> (point) isearch-other-end) (goto-char isearch-other-end))))
+(add-hook 'isearch-mode-end-hook (lambda () (if (and isearch-other-end (> (point) isearch-other-end)) (goto-char isearch-other-end))))
 #+END_SRC
 
 ** Save using f13
