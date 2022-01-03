@@ -803,7 +803,6 @@ with a copy of the text from the region."
     (fit-frame-to-buffer frame line-count line-count 80 80)
     (select-frame original-frame)))
 (global-set-key (kbd "C-x 5 r") 'matiash-copy-region-to-new-frame)
-(global-set-key (kbd "<f9>") 'matiash-copy-region-to-new-frame)
 #+END_SRC
 
 ** Delete Frame
@@ -872,7 +871,7 @@ consider selecting by special buffer name."
         ("\\*Ibuffer\\*" (display-buffer-in-side-window) (side . left) (window-width . 0.5))
         ("\\*Flycheck errors\\*" (display-buffer-in-side-window) (side . bottom) (slot . -1))
         ("\\*notmuch-.*\\*" (display-buffer-same-window))
-        ("\\*Org Agenda\\*" (display-buffer-at-bottom) (window-height . 0.25))
+        ("\\*Org Agenda.*\\*" (display-buffer-at-bottom) (window-height . 0.25))
         ("\\*scratch\\*" (display-buffer-same-window))
         ("shell-.*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
         ("\\*compilation\\*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
@@ -1435,3 +1434,12 @@ universal argument to switch to buffer in the same window"
 (global-set-key (kbd "s-b") 'matiash-display-and-switch-to-buffer)
    #+END_SRC
    
+** Olivetti Mode
+I really like this mode, so let's go ahead and map it to a key
+#+BEGIN_SRC emacs-lisp
+(use-package olivetti
+  :ensure t
+  :config
+  (setq olivetti-body-width 90))
+(global-set-key (kbd "<f9>") 'olivetti-mode)
+#+END_SRC
