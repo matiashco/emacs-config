@@ -351,7 +351,15 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
       '(("d" "Day Agenda with Current-day and Unscheduled TODOs"
 	 ((agenda #1="" ((org-agenda-span 1) ;; (org-agenda-use-time-grid nil)
                          ))
-          (stuck #1="" ((org-agenda-span 1) (org-agenda-use-time-grid nil)))))
+          (todo "GOAL" ((org-agenda-overriding-header "\nGoals")))
+          (stuck #1="" ((org-agenda-overriding-header "\nStuck Projects") (org-agenda-span 1) (org-agenda-use-time-grid nil)))
+          (agenda #1="" ((org-agenda-overriding-header "\nOngoing Projects")
+                     (org-agenda-skip-function
+		      '(org-agenda-skip-entry-if 'nottodo
+						 '("PROJECT"))) 
+                     (org-deadline-warning-days 365)
+                     (org-agenda-span 1)))
+          ))
 	("n" "Notes"
 	 ((todo "NOTE" ((org-agenda-files `(,work-notes-path))))))
         ("p" "Projects"
