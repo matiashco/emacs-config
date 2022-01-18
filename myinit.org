@@ -185,7 +185,7 @@ between them. Adding a keybinding to make that easier.
 (setq org-todo-repeat-to-state "NEXT")
 (setq org-startup-with-inline-images t)
 (setq org-log-redeadline 'time)
-(setq org-stuck-projects '("+LEVEL=1/PROJECT" ("NEXT") nil ""))
+(setq org-stuck-projects '("+PROJECT/-DONE-FUTURE-CANCELLED" ("NEXT") nil ""))
 #+END_SRC
 
 *** Key shorcuts
@@ -359,6 +359,22 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
 						 '("PROJECT"))) 
                      (org-deadline-warning-days 365)
                      (org-agenda-span 1)))
+          ))
+        ("w" "Work Agenda with Current-day and Unscheduled TODOs"
+	 ((agenda #1="" ((org-agenda-span 1) (org-agenda-files `(,work-inbox-path))
+                         ))
+          (todo "GOAL" ((org-agenda-overriding-header "\nGoals") (org-agenda-files `(,work-inbox-path))))
+          (stuck #1="" ((org-agenda-overriding-header "\nStuck Projects")
+                        (org-agenda-span 1)
+                        (org-agenda-use-time-grid nil)
+                        (org-agenda-files `(,work-inbox-path))))
+          (agenda #1="" ((org-agenda-overriding-header "\nOngoing Projects")
+                     (org-agenda-skip-function
+		      '(org-agenda-skip-entry-if 'nottodo
+						 '("PROJECT"))) 
+                     (org-deadline-warning-days 365)
+                     (org-agenda-span 1)
+                     (org-agenda-files `(,work-inbox-path))))
           ))
 	("n" "Notes"
 	 ((todo "NOTE" ((org-agenda-files `(,work-notes-path))))))
