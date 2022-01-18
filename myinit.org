@@ -616,7 +616,8 @@ have. It basically shows you the point easily.
     #+BEGIN_SRC emacs-lisp
 (defun matiash-always-save-this-file ()
   "Sets a variable so that this file is always saved"
-  (setq buffer-save-without-query t))
+  (if (not (string-match "\\*.*\\*" (buffer-name (current-buffer))))
+  (setq buffer-save-without-query t)))
 (add-hook 'org-mode-hook 'matiash-always-save-this-file)
     #+END_SRC
 * Searching
@@ -1355,6 +1356,11 @@ line spacing helps.
     (setq-default line-spacing nil)))
 (global-set-key (kbd "<f12>") 'matiash-toggle-line-spacing)
   #+END_SRC
+
+This configuration does help - making it the default:
+#+BEGIN_SRC emacs-lisp
+(matiash-toggle-line-spacing)
+#+END_SRC
 
 ** Move Point to Help
 I like having the point in the Help buffer when I open it up.
