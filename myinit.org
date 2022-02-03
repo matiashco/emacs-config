@@ -185,7 +185,7 @@ between them. Adding a keybinding to make that easier.
 (setq org-todo-repeat-to-state "NEXT")
 (setq org-startup-with-inline-images t)
 (setq org-log-redeadline 'time)
-(setq org-stuck-projects '("+PROJECT/-DONE-FUTURE-CANCELLED" ("NEXT") nil ""))
+(setq org-stuck-projects '("+PROJECT/-DONE-FUTURE-CANCELLED" ("NEXT" "WAITING") nil ""))
 #+END_SRC
 
 *** Key shorcuts
