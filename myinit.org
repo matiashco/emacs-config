@@ -901,6 +901,7 @@ consider selecting by special buffer name."
         ("shell-.*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
         ("\\*compilation\\*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
         ("\\*ansi-term.*\\*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
+        ("\\*Org Select\\*" (display-buffer-same-window))
         ("\\*.*\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 1))
         (".*" (display-buffer-same-window))))
 #+END_SRC
@@ -1473,4 +1474,11 @@ I really like this mode, so let's go ahead and map it to a key
   :config
   (setq olivetti-body-width 90))
 (global-set-key (kbd "<f9>") 'olivetti-mode)
+#+END_SRC
+
+** Call Org Capture in Side Window
+#+BEGIN_SRC emacs-lisp
+(defadvice org-capture (before hide-side-windows)
+  (if (window-with-parameter 'window-side nil (selected-frame))
+      (window-toggle-side-windows)))
 #+END_SRC
