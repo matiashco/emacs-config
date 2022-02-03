@@ -1010,6 +1010,7 @@ Sets up bash profile. I can now call 'remote-bash using
 (require 'sh-script)
 (define-key sh-mode-map (kbd "C-c C-x") nil)
 #+END_SRC
+
 * Eshell
 ** Eshell Variables
 #+BEGIN_SRC emacs-lisp
