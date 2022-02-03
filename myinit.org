@@ -1006,6 +1006,7 @@ Sets up bash profile. I can now call 'remote-bash using
 ** Integrate with Org Mode Better
 #+BEGIN_SRC emacs-lisp
 (define-key shell-mode-map (kbd "C-c C-x") nil)
+(define-key sh-mode-map (kbd "C-c C-x") nil)
 #+END_SRC
 * Eshell
 ** Eshell Variables
