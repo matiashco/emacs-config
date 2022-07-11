@@ -181,11 +181,12 @@ between them. Adding a keybinding to make that easier.
 (setq org-log-done 'time)
 (setq org-log-into-drawer t)
 (setq org-src-window-setup 'current-window)
-(setq org-deadline-warning-days 0)
+(setq org-deadline-warning-days 14)
 (setq org-todo-repeat-to-state "NEXT")
 (setq org-startup-with-inline-images t)
 (setq org-log-redeadline 'time)
 (setq org-stuck-projects '("+PROJECT/-DONE-FUTURE-CANCELLED" ("NEXT" "WAITING") nil ""))
+(setq org-agenda-span 'day)
 #+END_SRC
 
 *** Key shorcuts
