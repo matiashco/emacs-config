@@ -26,32 +26,20 @@ Everything seems to be working right now!
 
 ** Theme Changes
  #+BEGIN_SRC emacs-lisp
-(setq custom-safe-themes t)
-(defun matiash-toggle-dark-mode ()
-  "Toggles ATOM-ONE-DARK custom theme. Assumes theme is
-installed"
-  (interactive)
-  (if (custom-theme-enabled-p 'atom-one-dark)
-      (progn
-        (disable-theme 'atom-one-dark)
-        (load-theme 'adwaita)
-        (set-face-attribute 'org-block nil :background "pale goldenrod")
-        (set-face-attribute 'org-block-begin-line nil :background "gray85"))
-    (progn
-      (disable-theme 'adwaita)
-      (load-theme 'atom-one-dark)
-      (set-face-attribute 'org-block nil :background "gray18")
-      (set-face-attribute 'org-block-begin-line nil :background "gray24"))))
-(global-set-key (kbd "<f10>") 'matiash-toggle-dark-mode)
-
-;; Runs this hack when running macOS to start up with no selected theme.
-(if (string= system-type "darwin")
-    (progn
-      (enable-theme 'atom-one-dark)
-      (disable-theme 'atom-one-dark)))
-
-(set-face-attribute 'org-block nil :background "pale goldenrod")
-(set-face-attribute 'org-block-begin-line nil :background "gray85")
+   (setq custom-safe-themes t)
+   (defun matiash-toggle-dark-mode ()
+     "Toggles TANGO-DARK custom theme. Assumes theme is
+   installed"
+     (interactive)
+     (if (custom-theme-enabled-p 'tango-dark)
+	 (progn
+	   (disable-theme 'tango-dark)
+	   (load-theme 'adwaita))
+       (progn
+	 (disable-theme 'adwaita)
+	 (load-theme 'tango-dark)))
+     )
+   (global-set-key (kbd "<f10>") 'matiash-toggle-dark-mode)
 #+END_SRC
  
 ** Adwaita
@@ -238,8 +226,8 @@ Used to capture ideas and things to do. Right now I'm in the middle of
 implementing a workflow, so this will be edited soon enough.
 #+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
-      '(("e" "Entry" entry (file inbox-path) "* NEXT %?")
-        ("w" "Work Entry" entry (file work-inbox-path) "* NEXT %?")
+      '(("e" "Entry" entry (file inbox-path) "* NEXT %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t) nil)")
+        ("w" "Work Entry" entry (file work-inbox-path) "* NEXT %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t) nil)")
         ("p" "Journal Entry" plain 
          (file+datetree+prompt personal-journal-path)
          "    %?" :empty-lines-before 1)
@@ -362,7 +350,7 @@ plus unscheduled ones. Skip function found at [[https://github.com/mwfogleman/.e
                      (org-agenda-span 1)))
           ))
         ("w" "Work Agenda with Current-day and Unscheduled TODOs"
-	 ((agenda #1="" ((org-agenda-span 1) (org-agenda-files `(,work-inbox-path))
+	 ((agenda #1="" ((org-agenda-span 1) (org-agenda-files `(,work-inbox-path)) (org-agenda-use-time-grid nil)
                          ))
           (todo "GOAL" ((org-agenda-overriding-header "\nGoals") (org-agenda-files `(,work-inbox-path))))
           (stuck #1="" ((org-agenda-overriding-header "\nStuck Projects")
@@ -900,6 +888,7 @@ consider selecting by special buffer name."
         ("\\*notmuch-.*\\*" (display-buffer-same-window))
         ("\\*Org Agenda.*\\*" (display-buffer-at-bottom) (window-height . 0.25))
         ("\\*scratch\\*" (display-buffer-same-window))
+        ("\\*grep\\*" (display-buffer-in-side-window) (window-height . 0.20) (slot . 0))
         ("shell-.*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
         ("\\*compilation\\*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
         ("\\*ansi-term.*\\*" (display-buffer-in-side-window) (side . bottom)  (window-height . 0.20) (slot . 0) (window-parameters . ((no-delete-other-windows . t))))
@@ -1013,6 +1002,16 @@ Sets up bash profile. I can now call 'remote-bash using
 (define-key sh-mode-map (kbd "C-c C-x") nil)
 #+END_SRC
 
+** Setup Coterm Mode
+Looks like this mode allows for good terminal integration for
+shell-mode!
+#+begin_src emacs-lisp
+(use-package coterm
+  :ensure t
+  :config
+  (coterm-mode))
+#+end_src
+
 * Eshell
 ** Eshell Variables
 #+BEGIN_SRC emacs-lisp
@@ -1020,28 +1019,6 @@ Sets up bash profile. I can now call 'remote-bash using
 (setq eshell-history-size 1000000)
 (setq eshell-cmpl-cycle-completions nil)
 (setq eshell-cmpl-ignore-case t)
-#+END_SRC
-
-** Change the Default Eshell prompt
-This gives problems when root, but that can be fixed later.
-#+BEGIN_SRC emacs-lisp
-(setq eshell-prompt-function
-      (lambda ()
-        (propertize
-         (concat
-          "["
-          (getenv "USER")
-          "@"
-          (replace-regexp-in-string "\n"
-                                    ""
-                                    (shell-command-to-string "hostname"))
-          " "
-          (replace-regexp-in-string "^.*:" "" (eshell/pwd))
-          "]"
-          (if (= (user-uid) 0) "# " " $ "))
-         'face `,(if (seq-contains custom-enabled-themes 'atom-one-dark)
-                     '(:foreground "yellow")
-                  '(:foreground "red")))))
 #+END_SRC
 
 ** Set Pager to cat
